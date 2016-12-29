@@ -1,0 +1,2 @@
+# campusStore
+一个基于ThinkPHP5开发的简单的B2C校园商城
