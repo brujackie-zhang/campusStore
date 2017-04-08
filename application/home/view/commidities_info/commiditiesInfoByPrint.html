@@ -1,0 +1,251 @@
+<div id="mainbody">
+<div class="page-pro w1000 mar">
+  <!--pro-main-->
+  <div class="pro-main mar-t10">
+    <div class="box">
+        <div class="tb-booth tb-pic tb-s310">
+            <a href="javascript:void(0);"><img src="{$commiditiesInfo.image}" rel="{$commiditiesInfo.image}" class="jqzoom" /></a>
+        </div>
+        <ul class="tb-thumb" id="thumblist">
+        {foreach $pictures as $detail}
+            <li class="tb-selected">
+                <div class="tb-pic tb-s40">
+                    <a href="javascript:void(0);"><img src="{$Think.const.PIC}{$detail}" mid="{$Think.const.PIC}{$detail}" big="{$Think.const.PIC}{$detail}"></a>
+                </div>
+            </li>
+        {/foreach}
+        </ul>
+    </div>
+    <script type="text/javascript" src="{$Think.const.JS}big_glass.js"></script>
+    <script type="text/javascript" src="{$Think.const.JS}carPrint.js"></script>
+    <script language="javascript" src="{$Think.const.JS}jquery.imagezoom.min.js"></script>
+    <div class="pro-info fl">
+      <h1><span>{$commiditiesInfo.introduction}</span><span id="span-admire" class="glyphicon glyphicon-hand-right" style="color:#4CA2D3;cursor:pointer;float:right;" onclick="collectionByCommidityId({$commiditiesInfo.commidityId});"> 点击收藏</span></h1>
+      <span id="cTypeName">{$commiditiesInfo.cTypeName}</span> 
+      <span id="unitPrice">{$commiditiesInfo.price}</span>
+      <span id="userFiles">{$userFiles}</span>
+      <div class="price posR mar-t10"><b>￥<i id="i-price">{$commiditiesInfo.price}</i></b>
+        &nbsp;&nbsp;&nbsp;&nbsp;单价：<b>￥<i id="b-price">{$commiditiesInfo.price}</i></b>
+        &nbsp;&nbsp;&nbsp;&nbsp;赠送积分：<b id="b-credits">{$commiditiesInfo.price}</b>
+        <b id="b-count">&nbsp;&nbsp;&nbsp;&nbsp;折扣：<i id="i-count">100</i>%</b>
+        &nbsp;&nbsp;&nbsp;&nbsp;销量：<b>{$commiditiesInfo.salesVolume}</b>
+        <dl>
+          <dt>累计评价</dt>
+          <dd><a href="{:url('CommentInfo/getCommidityAllComment', ['commidityId' => $commidityId])}">{$commentTotal}</a></dd>
+        </dl>
+      </div>
+      <div class="other mar-t10">由&nbsp;<span style="color:#4CA2D3;">校园商城&nbsp;</span>发货并提供售后服务。16:00前完成下单，预计明日（{$tommorrow}）送达</div>
+      <div id="print_detail">
+         <!-- 
+         <div class="upload-file mar-t20" id="div-upload-file"><span class="print-operate"></span>
+            <form action="#" enctype="multipart/form-data" method="post">
+              <input type="file" name="upload-file[]" id="upload-file" multiple="multiple"/>
+              <input type="submit" value="上传" onclick="upload();" />
+            </form> 
+         </div> -->
+         <div class="style-print mar-t20"><span class="print-operate" id="print-operate-style">规格</span>
+            <select name="paper-type" id="paper-style" onchange="thesisChange({$commidityId});">
+                <option value="0.5" selected disabled>请选择纸张规格</option>
+                {foreach $extraInfoForStyle as $style}
+                    {foreach $style as $style_value => $style_text}
+                  <option value="{$style_value}">{$style_text}</option>
+                    {/foreach}
+                {/foreach}
+            </select>
+            <select name="photo-type" id="photo-style" onchange="photoChange({$commidityId});">
+                <option value="1" selected disabled>请选择照片纸张</option>
+                {foreach $extraInfoForStyle as $style}
+                    {foreach $style as $style_value => $style_text}
+                  <option value="{$style_value}">{$style_text}</option>
+                    {/foreach}
+                {/foreach}
+            </select>
+            <select name="bannerWidth" id="banner-style" onchange="bannerChange({$commidityId});">
+                <option value="1.3" selected disabled>请选择条幅规格</option>
+                {foreach $extraInfoForStyle as $style}
+                    {foreach $style as $style_value => $style_text}
+                  <option value="{$style_value}">{$style_text}</option>
+                    {/foreach}
+                {/foreach}
+            </select>
+            <select name="cardStyle" id="card-style">
+              <option value="{$commiditiesInfo.price}" selected>{$commiditiesInfo.price}</option>
+            </select>
+         </div>
+         <div class="technology mar-t20"><span class="print-operate" id="print-operate-technology">工艺</span>
+            <select name="thesis-technology" id="thesis-technology" onchange="thesisChange({$commidityId});">
+                <option value="1" selected disabled>请选择论文打印难度</option>
+                {foreach $extraInfoForTechnology as $technology}
+                    {foreach $technology as $technology_value => $technology_text}
+                    <option value="{$technology_value}">{$technology_text}</option>
+                    {/foreach}
+                {/foreach}
+            </select>
+            <select name="card-technology" id="card-technology" onchange="cardChange({$commidityId});">
+                <option value="10" selected disabled>请选择名片制作工艺</option>
+                {foreach $extraInfoForTechnology as $technology}
+                    {foreach $technology as $technology_value => $technology_text}
+                    <option value="{$technology_value}">{$technology_text}</option>
+                    {/foreach}
+                {/foreach}
+            </select>
+            <select name="bind-technology-style" id="bind-technology-style" onchange="bindChange({$commidityId});">
+                <option value="0" selected disabled>请选择装订类别</option>
+                {foreach $extraInfoForTechnology as $technology}
+                    {foreach $technology as $technology_value => $technology_text}
+                    <option value="{$technology_value}">{$technology_text}</option>
+                    {/foreach}
+                {/foreach}
+            </select>
+            <select name="bind-technology" id="bind-technology" onchange="bindChange({$commidityId});">
+                <option value="0" selected disabled>请选择装订要求</option>
+                {foreach $extraInfoForTechnology1 as $technology1}
+                    {foreach $technology1 as $technology_value1 => $technology_text1}
+                    <option value="{$technology_value1}">{$technology_text1}</option>
+                    {/foreach}
+                {/foreach}
+            </select>
+            <select name="banner-technology" class="banner-technology" id="banner-technology" onchange="bannerChange({$commidityId});">
+                <option value="0" selected disabled>请选择条幅工艺</option>
+                {foreach $extraInfoForTechnology as $technology}
+                    {foreach $technology as $technology_value => $technology_text}
+                    <option value="{$technology_value}">{$technology_text}</option>
+                    {/foreach}
+                {/foreach}
+            </select>
+            <select name="banner-technology-background" class="banner-technology" id="banner-background">
+                <option selected disabled>请选择条幅背景色</option>
+                {foreach $extraInfoForBackground as $background}
+                    {foreach $background as $background_value => $background_text}
+                    <option value="{$background_value}">{$background_text}</option>
+                    {/foreach}
+                {/foreach}
+            </select>
+            <select name="banner-technology-color" class="banner-technology" id="banner-font">
+                <option selected disabled>请选择条幅字体颜色</option>
+                {foreach $extraInfoForFont as $font}
+                    {foreach $font as $font_value => $font_text}
+                    <option value="{$font_value}">{$font_text}</option>
+                    {/foreach}
+                {/foreach}
+            </select>
+            <select name="print-technology" id="print-technology" onchange="printChange({$commidityId});">
+                <option value="0.2" selected disabled>请选择打印工艺</option>
+                {foreach $extraInfoForTechnology as $technology}
+                    {foreach $technology as $technology_value => $technology_text}
+                    <option value="{$technology_value}">{$technology_text}</option>
+                    {/foreach}
+                {/foreach}
+            </select>
+            <select name="print-technology" id="photo-technology" onchange="photoChange({$commidityId});">
+                <option value="1" selected disabled>请选择照片尺寸</option>
+                {foreach $extraInfoForTechnology as $technology}
+                    {foreach $technology as $technology_value => $technology_text}
+                    <option value="{$technology_value}">{$technology_text}</option>
+                    {/foreach}
+                {/foreach}
+            </select>
+         </div>
+         <div class="urgency mar-t20"><span class="print-operate">加急</span>
+            <select name="urgency-technology" id="urgency-technology" onchange="urgencyChange({$commidityId});">
+                <option value="0" selected disabled>请选择急迫程度</option>
+                {foreach $extraInfoForUrgency as $urgency}
+                    {foreach $urgency as $urgency_value => $urgency_text}
+                    <option value="{$urgency_value}">{$urgency_text}</option>
+                    {/foreach}
+                {/foreach}
+            </select>
+         </div>
+         <div class="num mar-t20"><span class="print-operate" id="print-operate-num">数量</span>
+            <input type="button" name="subtract" id='subtract' value="-" onclick="sub({$commidityId});" />
+            <input type="text" class="fi-num" name="num_{$commidityId}" id='num_{$commidityId}' value="1" onchange="numChange({$commidityId});">
+            <input type="button" name="add" id='add' value="+" onclick="add({$commidityId});" />
+         </div>
+         <div class="other-request mar-t20"><span class="print-operate">其他</span>
+            <textarea name="other-request" placeholder="请输入其他的要求" id="textarea-other"></textarea>
+         </div>
+         <p class="clear"></p>
+         <div class="ok-no-delivery mar-t20"><span class="print-operate">取件</span>
+            <input type="radio" name="delivery-way" value="自取" checked="checked" id="own-delivery">
+            <label for="own-delivery">自取</label>
+            <input type="radio" name="delivery-way" value="配送" id="quick-delivery">
+            <label for="quick-delivery">配送</label>
+         </div>
+         <div class="ok-no-file mar-t20"><span class="print-operate">文件</span>
+            <input type="radio" name="upload-file" value="1" id="ok-upload-file" onclick="fileChange();">
+            <label for="ok-upload-file">有</label>
+            <input type="radio" name="upload-file" value="0" checked="checked" id="no-upload-file" onclick="fileChange();">
+            <label for="no-upload-file">无</label>
+         </div>
+         <div class="upload-file mar-t20" id="div-upload-file"><span class="print-operate"></span>
+            <div style="width:500px;margin-left:7%; margin-top:-5%; border:solid 1px #ddd; overflow:hidden;">
+                <form id='myupload' action="{:url('Upload/upload')}" method='post' enctype='multipart/form-data'>
+                    <input type="file" id="input_uploadfile" name="uploadfile"/>
+                </form>
+                <div id="filelist"></div>
+                <p id="res"></p>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped" ><span class="percent">0%</span></div>
+                </div>
+                <a href="javascript:void(0);" onclick="input_uploadfile.click()" class="uploadbtn" id="a-upload-file">点击上传文件</a>
+            </div>
+         </div>
+      <div class="pro-btn mar-t20" style="text-align:center;margin-top:-5%;">
+        <span id="add-car" dataid="{$commidityId}" dataprice="{$commiditiesInfo.price}" datadiscount="{$commiditiesInfo.discount}" onclick="addCommidity({$commidityId});">加入购物车</span>
+      </div>
+    </div>
+    <p class="clear"></p>
+  </div>
+  <!--/pro-main--> 
+  <!--pro-block-->
+  <div class="pro-block mar-t20">
+    <div class="pro-block-sidebar fl">
+      <div class="sidebox">
+        <h2>购买了该商品的用户还购买了</h2>
+        <ul class="mod-pro">
+        {foreach $commidityInfoFromUser as $user}
+          <li><a href="{:url('CommiditiesInfo/getCommidityInfoByCommidityId', ['commidityId' => $user.commidityId])}" style="text-decoration:none"><img src="{$user.image}" width="100" height="100">{$user.introduction}</a><span>￥{$user.price}</span></li>
+        {/foreach}
+        </ul>
+      </div>
+    </div>
+    <div class="pro-block-content fl mar-l10">
+      <div class="pro-title"></div>
+      <div class="pro-details">
+        <p>
+        {foreach $pictures as $detail}
+            <img src="{$Think.const.PIC}{$detail}" alt="{$detail}" title="{$detail}" width="750" height="600" style="margin-bottom:30px">
+        {/foreach}
+        </p>
+      </div>
+    </div>
+    <p class="clear"></p>
+  </div>
+  <!--pro-blcok--> 
+</div>
+</div>
+<div class="car-footer" style="bottom:0;position:fixed;right:0;width:350px;line-height:80px;background:#4CA2D3 none repeat scroll 0 0;cursor:pointer;font-size:22px;padding-left:14px;text-align:left;color:#fff;border-radius:10px">
+    <div id="car-icon" style="float:left;font-size:22px">
+        <!-- <i class='font-face' style="font-size:25px">&#xea98;</i>&nbsp; -->
+        <!-- <i class='font-face' style="font-size:30px">&#xea4c;</i>&nbsp; -->
+        <i id="end" class='font-face' style="font-size:30px">&#xe96f;</i>&nbsp;
+        共
+        <span id="money">0.00</span>
+        元
+    </div>
+    <a href="javascript:void(0);" style="hover:none" onclick="goAccount({$commidityId});">
+        <div class="go" style="float:right;padding-right:14px;color:#fff">
+            去结算
+        </div>
+    </a>
+</div>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(".jqzoom").imagezoom(); 
+        $("#thumblist li a").click(function(){
+            $(this).parents("li").addClass("tb-selected").siblings().removeClass("tb-selected");
+            $(".jqzoom").attr('src',$(this).find("img").attr("mid"));
+            $(".jqzoom").attr('rel',$(this).find("img").attr("big"));
+        });
+    });
+</script>

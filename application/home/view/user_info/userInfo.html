@@ -1,0 +1,60 @@
+<style type="text/css" media="screen">
+  th {
+    color:#4CA2D3;
+    text-align: right;
+  }
+</style>
+<div id="mainbody">
+    <div class="admin-cont w1000 mar mar-t30 clearfix">
+      <div class="admin-left fl">
+        <div class="admin-nav">		
+        <dl class="on">
+          <dt><a href="#"><i></i>我的账号</a></dt>
+          <dd>
+              <a href="{:url('UserInfo/getUserInfo')}">基本信息</a>
+              <a href="{:url('UserInfo/editPassword')}">安全中心</a>
+              <a href="{:url('UserInfo/userPhotoUpload')}">用户头像</a>
+          </dd>
+        </dl>
+        <dl>
+          <dt><a href="{:url('CommiditiesInfo/getDealInfoByUserId')}"><i></i>我的订单</a></dt>
+          <dd></dd>
+        </dl>
+        <dl>
+          <dt><a href="{:url('CommentInfo/getMyComment')}"><i></i>我的评价</a></dt>
+          <dd></dd>
+        </dl>
+        <dl>
+          <dt><a href="{:url('CollectionInfo/getMyCollection')}"><i></i>我的收藏</a></dt>
+          <dd></dd>
+        </dl>
+        <dl>
+          <dt><a href="{:url('AddressInfo/getAddress')}"><i></i>我的地址</a></dt>
+          <dd></dd>
+        </dl>
+        </div>
+      </div>
+      <div class="admin-right fl">
+          <h1>我的基本信息</h1>
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" class="table-fm mar-t20">
+            <tr>
+              <th class="baseInfo">用&nbsp;&nbsp;户&nbsp;&nbsp;名</th>
+              <td colspan="1">{$userInfo.name}</td>
+            </tr>
+            <tr>
+              <th class="baseInfo">详&nbsp;细&nbsp;地&nbsp;址</th>
+              <td colspan="1">{$userInfo.address}</td>
+            </tr>	
+            <tr>
+              <th class="baseInfo">就&nbsp;读&nbsp;学&nbsp;校&nbsp;</th>
+              <td colspan="1">{$userInfo.school}</td>
+            </tr>	
+            <tr>
+              <th class="baseInfo">绑定手机号</th>
+              <td colspan="1">{$userInfo.mobile_phone}</td>
+            </tr>
+          </table>
+      </div>
+      <p class="clear"></p>
+    </div>
+</div>

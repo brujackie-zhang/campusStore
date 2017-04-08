@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link rel="stylesheet" href="{$Think.const.CSS}pintuer.css">
+<link rel="stylesheet" href="{$Think.const.CSS}admin.css">
+<script src="{$Think.const.JS}jquery.js"></script>
+<script src="{$Think.const.JS}pintuer.js"></script>
+</head>
+<body>
+<div class="panel admin-panel">
+  <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>修改用户信息</strong></div>
+  <div class="body-content">
+    <form method="post" class="form-x" action="{:url('user/update',['id'=> $user_info.id])}">  
+      <div class="form-group">
+        <div class="label">
+          <label>用户账号：</label>
+        </div>
+        <div class="field">
+          <input type="text" readonly="true" class="input w50" value="{$user_info.name}" name="user_account"/>
+          <div class="tips"></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label>用户昵称：</label>
+        </div>
+        <div class="field">
+          <input class="input w50" type="text" name="user_nickname" value="{$user_info.nickname}"/>
+          <div class="tips"></div>
+        </div>
+      </div>
+      <div class="clear"></div>
+      <div class="form-group">
+        <div class="label">
+          <label>用户密码：</label>
+        </div>
+        <div class="field">
+          <input type="text" class="input" name="user_password" value="{$user_info.password}" />
+        </div>
+      </div>
+      <div class="form-group">
+          <div class="label">
+            <label>用户性别：</label>
+          </div>
+          <div class="field">
+            <select name="user_sex" class="input w50">
+              <option value="{$user_info.sex}">{$user_info.sex}</option>
+	          {switch name="$user_info.sex" }
+    		      {case value="男"}<option value="女">女</option>{/case}
+    		      {case value="女"}<option value="男">男</option>{/case}
+		      {default /}<option value="男">男</option><option value="女">女</option>
+		  {/switch}
+            </select>
+            <div class="tips"></div>
+          </div>
+        </div>
+      <div class="form-group">
+        <div class="label">
+          <label>真实姓名：</label>
+        </div>
+        <div class="field">
+          <input type="text" class="input" name="user_real_name" value="{$user_info.real_name}"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label>身份证号：</label>
+        </div>
+        <div class="field">
+	    <input type="text" class="input" name="user_id_card" value="{$user_info.id_card}"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label>手机号：</label>
+        </div>
+        <div class="field">
+            <input type="text" class="input" name="user_phone" value="{$user_info.mobile_phone}"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label>学校：</label>
+        </div>
+        <div class="field">
+            <input type="text" class="input" name="user_school" value="{$user_info.school}"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label></label>
+        </div>
+        <div class="field">
+          <button class="button bg-main icon-check-square-o" type="submit"> 提交</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+</body></html>

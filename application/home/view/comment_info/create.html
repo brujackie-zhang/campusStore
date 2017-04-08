@@ -1,0 +1,117 @@
+<style type="text/css">
+  label {
+    color:#4CA2D3;
+  }
+</style>
+<div id="mainbody">
+<div class="admin-cont w1000 mar mar-t30 clearfix">
+  <div class="admin-left fl">
+    <div class="admin-nav">   
+    <dl class="on">
+      <dt><a href="#"><i></i>我的账号</a></dt>
+          <dd>
+              <a href="{:url('UserInfo/getUserInfo')}">基本信息</a>
+              <a href="{:url('UserInfo/editPassword')}">安全中心</a>
+              <a href="{:url('UserInfo/userPhotoUpload')}">用户头像</a>
+          </dd>
+        </dl>
+        <dl>
+          <dt><a href="{:url('CommiditiesInfo/getDealInfoByUserId')}"><i></i>我的订单</a></dt>
+          <dd></dd>
+        </dl>
+        <dl>
+          <dt><a href="{:url('CommentInfo/getMyComment')}"><i></i>我的评价</a></dt>
+      <dd></dd>
+    </dl>
+    <dl>
+      <dt><a href="{:url('CollectionInfo/getMyCollection')}"><i></i>我的收藏</a></dt>
+      <dd></dd>
+    </dl>
+    <dl>
+      <dt><a href="{:url('AddressInfo/getAddress')}"><i></i>我的地址</a></dt>
+      <dd></dd>
+    </dl>
+    </div>
+  </div>
+  <div class="admin-right fl">
+    <div class="shop-balance">
+        <h1>添加商品评价</h1>
+        <form class="form-horizontal mar-t30" method="post" action="">
+        <div class="form-group" id="div-commidityId" style="display:none;">
+            <label for="commidityId" class="col-sm-2 control-label">商品ID</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="commidityId" name="commidityId" style="float:left" readonly='true' value="{$commidityId}">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="commidityName" class="col-sm-2 control-label">商品名称</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="commidityName" name="commidityName" style="float:left" readonly='true' value="{$commidityName}">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="score" class="col-sm-2 control-label">评分</label>
+            <div class="col-sm-6">
+              <select name="selectScore" id="selectScore" class="form-control input-md font-face" style="font-size:20px;color:#4CA2D3;background:#eee">
+                <option value="5" selected class="font-face" style="color:#4CA2D3">&#xe98c;&#xe98c;&#xe98c;&#xe98c;&#xe98c;&#xe993;&#xe993;&#xe993;&#xe904;</option>
+                <option value="4.5">&#xe98c;&#xe98c;&#xe98c;&#xe98c;&#xe993;&#xe993;</option>
+                <option value="4">&#xe98c;&#xe98c;&#xe98c;&#xe98c;&#xe993;&#xe903;</option>
+                <option value="3.5">&#xe98c;&#xe98c;&#xe98c;</option>
+                <option value="3">&#xe98c;&#xe98d;&#xe902;</option>
+                <option value="2.5">&#xe98d;&#xe98d;&#xe98d;</option>
+                <option value="2">&#xe98d;&#xe98d;&#xe98d;&#xe9ac;&#xe901;</option>
+                <option value="1.5">&#xe98d;&#xe98d;&#xe98d;&#xe98d;&#xe9ac;&#xe9ac;</option>
+                <option value="1">&#xe98d;&#xe98d;&#xe98d;&#xe9ac;&#xe9ac;&#xe9ac;&#xe900;</option>
+                <option value="0">&#xe9ac;&#xe9ac;&#xe9ac;&#xe9ac;&#xe9ac;&#xe9ac;&#xe9ac;&#xe909;</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="commentContent" class="col-sm-2 control-label">评价内容</label>
+            <div class="col-sm-6">
+              <textarea class="form-control" id="commentContent" placeholder="请输入您的评价内容" name="commentContent" style="width:517px;height:100px;"></textarea>
+            </div>
+          </div>
+          <div class="form-group mar-t30">
+            <label for="button" class="col-sm-2 control-label"></label>
+            <div class="col-sm-5">
+              <button type="button" class="btn btn-lg" id="button" style="margin-left:30%;width:30%;line-height:20px;font-size:20px;background:#4CA2D3;border:1px solid #4CA2D3;color:#FFF;" onclick="createCommentByCommidityId({$commidityId});">评价</button>
+            </div>
+          </div>
+        </form>
+    </div>
+  </div>
+  <p class="clear"></p>
+</div>
+</div>
+<script type="text/javascript">
+    function createCommentByCommidityId(commidityId) {
+      var commidityName  = $('#commidityName').val();
+      var selectScore    = $('#selectScore').val();
+      var commentContent = $('#commentContent').val();
+      $.ajax({
+        type : 'POST',
+        url : 'http://campusstore/home/comment_info/createCommentByCommidityId/commidityId/' + commidityId,
+        // url : '{:url("CommentInfo/createCommentByCommidityId", ["commidityId" => $commidityId])}',
+        data : {"commidityId" : commidityId,
+                "commidityName" : commidityName,
+                "selectScore" : selectScore,
+                'commentContent' : commentContent,
+                },
+        dataType : 'json',
+        success : function(data) {
+            if (data.code) {
+                alert(data.msg);
+                setTimeout(function(){
+                    location.href = data.url;
+                }, 100);
+            } else {
+                alert(data.msg);
+            }
+        },
+        error : function(request) {
+            alert('页面错误！'+XHRHttpRequest.status);
+        }
+      });
+    }
+</script>

@@ -1,0 +1,135 @@
+<div id="mainbody">
+    <div class="admin-cont w1000 mar mar-t30 clearfix" style="background:rgb(255,255,255);border-left:1px solid #eee">
+      <div class="page-top">
+        <ul class="topmenu">
+        <div class="toptitle">
+            全部商品分类
+        </div>
+        {foreach $list as $k => $data}
+        <li><a href="#">{$k}</a><span></span>
+            <div class="submenu">
+            {if condition = "$data neq null"}
+                <div class="leftdiv">
+                {foreach $data as $kk => $v}
+                    <dl>
+                        <dt><a href="#">{$kk}</a></dt>
+                    {if condition = "$v neq null"}
+                        <dd>
+                        {foreach $v as $vv}
+                            {if condition = "$vv neq null"}
+                            <a href="{:url('CommiditiesInfo/getCommidityInfoByCommidityId', ['commidityId' => $vv.id])}">{$vv.name}</a>
+                            {/if}
+                        {/foreach}
+                        </dd>
+                    {/if}
+                    </dl>
+                {/foreach}
+                </div>
+            {/if}
+                <div class="rightdiv">
+                    <dl>
+                        <dd>
+                            <a href="#">
+                                <img src="{$vv.image}" width="194" height="200" title="{$vv.name}">
+                            </a>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>推荐店铺</dt>
+                        <dd>
+                            <a href="#">北化打印店</a>
+                        </dd>
+                        <dd>
+                            <a href="#">朝阳打印店</a>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </li>
+        {/foreach}
+    </ul>
+        <div class="slider"> 
+          <ul class="slider-main"> 
+           <li class="slider-panel"> 
+            <a href="#" target="_blank"><img alt="打印" title="打印" src="{$Think.const.PIC}slide.jpg"></a> 
+           </li> 
+           <li class="slider-panel"> 
+            <a href="#" target="_blank"><img alt="打印" title="打印" src="{$Think.const.PIC}slide1.jpg"></a> 
+           </li> 
+           <li class="slider-panel"> 
+            <a href="#" target="_blank"><img alt="打印" title="打印" src="{$Think.const.PIC}slide4.jpg"></a> 
+           </li> 
+           <li class="slider-panel"> 
+            <a href="#" target="_blank"><img alt="打印" title="打印" src="{$Think.const.PIC}slide3.jpg"></a> 
+           </li><li class="slider-panel"> 
+            <a href="#" target="_blank"><img alt="打印" title="打印" src="{$Think.const.PIC}slide2.jpg"></a> 
+           </li> 
+          </ul> 
+          <div class="slider-extra"> 
+           <ul class="slider-nav"> 
+            <li class="slider-item">1</li> 
+            <li class="slider-item">2</li> 
+            <li class="slider-item">3</li> 
+            <li class="slider-item">4</li> 
+            <li class="slider-item">5</li> 
+           </ul> 
+           <div class="slider-page"> 
+            <a class="slider-pre" href="javascript:;;">&lt;</a> 
+            <a class="slider-next" href="javascript:;;">&gt;</a> 
+           </div> 
+          </div> 
+         </div>
+      </div>
+      <div class="admin-right fl">
+      <div style="float:left;margin-bottom:20px">
+        <img src="{$commidityImage}" width="215" height="205"></a>  
+      </div>
+      <div style="width:215px;height:150px;float:left;margin-left:100px">
+          <h3>{$commidityName}的评论列表</h3>
+          <form class="form-inline" method="post" action="{:url('CommentInfo/getCommidityAllComment', ['commidityId' => $commidityId])}">
+            <div class="form-group mar-t10">
+              <select name="select_comment" id="select_comment" class="form-control input-md">
+                <option value="1" selected>好评</option>
+                <option value="2">中评</option>
+                <option value="3">差评</option>
+              </select>   
+              <button type="submit" class="btn btn-md" style="background:#4CA2D3;border:1px solid #4CA2D3;color:white;">查询</button>
+            </div>
+          </form>
+      </div>		  
+          <div class="balance-list mar-t20" style="clear:both;">
+            <div class="table-data">
+            <div class="panel panel-default"> 
+              <!-- Default panel contents -->
+              <div class="panel-heading" style="text-align:center">{$commidityName}评价表</div>
+              <!-- Table -->
+              <table width="100%" cellspacing="1" cellpadding="0" border="0" bgcolor="#dddddd" class="table table-bordered table-hover table-striped">
+                <thead>
+                  <tr>
+					<th>评价ID</th>
+					<th>评价用户</th>	
+                    <th>评分</th>
+                    <th>评价内容</th>
+                    <th>评价时间</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {foreach $commidityComments as $data}
+                  <tr>
+                    <td>{$data.id}</td>
+					<td>{$data.userName}</td>
+                    <td>{$data.score}</td>
+                    <td>{$data.content}</td>
+                    <td>{$data.time}</td> 
+                  </tr>
+                {/foreach}  
+                </tbody>
+              </table>
+              {$page}
+            </div>
+          </div>
+          </div>
+      </div>
+      <p class="clear"></p>
+    </div>
+  </div>

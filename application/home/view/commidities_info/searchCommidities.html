@@ -1,0 +1,25 @@
+<div id="mainbody">
+    <div class="page-pro w1000 mar">
+      <div class="shop-block mar-t20">
+        <div class="pro-block-content fl" style="width:1030px;">
+          <div class="shop-pro">
+            <ul>
+            {foreach $commidities as $data}
+              <li>
+                <a href="{:url('CommiditiesInfo/getCommidityInfoByCommidityId',['commidityId' => $data.id])}"><img src="{$data.image}" width="215" height="205"></a>
+                <b>￥{$data.price}元</b>
+                <span class="intro">{$data.introduction}</span>
+                <span class="info">销量：<i>{$data.salesVolume}</i> <br><a href="#">评价：0</a></span>        
+              </li>
+              {/foreach}
+              <p class="clear"></p>
+            </ul>
+          </div>
+            {$page}  
+        </div>
+        <p class="clear"></p>
+      </div>
+      <!--pro-blcok--> 
+    </div>
+  </div>
+  <script type="text/javascript" src="{$Think.const.JS}baidu_map.js"></script>

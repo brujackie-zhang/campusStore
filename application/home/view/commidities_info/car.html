@@ -1,0 +1,71 @@
+<script type="text/javascript" src="{$Think.const.JS}carForCar.js"></script>
+<div id="mainbody">
+<div class="page-pro w1000 mar">
+  <div class="main-shopcart mar-t10">
+    <h1>购物车</h1> 
+    <table width="100%" cellspacing="1" cellpadding="0" border="0" class="table table-bordered table-hover table-striped" id="deal-table">
+      <thead>
+        <tr>
+          <th><input type="checkbox" name="all" value="145"><span style="color:#4CA2D3;text-align:center;margin:2px;">全选</span></th>
+          <th>订单编号</th>
+          <th style="display:none;">订单ID</th>
+          <th>商品名称</th>
+          <th>商品图片</th>
+          <th>商品数量</th>           
+          <th>商品单价</th>           
+          <th>商品折扣</th>           
+          <th>小计</th>
+          <th>取件方式</th>
+          <th>订单提交时间</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+    {foreach $list as $data}
+        <tr id="tr_{$data.dealId}">
+          <td class="td-single-select"><input type="checkbox" name="single" value="{$data.dealNumber}"></td>
+          <td>{$data.dealNumber}</td>
+          <td id="td-dealId" style="display:none;">{$data.dealId}</td>
+          <td>{$data.commidityName}</td>
+          <td>
+            <img src="{$data.commidityImage}" width="80" height="80">
+         </td>
+         <td class="num">
+            <input type="button" name="subtract" id='subtract_{$data.dealId}' value="-" style="width:20px;line-height:20px;cursor:not-allowed;" disabled="disabled" onclick="sub({$data.dealId});" />
+            <input type="text" class="fi-num" name="num_{$data.dealId}" id='num_{$data.dealId}' value="{$data.commidityNum}" style="width:50px;cursor:not-allowed;" disabled="disabled" onchange="numChange({$data.dealId});">
+            <input type="button" name="add" id='add_{$data.dealId}' value="+" style="width:20px;line-height:20px;cursor:not-allowed;" disabled="disabled" onclick="add({$data.dealId});" />
+         </td>
+         <td>￥<span id="singlePrice_{$data.dealId}">{$data.commidityPrice}</span>元</td>
+         <td><span id="discount_{$data.dealId}" style="font-size:1.3em;color:red;">{$data.discount}</span>%</td>
+         <td>￥<span id="totalMoney_{$data.dealId}" style="font-size:1.3em;color:red;">{$data.total}</span>元</td>
+          <td>{$data.deliveryMethod}</td>
+          <td>{$data.time}</td>
+          <td>
+                <a href="javascript:void(0);" class="delete" style="display:inline-block;width:30px;line-height:20px;font-size:5px;text-align:center;border:1px solid #0088bb;text-decoration:none" onclick="deleteDealById({$data.dealId});">删除</a>
+                <a href="javascript:void(0);" id="modify_{$data.dealId}" style="display:inline-block;width:30px;line-height:20px;font-size:5px;text-align:center;border:1px solid #0088bb;text-decoration:none" onclick="modifyDealById({$data.dealId});">修改</a>
+          </td>
+        </tr>
+    {/foreach}
+      </tbody>
+    </table>
+    <div class="main-shopcart-info posR">
+      <dl>
+        <dt id="dt-total">总价（含配送费）：<b id="b-total">￥{$totalPrice}</b></dt>
+        <dd>已节省： -￥{$discountPrice}</dd>
+      </dl>
+      <!-- <a href="{:url('commiditiesInfo/pay')}" class="btns btn-3 posA">去付款</a> -->
+      <a href="javascript:void(0);" class="btns btn-3 posA" style="text-decoration:none;" onclick="pay();">去付款</a>
+    </div>
+  </div>
+</div>
+</div>
+<script type="text/javascript">
+    //全选按钮
+    $("input[name='all']").click(function() {
+        if ($(this).is(":checked")) {
+            $("input[name='single']").prop("checked", true);
+        } else {
+            $("input[name='single']").prop("checked", false);
+        }
+    });
+</script>

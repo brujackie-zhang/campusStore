@@ -1,60 +1,78 @@
-<header id="header"> 
-<!--topbar-->
-<div class="topbar">
-  <div class="w1000 mar posR">
-    <div class="topInfo"><a href="#">用户注册</a> | <a href="#">登录</a> 欢迎您<b><a href="#">&nbsp;{$name}!</a></b></div>
-    <ul>
-      <li class="dropMenu posR"> <a href="#">我的云印</a>
-        <div class="dropMenuList posA" style="width:120px"> 
-            <i class="arrow"></i> 
-            <a href="#"><img src="/static/common/icon/order.png" alt="order.png" style="width:16px;height:16px">&nbsp;&nbsp;我的订单</a><br/>
-            <a href="#"><img src="/static/common/icon/address.png" alt="address.png" style="width:16px;height:16px">&nbsp;&nbsp;收货地址</a><br/>
-            <a href="#"><img src="/static/common/icon/comment.png" alt="comment.png" style="width:16px;height:16px">&nbsp;&nbsp;我的评价</a><br/>
-            <a href="#"><img src="/static/common/icon/collection.png" alt="collection.png" style="width:16px;height:16px">&nbsp;&nbsp;我的收藏</a><br/> 
-            <a href="#"><img src="/static/common/icon/member.png" alt="member.png" style="width:16px;height:16px">&nbsp;&nbsp;个人中心</a><br/> 
-            <a href="#"><img src="/static/common/icon/logout.png" alt="logout.png" style="width:16px;height:16px">&nbsp;&nbsp;退出登录</a><br/> 
-        </div>
-      </li>
-      <li class="mar-l10"><a href="#">我的购物车</a></li>
-      <li class="dropMenu posA" style="right:80px;"> <a href="#">我的店铺</a>
-        <div class="dropMenuList"> <i class="arrow"></i> <a href="#">我的店铺</a> <a href="#">密码管理</a> </div>
-      </li>
-      <li class="posA" style="right:0;"><a href="#">新店入驻</a></li>
-      </dd>
-    </ul>
-  </div>
-</div>
-<!--/topbar end--> 
-<!--logo-bar-->
-<div class="logo-bar mar w1000 posR"> <a href="#" class="logo posA"></a>
-  <div class="top-city posA">
-    <dl class="city clearfix">
-      <dt><a href="#" class="city-tab">切换区域</a></dt>
-      <dd>北京 市辖区 海淀区 中关村</dd>
-    </dl>
-    <dl class="school clearfix">
-      <dt><a href="#" class="city-tab">切换学校</a></dt>
-      <dd>中国人民大学 主校区</dd>
-    </dl>
-  </div>
-  <div class="top-search posA">
-    <div id="selectnav" class="search-select fl">
-      <div class="select">
-        <h2 s-data="0">选择</h2>
-        <ul class="select-nav">
-          <li><a href="#" s-data="1">职业</a></li>
+<div id="container"> 
+  <!--header-->
+  <div id="header"> 
+    <!--topbar-->
+    <div class="topbar">
+      <div class="w1000 mar posR">
+        <div class="topInfo">欢迎您<b><a href="{:url('UserInfo/getUserInfo')}" style="text-decoration:none;">&nbsp;{$name}&nbsp;<img src="{$userImage}" alt="用户头像" width="25" height="25" style="border-radius:50%;"></a></b></div>
+        <ul>
+          <li class="dropMenu posR"> <a href="#">我的云印</a>
+            <div class="dropMenuList posA" style="width:120px"> 
+                <i class="arrow"></i> 
+                <a href="{:url('CommiditiesInfo/getDealInfoByUserId')}"><img src="{$Think.const.ICON}order.png" alt="order.png" style="width:16px;height:16px">&nbsp;&nbsp;我的订单</a><br/>
+                <a href="{:url('AddressInfo/addAddress')}"><img src="{$Think.const.ICON}address.png" alt="address.png" style="width:16px;height:16px">&nbsp;&nbsp;收货地址</a><br/>
+                <a href="{:url('comment_info/getMyComment')}"><img src="{$Think.const.ICON}comment.png" alt="comment.png" style="width:16px;height:16px">&nbsp;&nbsp;我的评价</a><br/>
+                <a href="{:url('CollectionInfo/getMyCollection')}"><img src="{$Think.const.ICON}collection.png" alt="collection.png" style="width:16px;height:16px">&nbsp;&nbsp;我的收藏</a><br/> 
+                <a href="{:url('UserInfo/editPassword')}"><img src="{$Think.const.ICON}member.png" alt="member.png" style="width:16px;height:16px">&nbsp;&nbsp;个人中心</a><br/> 
+                <a href="{:url('login/logout')}"><img src="{$Think.const.ICON}logout.png" alt="logout.png" style="width:16px;height:16px">&nbsp;&nbsp;退出登录</a><br/> 
+            </div>
+          </li>
+          <li class="mar-l10"><a href="{:url('commidities_info/goToAccount')}" style="text-decoration:none;">我的购物车</a></li>
+          <li class="posA" style="right:0;"><a href="{:url('login/logout')}" style="text-decoration:none;"><span class="glyphicon glyphicon-off" style="font-size:15px;color:#4CA2D3;line-height:16px;"></span>&nbsp;退出登录</a></li>
         </ul>
       </div>
     </div>
-    <input type="text" class="fi-search fl" />
-    <button type="submit" class="btn btn-search fl" />
+    <!--/topbar end--> 
+    <!--logo-bar-->
+    <div class="logo-bar mar w1000 posR"> <div class="logo2 glyphicon glyphicon-shopping-cart" style="margin-top:2%;"><span style="font-size:0.65em">校园商城系统</span></div>
+      <div class="top-search posA" style="margin-left:-50px;margin-top:2%;">
+      <form method="post" action="{:url('commidities_info/getCommiditiesByParentId')}" id="search-from">
+        <div id="selectnav" class="search-select fl">
+              <select name="selectSearch" id="selectSearch" class="form-control input-md" style="background:#fff;border:0;">
+              {foreach $parent as $commidityParent}
+                <option value="{$commidityParent.id}">{$commidityParent.name}</option>
+              {/foreach}
+              </select>
+        </div>
+        <input type="text" class="fi-search fl" id="searchContent" name="searchContent" />
+        <button type="submit" class="btn btn-search fl" id="search-button" />
+        <!-- <button type="button" class="btn btn-search fl" id="search-button" onclick="searchCommidities();" /> -->
+        </form>
+      </div>
+      <!-- <div class="top-keyword posA">&nbsp; 热门关键字：<a href="#">北京化工大学</a> <a href="#">复印</a> <a href="#">打印</a></div> -->
+    </div>
+    <!--/logo-bar end--> 
+    <!--nav-->
+    <div class="nav-cont">
+      <div class="nav w1000 mar"> <a href="{:url('login/login')}" class="on">首页</a> <a href="{:url('ShopsInfo/displayShops')}">店铺</a><a href="{:url('login/aboutUs')}">关于我们</a> </div>
+    </div>
+    <!--/nav end--> 
   </div>
-  <div class="top-keyword posA">&nbsp; 热门关键字：<a href="#">北京语言大学</a> <a href="#">复印</a> <a href="#">打印</a></div>
 </div>
-<!--/logo-bar end--> 
-<!--nav-->
-<div class="nav-cont">
-  <div class="nav w1000 mar"> <a href="#" class="on">首页</a> <a href="#">店铺</a> <a href="#">服务</a> <a href="#">客户端</a> <a href="#">诚聘英才</a> <a href="#">关于我们</a> </div>
-</div>
-<!--/nav end--> 
-</header>
+<script type="text/javascript">
+    function searchCommidities() {
+        var pId = $('#selectSearch').val();
+        var condition = $('#searchContent').val() ? $('#searchContent').val() : "";
+        // alert(pId+condition);
+        $.ajax({
+              type : "POST",
+              url : "{:url('commidities_info/getCommiditiesByParentId')}",
+              data : {"pId" : pId,
+                      "condition" : condition,
+                      },
+              dataType : "json",
+              success : function(data) {
+                  if (data.code) {
+                      setTimeout(function(){
+                          window.location.href = data.url;
+                      }, 100);
+                  } else {
+                      alert(data.msg);
+                  }
+              },
+              error : function(request) {
+                  alert('页面错误！'+XHRHttpRequest.status);
+              }
+          });
+    }
+</script>

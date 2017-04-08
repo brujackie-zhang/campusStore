@@ -1,0 +1,61 @@
+<div id="mainbody">
+<div class="page-pro w1000 mar">
+  <div class="main-shopcart mar-t10">
+    <h1>我的订单列表</h1>
+    <table width="100%" cellspacing="1" cellpadding="0" border="0" class="table table-bordered table-hover table-striped">
+      <thead>
+        <tr>
+          <th>订单编号</th>
+          <th>商品名称</th>
+          <!-- <th>商品ID</th> -->
+          <th>商品图片</th>
+          <th>商品数量</th>			  
+          <th>消费总额</th>
+          <th>付款方式</th>
+          <th>送货方式</th>
+          <th>订单时间</th>
+          <th>订单状态</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+    {foreach $list as $data}
+        <tr>
+          <td>{$data.dealNumber}</td>
+          <td>{$data.commidityName}</td>
+          <!-- <td>{$data.commidityId}</td> -->
+          <td>
+            <img src="{$data.commidityImage}" width="80" height="80">
+		 </td>
+         <td>{$data.commidityNum}</td>
+         <td>￥{$data.total}元</td>			  
+          <td>{$data.payMethod}</td>
+		  <td>{$data.deliveryMethod}</td>
+          <td>{$data.time}</td>
+          <td id="td-status_{$data.id}">{$status[$data.status]}</td>
+          <td>
+            <a href="{:url('CommentInfo/createCommentByCommidityId', ['commidityId' => $data.commidityId])}" id="go-comment_{$data.id}" style="display:inline-block;width:50px;line-height:20px;font-size:5px;text-align:center;border:1px solid #0088bb;text-decoration:none" onclick="judgeIsOk({$data.id});">去评价</a>
+          </td>
+        </tr>
+    {/foreach}
+      </tbody>
+    </table>
+    {$page}
+  </div>
+</div>
+</div>
+<script type="text/javascript">
+    function judgeIsOk(id) {
+        var status = $("#td-status_" + id).text();
+        if (status != "成功") {
+            $("#go-comment_" + id).attr(
+                {
+                    "disabled" : true,
+                    "href" : "#",
+                }
+            );
+            // $("#go-comment_" + id).css("cursor", "not-allowed");
+            alert("请先完成订单付款再来评价吧！");
+        }
+    }
+</script>

@@ -1,0 +1,36 @@
+<div id="container">
+    <div class="page-pro w1000 mar" style="border:1px solid #ddd;padding:10px;">
+        <form class="form-inline" method="post" action="#">
+            <div class="form-group mar-t10">
+            <span class="btn btn-md" style="background:#4CA2D3;border:1px solid #4CA2D3;color:white;cursor:default;">店铺搜索</span>
+              <select name="select_shops" id="select_shops" class="form-control input-md">
+                <option value="1" selected>全部</option>
+                <option value="2">打印类</option>
+                <option value="3">非打印类</option>
+                <option value="4">好评</option>
+              </select>   
+              <button type="submit" class="btn btn-md" style="background:#4CA2D3;border:1px solid #4CA2D3;color:white;">查询</button>
+            </div>
+        </form>
+        <div class="main-shopcart mar-t10">
+        {foreach $shopsInfo as $data}
+            <div class="sub-search-list">
+                <div class="search-list-image" id="image1">
+                    <a href="{:url('ShopsInfo/displayShopDetailInfo', ['id' => $data.id])}"><img src="{$data.face}" height="220" width="220" /></a>
+                </div>
+                <div class="search-list-info">
+                    <h1 style=" font-size:25px;color:#4CA2D3;margin-bottom:1%;"><a href="{:url('ShopsInfo/displayShopDetailInfo', ['id' => $data.id])}"><strong style="color:#4CA2D3;">{$data.name}</strong></a></h1>
+                    <p class="p-info"><span class="fa fa-server"></span>{$data.sevices}</p>
+                    <p class="p-info"><span class="fa fa-street-view"></span>{$data.address}</p>
+                    <p class="p-info"><span class="glyphicon glyphicon-phone"></span>{$data.mobile}</p>
+                    <p class="p-info"><span class="fa fa-qq"></span>{$data.qq}</p>
+                    <p class="p-info"><span class="fa fa-hourglass-start"></span>{$data.onDuty}&nbsp;开始营业</p>
+                    <p class="p-info"><span class="fa fa-hourglass-end"></span>{$data.offDuty}&nbsp;结束营业</p>
+                </div>
+                <p class="clear"></p>
+            </div>
+        {/foreach}
+        {$page}
+        </div>
+    </div>
+</div>

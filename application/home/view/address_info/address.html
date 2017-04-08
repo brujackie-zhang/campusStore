@@ -1,0 +1,179 @@
+<style type="text/css">
+    .from-group{
+        width:500px;
+    }
+    .col-sm-6{
+        width:60%;
+    }
+    .three_address{
+        width:20%;
+    }
+    h1{
+        width:80%;
+    }
+    label {
+      color:#4CA2D3;
+    }
+</style>
+<div id="mainbody">
+<div class="admin-cont w1000 mar mar-t30 clearfix">
+  <div class="admin-left fl">
+    <div class="admin-nav">   
+    <dl class="on">
+      <dt><a href="#"><i></i>我的账号</a></dt>
+          <dd>
+              <a href="{:url('UserInfo/getUserInfo')}">基本信息</a>
+              <a href="{:url('UserInfo/editPassword')}">安全中心</a>
+              <a href="{:url('UserInfo/userPhotoUpload')}">用户头像</a>
+          </dd>
+        </dl>
+        <dl>
+          <dt><a href="{:url('CommiditiesInfo/getDealInfoByUserId')}"><i></i>我的订单</a></dt>
+          <dd></dd>
+        </dl>
+        <dl>
+          <dt><a href="{:url('CommentInfo/getMyComment')}"><i></i>我的评价</a></dt>
+      <dd></dd>
+    </dl>
+    <dl>
+      <dt><a href="{:url('CollectionInfo/getMyCollection')}"><i></i>我的收藏</a></dt>
+      <dd></dd>
+    </dl>
+    <dl>
+      <dt><a href="{:url('AddressInfo/getAddress')}"><i></i>我的地址</a></dt>
+      <dd></dd>
+    </dl>
+    </div>
+  </div>
+  <div class="admin-right fl">
+    <div class="shop-balance">
+        <div class="page-block borA clearfix">
+      <div style="width:500px;float:left;">
+        <h1>我的地址管理</h1>
+        <form class="form-horizontal mar-t30" method="post" action="{:url('AddressInfo/addAddress')}" style="margin:0;">
+            <div class="form-group mod-select">
+            <label for="address" class="col-xs-2 control-label">收件地址</label>
+            <div class="col-xs-2 three_address" id="three_address">
+              <select name="province" id="province" class="form-control prov"></select>
+            </div>
+            <div class="col-xs-2 three_address">
+              <select name="city" id="city" class="form-control city"></select>
+            </div>
+            <div class="col-xs-2 three_address">
+              <select name="district" id="district" class="form-control dist"></select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="address" class="col-sm-2 control-label"></label>
+            <div class="col-sm-6" style="width:60%">
+              <input type="text" class="form-control" id="address" placeholder="街道详细地址" name="address">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputReceiver" class="col-sm-2 control-label">收货人</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="inputReceiver" placeholder="请输入收货人姓名" name="receiver" style="float:left">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputMobile" class="col-sm-2 control-label">收货电话</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="inputMobile" placeholder="请输入您的收货电话" name="mobile">
+            </div>
+          </div>
+          <div class="form-group mar-t30">
+            <label for="inputEmail3" class="col-sm-2 control-label"></label>
+            <div class="col-sm-5">
+              <button type="button" class="btn btn-lg" id="button" style="margin-left:20%;background:#4CA2D3;border:1px solid #4CA2D3;color:white;width:50%;" onclick="addAddress();">添加</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div style="border-left:2px dotted #eee;width:300px;margin-left:-80px;float:right;">
+      {volist name = 'addressInfo' id = 'data'}        
+        <dl>
+          <dt style="color:#4CA2D3">地址{$i}</dt>
+          <dd>
+            {$data.addressInfo}
+          </dd>
+        </dl>
+        <input type="button" name="delete_address" value="删除" style="float:right;margin-top:-20px;background:#4CA2D3;border:1px solid #4CA2D3;color:white;width:40px;line-height:20px;font-size:12px;border-radius:5px;" onclick="deleteAddressById({$data.id});">
+        {/volist}
+      </div>
+    </div>
+    </div>
+  </div>
+  <p class="clear"></p>
+</div>
+</div>
+<script type="text/javascript">
+    $(function(){
+        $('.three_address').citySelect({
+            prov:'北京',
+            nodata:'none'
+        });
+    });
+    function addAddress() {
+      if ($('#district').val() === null) {
+        var district = '';
+      } else {
+        var district = $('#district').val();
+      }
+      var province = $('#province').val();
+      var city     = $('#city').val();
+      var address  = $('#address').val();
+      var receiver = $('#inputReceiver').val();
+      var mobile   = $('#inputMobile').val();
+
+      $.ajax({
+        type : 'POST',
+        url : "{:url('AddressInfo/addAddress')}",
+        data : {"province" : province,
+                'city' : city,
+                'district' : district,
+                'address' : address,
+                "receiver" : receiver,
+                'mobile' : mobile,
+                },
+        dataType : 'json',
+        success : function(data) {
+            if (data.code) {
+                alert(data.msg);
+                setTimeout(function(){
+                    location.href = data.url;
+                }, 100);
+            } else {
+                alert(data.msg);
+            }
+        },
+        error : function(request) {
+            alert('页面错误！' + XMLHttpRequest.status);
+        }
+      });
+    }
+
+    function deleteAddressById(id) {
+    var info = confirm("确定删除此地址吗？");
+    if (info) {
+        $.ajax({
+        type : 'POST',
+        url : "http://campusstore/home/address_info/deleteAddressById/id/" + id,
+        data : {"addressId" : id},
+        dataType : 'json',
+        success : function(data) {
+            if (data.code) {
+                // alert(data.msg);
+                setTimeout(function(){
+                    location.href = data.url;
+                }, 100);
+            } else {
+                alert(data.msg);
+            }
+        },
+        error : function(request) {
+            alert('页面错误！'+XHRHttpRequest.status);
+        }
+      });
+    }
+}
+</script>

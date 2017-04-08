@@ -1,73 +1,59 @@
+{__NOLAYOUT__}
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<link rel="stylesheet" href="/static/common/css/bootstrap.min.css">
-<link rel="stylesheet" href="/static/common/css/common.css">
-<link rel="stylesheet" href="/static/common/css/default.css">
-<script language="javascript" src="/static/common/js/bootstrap.min.js"></script>
-<script language="javascript" src="/static/common/js/jquery.min.js"></script>
-<script language="javascript" src="/static/common/js/selectNav.js"></script>
-<script language="javascript" src="/static/common/js/common.js"></script>
+<link rel="stylesheet" href="{$Think.const.CSS}bootstrap.min.css">
+<link rel="stylesheet" href="{$Think.const.CSS}common.css">
+<link rel="stylesheet" href="{$Think.const.CSS}default.css">
+<script language="javascript" src="{$Think.const.JS}bootstrap.min.js"></script>
+<script language="javascript" src="{$Think.const.JS}jquery.min.js"></script>
+<script language="javascript" src="{$Think.const.JS}selectNav.js"></script>
+<script language="javascript" src="{$Think.const.JS}common.js"></script>
 </head>
 <body>
-<div id="container">
-  <div class="login-cont w1000 mar">
-    <div class="login-top posR">
-      <div class="logo2"></div>
-      <div class="login-top-link posA"><a href="{:url('login/homePage')}">返回首页</a> | <a href="{:url('login/help')}">帮助</a></div>
+<div class="container">
+    <div class="login-top posR" style="width:840px;">
+      <div class="logo2 glyphicon glyphicon-shopping-cart"><span style="font-size:0.65em">校园商城系统</span></div>
     </div>
-    <div class="page-block borA clearfix">
-      <div class="login-left fl">
-        <h1>用户登录</h1>
+    <div class="page-block borA clearfix" style="width:940px;">
+      <div class="login-left fl" style="border:1px solid #eee;width:600px;">
+        <div class="col-sm-6" style="border-bottom:1px solid #eee;margin-bottom:5%;font-size:1.2em;color:#4CA2D3;">用户登录</div>   
+        <div class="col-sm-6" style="border-bottom:1px solid #eee;margin-bottom:5%;font-size:1.2em;"><span class="glyphicon glyphicon-hand-right" style="color:#4CA2D3;"></span>&nbsp;&nbsp;<a href="{:url('register/index')}">立即注册</a></div>   
         <form class="form-horizontal mar-t30" method="post" action="">
           <div class="form-group">
-            <label for="inputEmail" class="col-sm-2 control-label">用户名：</label>
+            <label for="inputEmail" class="col-sm-2 control-label" style="color:#4CA2D3;">用户名</label>
             <div class="col-sm-6">
-              <input type="text" class="form-control" id="inputName" placeholder="请输入您的用户名/手机/邮箱" name="name" style="float:left"> <label id="name_error" class="error" style="margin-left:300px;margin-top:-40px;text-align:left;width:120px;height:40px;color:red;display:none">*用户名不能为空</label>
+              <input type="text" class="form-control" id="inputName" placeholder="请输入您的用户名/手机/邮箱" name="name" style="float:left;background-color:#eee"> <label id="name_error" class="error" style="margin-left:300px;margin-top:-40px;text-align:left;width:120px;height:40px;color:red;display:none">*用户名不能为空</label>
             </div>
           </div>
           <div class="form-group">
-            <label for="inputPassword" class="col-sm-2 control-label">登录密码：</label>
+            <label for="inputPassword" class="col-sm-2 control-label" style="color:#4CA2D3;">密&nbsp;&nbsp;&nbsp;码</label>
             <div class="col-sm-6">
-              <input type="password" class="form-control" id="inputPassword" placeholder="请输入用户登录密码" name="password"> <label id="password_error" class="error" style="margin-left:300px;margin-top:-40px;text-align:left;width:120px;height:40px;color:red;display:none">*密码不为空</label>
+              <input type="password" class="form-control" id="inputPassword" placeholder="请输入用户登录密码" name="password" style="background-color:#eee;"> <label id="password_error" class="error" style="margin-left:300px;margin-top:-40px;text-align:left;width:120px;height:40px;color:red;display:none">*密码不为空</label>
             </div>
           </div>
           <div class="form-group">
-            <label for="inputValid" class="col-sm-2 control-label">验证码：</label>
-            <div class="col-sm-2" id="div_captcha">
-              <input type="text" class="form-control" id="inputCaptcha" placeholder="验证码" name="captcha"><img src="{:captcha_src()}" alt="验证码" style="display:block;width:140px;height:40px;margin-left:120px;margin-top:-40px" id="captcha_img" onclick='this.src="{:captcha_src()}?id="+Math.random();' title="点击更换验证码">
+            <label for="inputValid" class="col-sm-2 control-label" style="color:#4CA2D3;">验证码</label>
+            <div class="col-sm-3" id="div_captcha">
+              <input type="text" class="form-control" id="inputCaptcha" placeholder="请输入验证码" name="captcha" style="background-color:#eee;"><img src="{:captcha_src()}" alt="验证码" style="display:block;width:140px;height:40px;margin-left:120px;margin-top:-40px" id="captcha_img" onclick='this.src="{:captcha_src()}?id="+Math.random();' title="点击更换验证码">
             </div><label id="captcha_error" class="error" style="margin-left:418px;margin-top:-40px;text-align:left;width:150px;height:40px;color:red;display:none">*验证码不为空</label>
           </div>
           <div class="form-group mar-t30">
             <label for="inputEmail3" class="col-sm-2 control-label"></label>
             <div class="col-sm-5">
-              <button type="submit" class="btn btn-success btn-lg" id="submit">登录</button>
-              <button type="reset" class="btn btn-success btn-lg" style="margin-left:35%">重置</button>
+              <button type="submit" class="btn btn-lg" id="submit" style="background:#4CA2D3;border-color:#4CA2D3;color:#fff;width:70%;margin-left:20%">登录</button>
             </div>
           </div>
         </form>
       </div>
-      <div class="login-right fl mar-l30">        
-        <dl>
-          <dt>没有橙云网帐号？</dt>
-          <dd>
-            <a href="{:url('register/index')}" class="btn btn-success btn-lg">立即注册</a>
-          </dd>
-        </dl> 	
-        <dl class="mar-t50">
-          <dt>用第三方帐号登录</dt>
-          <dd class="quick-login">
-            <a href="#" class="btns btn-qq"></a>
-            <a href="#" class="btns btn-weibo"></a>
-            <a href="#" class="btns btn-weixin"></a>
-          </dd>
-        </dl>
+      <div class="login-right fl" style="border:1px solid #4CA2D3;">
+        <div class="glyphicon glyphicon-education" style="color:#4CA2D3;font-size:15em;margin-left:2%;"></div>
+        <span style="color:#4CA2D3;font-size:2.5em;margin-left:2%;text-shadow:3px 3px 3px;">Campus Store</span>
       </div>
     </div>
-  </div>
 </div>
 <script type="text/javascript">
     $(function(){
@@ -104,7 +90,7 @@
                     if (msg == 'success') {
                         window.location.href = '{:url('login/login')}';
                     } else {
-                        alert('Login failure,user name or password error!!!');
+                        alert('验证码出错，请刷新验证码并重新登陆！');
                     }
                 },
             });
@@ -114,6 +100,6 @@
 </script>
 </body>
 <footer>
-    <div class="footer-copy mar-t30">Copyright © 2013-2015 <a href="http://www.jikexueyuan.com/" target="_blank">云印科技</a> All Rights Reversed. 京ICP备11018032号</div>
+    <div class="footer-copy">Copyright &copy; All Rights Reversed. BZ</div> 
 </footer>
 </html>

@@ -1,0 +1,62 @@
+<div id="mainbody">
+    <div class="page-pro w1000 mar">
+      <div class="page-top">
+        <div class="pro-main mar-t10">
+          <div id="wrap">
+              <div class="pro-img fl" id="minbox">
+                  <img src="{$shopInfo.face}" width="345" height="345">
+              </div>
+          </div>
+          <div class="pro-info fl" id="div-shopinfo">
+            <h1>{$shopInfo.name}简介</h1>
+                <p id="p-description">{$shopInfo.description}</p>
+                <p class="p-info"><span class="fa fa-street-view"></span>{$shopInfo.address}</p>
+                <p class="p-info"><span class="glyphicon glyphicon-phone"></span>{$shopInfo.mobile}</p>
+                <p class="p-info"><span class="fa fa-qq"></span>{$shopInfo.qq}</p>
+          </div>
+        </div>
+      </div>
+      <div class="shop-block mar-t20">
+        <div class="pro-block-content fl" style="width:1030px;">
+          <div class="shop-pro">
+            <ul>
+            {foreach $shopCommiditiesInfo as $data}
+              <li>
+                <a href="{:url('CommiditiesInfo/getCommidityInfoByCommidityId',['commidityId' => $data.commidityId])}"><img src="{$data.image}" width="215" height="205"></a>
+                <b>￥{$data.price}元</b>
+                <span class="intro">{$data.introduction}</span>
+                <div id="commidityleft" style="float:left;">
+                    <span class="info">销量：<i>{$data.salesVolume}</i> <br><a href="{:url('CommentInfo/getCommidityAllComment',['commidityId' => $data.commidityId])}">评价：{$commentTotal[$data.commidityId]}</a></span>
+                </div>
+                <div id="commidityright" style="float:right;">
+                    <span class="glyphicon glyphicon-hand-right" style="color:#4CA2D3;line-height:38px;cursor:pointer;" id="span_collection_{$data.commidityId}" onclick="collectionByCommidityId({$data.commidityId});"> 点击收藏</span>
+                </div>     
+              </li>
+              {/foreach}
+              <p class="clear"></p>
+            </ul>
+          </div>
+            {$page}  
+        </div>
+        <p class="clear"></p>
+      </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function collectionByCommidityId(commidityId) {
+        $.ajax({
+            type : 'POST',
+            url : 'http://campusstore/home/collection_info/collectionByCommidityId/commidityId/' + commidityId,
+            dataType : 'json',
+            data : {
+                "commidityId" : commidityId,
+            },
+            success : function(data) {
+                alert(data.msg);
+            },
+            error : function(data) {
+                alert("页面错误！" + data.reponseText);
+            }
+        });
+    }
+</script>

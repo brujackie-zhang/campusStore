@@ -1,0 +1,63 @@
+<script type="text/javascript" src="{$Think.const.JS}collectionList.js"></script>
+<div id="mainbody">
+<div class="admin-cont w1000 mar mar-t30 clearfix">
+    <div class="admin-left fl">
+      <div class="admin-nav">   
+      <dl class="on">
+        <dt><a href="#"><i></i>我的账号</a></dt>
+        <dd>
+              <a href="{:url('UserInfo/getUserInfo')}">基本信息</a>
+              <a href="{:url('UserInfo/editPassword')}">安全中心</a>
+              <a href="{:url('UserInfo/userPhotoUpload')}">用户头像</a>
+          </dd>
+      </dl>
+      <dl>
+        <dt><a href="{:url('CommiditiesInfo/getDealInfoByUserId')}"><i></i>我的订单</a></dt>
+        <dd></dd>
+      </dl>
+      <dl>
+        <dt><a href="{:url('CommentInfo/getMyComment')}"><i></i>我的评价</a></dt>
+        <dd></dd>
+      </dl>
+      <dl>
+        <dt><a href="{:url('CollectionInfo/getMyCollection')}"><i></i>我的收藏</a></dt>
+        <dd></dd>
+      </dl>
+      <dl>
+      <dt><a href="{:url('AddressInfo/getAddress')}"><i></i>我的地址</a></dt>
+      <dd></dd>
+    </dl>
+      </div>
+    </div>
+    <div class="admin-right fl">
+      <h1>我的收藏列表</h1>
+      <table width="100%" cellspacing="1" cellpadding="0" border="0" class="table table-bordered table-hover table-striped">
+        <thead>
+          <tr>
+            <th>收藏编号</th>
+            <th>商品名称</th>
+            <th>商品图片</th>       
+            <th>商品价格</th>
+            <th>收藏时间</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+      {foreach $list as $data}
+          <tr id="tr_{$data.id}">
+            <td style="text-align:center">{$data.id}</td>
+            <td>{$data.commidityName}</td>
+            <td>
+              <img src="{$data.image}" width="80" height="80">
+       </td>
+           <td>￥{$data.price}元</td>       
+            <td>{$data.collectionTime}</td>
+            <td><a href="javascript:void(0);" class="delete" style="display:inline-block;width:30px;line-height:20px;font-size:5px;text-align:center;border:1px solid #0088bb;text-decoration:none" onclick="deleteCollectionById({$data.id});">删除</a> </td>
+          </tr>
+      {/foreach}
+        </tbody>
+      </table>
+    </div>
+    <p class="clear"></p>
+  </div>
+</div>

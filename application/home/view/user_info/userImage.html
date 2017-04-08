@@ -1,0 +1,118 @@
+<style type="text/css" media="screen">
+  th {
+    color:#4CA2D3;
+    text-align: right;
+  }
+</style>
+<div id="mainbody">
+    <span id="span-name" style="display:none;">{$name}</span>
+    <span id="span-userid" style="display:none;">{$userId}</span>
+    <div class="admin-cont w1000 mar mar-t30 clearfix">
+      <div class="admin-left fl">
+        <div class="admin-nav">		
+        <dl class="on">
+          <dt><a href="#"><i></i>我的账号</a></dt>
+          <dd>
+              <a href="{:url('UserInfo/getUserInfo')}">基本信息</a>
+              <a href="{:url('UserInfo/editPassword')}">安全中心</a>
+              <a href="{:url('UserInfo/userPhotoUpload')}">用户头像</a>
+          </dd>
+        </dl>
+        <dl>
+          <dt><a href="{:url('CommiditiesInfo/getDealInfoByUserId')}"><i></i>我的订单</a></dt>
+          <dd></dd>
+        </dl>
+        <dl>
+          <dt><a href="{:url('CommentInfo/getMyComment')}"><i></i>我的评价</a></dt>
+          <dd></dd>
+        </dl>
+        <dl>
+          <dt><a href="{:url('CollectionInfo/getMyCollection')}"><i></i>我的收藏</a></dt>
+          <dd></dd>
+        </dl>
+        <dl>
+          <dt><a href="{:url('AddressInfo/getAddress')}"><i></i>我的地址</a></dt>
+          <dd></dd>
+        </dl>
+        </div>
+      </div>
+      <div class="admin-right fl">
+          <h1>用户头像上传</h1>
+          <div style="width:400px;border:solid 1px #ddd; margin-top:1%; overflow:hidden;">
+              <form id='myupload' action="{:url('Upload/uploadPhoto')}" method='post' enctype='multipart/form-data'>
+                  <input type="file" id="input_uploadfile" name="uploadphoto"/>
+              </form>
+              <div id="imglist" style="height:200px;margin-bottom:2%;"></div>
+              <p id="res"></p>
+              <div class="progress">
+                  <div class="progress-bar progress-bar-striped" ><span class="percent">0%</span></div>
+              </div>
+              <a href="javascript:void(0);" onclick="input_uploadfile.click()" class="uploadbtn" id="a-upload-file">点击上传图片</a>
+          </div>
+      </div>
+      <p class="clear"></p>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function() {
+        var progress = $(".progress"); 
+        var progress_bar = $(".progress-bar");
+        var percent = $('.percent');
+
+        $("#input_uploadfile").change(function(){
+            $("#myupload").ajaxSubmit({ 
+                dataType:  'json',
+                beforeSend: function() {
+                    progress.show();
+                    var percentVal = '0%';
+                    progress_bar.width(percentVal);
+                    percent.html(percentVal);
+                }, 
+                uploadProgress: function(event, position, total, percentComplete) { 
+                    var percentVal = percentComplete + '%';
+                    progress_bar.width(percentVal);
+                    percent.html(percentVal); 
+                }, 
+                success: function(data) {
+                    if(data.status == 1){
+                        var name = data.name;
+                        var userName = $("#span-name").text() + "/" + name; 
+                        var attstr= '<img src="{$Think.const.USER_PHOTO}' + userName + '" style="width:200px;height:200px;padding:5px;border:1px solid #ddd;margin:5px;"><input type="button" style="width:50px;height:30px;color:#FFF;background:#4AC2D3;border:1px solid #4AC2D3;margin-left:5%;margin-bottom:-40%;" value="确定" onclick="updateUserInfoById();"/>';  
+                        $("#imglist").html(attstr);
+                        $("#res").text(data.name).hide();
+                    }else{
+                        $("#res").html(data.content);
+                    }
+                    progress.hide();       
+                }, 
+                error:function(xhr){
+                   alert("图片上传失败 :("); 
+                   progress.hide(); 
+                } 
+            });
+        });
+    });
+
+    function updateUserInfoById()
+    {
+        var userId = $("#span-userid").text();
+        var userName = $("#span-name").text();
+        var image = "/homeuploads/userPhoto/" + userName + "/" + $("#res").text();
+
+        $.ajax({
+            type : 'POST',
+            url : '{:url("UserInfo/updateUserInfoById", ["id" => $userId])}',
+            dataType : 'json',
+            data : {
+                "image" : image,
+            },
+            success : function(data){
+                alert(data.msg);
+                window.location.href = data.url;
+            },
+            error : function(data) {
+                alert('上传头像失败！' + data.responseText);
+            }
+        });
+    }
+</script>

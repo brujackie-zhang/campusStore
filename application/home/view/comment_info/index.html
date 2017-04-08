@@ -1,0 +1,87 @@
+<script type="text/javascript" src="{$Think.const.JS}commentForMe.js"></script>
+<div id="mainbody">
+<div class="admin-cont w1000 mar mar-t30 clearfix">
+  <div class="admin-left fl">
+    <div class="admin-nav">		
+    <dl class="on">
+      <dt><a href="#"><i></i>我的账号</a></dt>
+          <dd>
+              <a href="{:url('UserInfo/getUserInfo')}">基本信息</a>
+              <a href="{:url('UserInfo/editPassword')}">安全中心</a>
+              <a href="{:url('UserInfo/userPhotoUpload')}">用户头像</a>
+          </dd>
+        </dl>
+        <dl>
+          <dt><a href="{:url('CommiditiesInfo/getDealInfoByUserId')}"><i></i>我的订单</a></dt>
+          <dd></dd>
+        </dl>
+        <dl>
+          <dt><a href="{:url('CommentInfo/getMyComment')}"><i></i>我的评价</a></dt>
+      <dd></dd>
+    </dl>
+    <dl>
+      <dt><a href="{:url('CollectionInfo/getMyCollection')}"><i></i>我的收藏</a></dt>
+      <dd></dd>
+    </dl>
+    <dl>
+      <dt><a href="{:url('AddressInfo/getAddress')}"><i></i>我的地址</a></dt>
+      <dd></dd>
+    </dl>
+    </div>
+  </div>
+  <div class="admin-right fl">
+    <div class="shop-balance">
+	<h3>我的评论列表</h3>
+      <form class="form-inline" method="post" action="{:url('CommentInfo/getMyComment')}">
+        <div class="form-group mar-t10">
+          <select name="select_comment" id="select_comment" class="form-control input-md">
+            <option value="1">今天</option>
+            <option value="2" selected>一周内</option>
+			<option value="3">一个月内</option>
+          </select>	  
+          <button type="submit" class="btn btn-md" style="background:#4CA2D3;border:1px solid #4CA2D3;color:white;">查询</button>
+        </div>
+      </form>		  
+
+      <div class="balance-list mar-t20">
+        <div class="table-data">
+        <div class="panel panel-default"> 
+          <!-- Default panel contents -->
+          <div class="panel-heading">我的评价</div>
+          <!-- Table -->
+          <table width="100%" cellspacing="1" cellpadding="0" border="0" bgcolor="#dddddd" class="table table-bordered table-hover table-striped">
+            <thead>
+              <tr>
+				<th>评价ID</th>
+				<th>商品名</th>	
+                <th>评分</th>
+                <th>评价内容</th>
+                <th>评价时间</th>
+				<th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+            {foreach $comments as $data}
+              <tr id="tr_{$data.id}">
+                <td>{$data.id}</td>
+				<td>{$data.commidityName}</td>
+                <td>{$data.score}</td>
+                <td>{$data.content}</td>
+                <td>{$data.time}</td> 
+				<td>
+                    <a href="{:url('commentInfo/modifyCommentById', ['id' => $data.id])}" class="edit" style="display:inline-block;width:30px;line-height:20px;font-size:5px;text-align:center;border:1px solid #0088bb;text-decoration:none">编辑</a> 
+                    <a href="javascript:void(0);" id="delete_{$data.id}" style="display:inline-block;width:30px;line-height:20px;font-size:5px;text-align:center;border:1px solid #0088bb;text-decoration:none" onclick="deleteCommentById({$data.id});">删除</a> 
+                </td>
+              </tr>
+            {/foreach}  
+            </tbody>
+          </table>
+          {$page}
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+  <p class="clear"></p>
+</div>
+</div>

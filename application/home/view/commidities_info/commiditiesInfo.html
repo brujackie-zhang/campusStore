@@ -1,0 +1,104 @@
+<div id="mainbody">
+<div class="page-pro w1000 mar">
+  <!--pro-main-->
+  <div class="pro-main mar-t10">
+    <div class="box" style="margin-bottom:100px;">
+        <div class="tb-booth tb-pic tb-s310">
+            <a href="javascript:void(0);"><img src="{$commiditiesInfo.image}" rel="{$commiditiesInfo.image}" class="jqzoom" /></a>
+        </div>
+        <ul class="tb-thumb" id="thumblist">
+        {foreach $pictures as $detail}
+            <li class="tb-selected">
+                <div class="tb-pic tb-s40">
+                    <a href="javascript:void(0);"><img src="{$Think.const.PIC}{$detail}" mid="{$Think.const.PIC}{$detail}" big="{$Think.const.PIC}{$detail}"></a>
+                </div>
+            </li>
+        {/foreach}
+        </ul>
+    </div>
+    <script language="javascript" src="{$Think.const.JS}jquery.imagezoom.min.js"></script>
+    <script type="text/javascript" src="{$Think.const.JS}car.js"></script>
+    <div class="pro-info fl">
+      <h1><span>{$commiditiesInfo.introduction}</span><span id="span-admire" class="glyphicon glyphicon-hand-right" style="color:#4CA2D3;cursor:pointer;float:right;" onclick="collectionByCommidityId({$commiditiesInfo.commidityId});"> 点击收藏</span></h1>
+      <div class="price posR mar-t10"><b>￥<i id="i-price">{$commiditiesInfo.price}</i></b>
+        &nbsp;&nbsp;&nbsp;&nbsp;单价：<b>￥<i id="b-price">{$commiditiesInfo.price}</i></b>
+        &nbsp;&nbsp;&nbsp;&nbsp;赠送积分：<b id="b-credits">{$commiditiesInfo.price}</b>
+        <b id="b-count">&nbsp;&nbsp;&nbsp;&nbsp;折扣：<i id="i-count">100</i>%</b>
+        &nbsp;&nbsp;&nbsp;&nbsp;销量：<b>{$commiditiesInfo.salesVolume}</b>
+        <dl>
+          <dt>累计评价</dt>
+          <dd><a href="{:url('CommentInfo/getCommidityAllComment', ['commidityId' => $commidityId])}">{$commentTotal}</a></dd>
+        </dl>
+      </div>
+      <div class="other mar-t10">由&nbsp;<span style="color:#4CA2D3;">校园商城&nbsp;</span>发货并提供售后服务。16:00前完成下单，预计明日（{$tommorrow}）送达</div>
+      <div class="num mar-t20">购买数量&nbsp;&nbsp;
+        <input type="button" name="subtract" id='subtract' value="-" onclick="sub({$commidityId});" />
+        <input type="text" class="fi-num" name="num_{$commidityId}" id='num_{$commidityId}' value="1" onchange="numChange({$commidityId});">
+        <input type="button" name="add" id='add' value="+" onclick="add({$commidityId});" />
+     </div>
+     <div class="ok-no-delivery mar-t20"><span class="print-operate">取件方式</span>
+        <input type="radio" name="delivery-way" value="自取" checked="checked" id="own-delivery">
+        <label for="own-delivery">自取</label>
+        <input type="radio" name="delivery-way" value="配送" id="quick-delivery">
+        <label for="quick-delivery">配送</label>
+     </div>
+      <div class="pro-btn mar-t20" style="text-align:center">
+        <span id="buy-now" dataid="{$commidityId}" dataprice="{$commiditiesInfo.price}">立即购买</span>
+        <span id="add-car" dataid="{$commidityId}" dataprice="{$commiditiesInfo.price}" datadiscount="{$commiditiesInfo.discount}" onclick="addCommidity({$commidityId});">加入购物车</span>
+      </div>
+    </div>
+    <p class="clear"></p>
+  </div>
+  <!--/pro-main--> 
+  <!--pro-block-->
+  <div class="pro-block mar-t20">
+    <div class="pro-block-sidebar fl">
+      <div class="sidebox">
+        <h2>购买了该商品的用户还购买了</h2>
+        <ul class="mod-pro">
+        {foreach $commidityInfoFromUser as $user}
+          <li><a href="{:url('CommiditiesInfo/getCommidityInfoByCommidityId', ['commidityId' => $user.commidityId])}" style="text-decoration:none"><img src="{$user.image}" width="100" height="100">{$user.introduction}</a><span>￥{$user.price}</span></li>
+        {/foreach}
+        </ul>
+      </div>
+    </div>
+    <div class="pro-block-content fl mar-l10" style="width:770px;float:left;">
+      <div class="pro-title"></div>
+      <div class="pro-details">
+        <p>
+        {foreach $pictures as $detail}
+            <img src="{$Think.const.PIC}{$detail}" alt="{$detail}" title="{$detail}" width="750" height="600" style="border:1px solid #ddd;margin:10px;">
+        {/foreach}
+        </p>
+      </div>
+    </div>
+    <p class="clear"></p>
+  </div>
+  <!--pro-blcok--> 
+</div>
+</div>
+<div class="car-footer">
+    <div id="car-icon" style="float:left;font-size:22px">
+        <!-- <i class='font-face' style="font-size:25px">&#xea98;</i>&nbsp; -->
+        <!-- <i class='font-face' style="font-size:30px">&#xea4c;</i>&nbsp; -->
+        <i id="end" class='font-face' style="font-size:30px">&#xe96f;</i>&nbsp;
+        共
+        <span id="money">0.00</span>
+        元
+    </div>
+    <a href="javascript:void(0);" style="hover:none" onclick="goAccount({$commidityId});">
+        <div class="go" style="float:right;padding-right:14px;color:#fff">
+            去结算
+        </div>
+    </a>
+</div>
+<script type="text/javascript">
+  $(document).ready(function(){
+        $(".jqzoom").imagezoom(); 
+        $("#thumblist li a").click(function(){
+            $(this).parents("li").addClass("tb-selected").siblings().removeClass("tb-selected");
+            $(".jqzoom").attr('src',$(this).find("img").attr("mid"));
+            $(".jqzoom").attr('rel',$(this).find("img").attr("big"));
+        });
+    });
+</script>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link rel="stylesheet" href="{$Think.const.CSS}pintuer.css">
+<link rel="stylesheet" href="{$Think.const.CSS}admin.css">
+<script src="{$Think.const.JS}jquery.js"></script>
+<script src="{$Think.const.JS}pintuer.js"></script>
+<script type="text/javascript">
+function doUpload() {
+    var formData = new FormData($( "#addProduct" )[0]);
+    $.ajax({
+        url: 'http://demo/admin.php/product/upload' ,
+        type: 'POST',
+        data: formData,
+        async: false,
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function (returndata) {
+	    $('#img_url').val('');
+	    $('#img_url').val(returndata);
+            alert('上传成功');
+        },
+        error: function (returndata) {
+            alert('上传失败，请重新上传');
+        }
+    });
+}
+</script>
+</head>
+<body>
+<div class="panel admin-panel">
+  <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>添加商品</strong></div>
+  <div class="body-content">
+    <form method="post" class="form-x" action="{:url('product/save')}" id="addProduct">  
+      <div class="form-group">
+        <div class="label">
+          <label>商品名称：</label>
+        </div>
+        <div class="field">
+          <input type="text" class="input w50" value="" name="product_name" data-validate="required:请输入标题" />
+          <div class="tips"></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label>图片：</label>
+        </div>
+        <div class="field">
+          <input type="text" id="img_url" name="img" class="input tips" style="width:25%; float:left;"  value=""  data-toggle="hover" data-place="right" data-image="" />
+          <input type="file" class="button bg-blue margin-left" name="image" style="float:left;">
+	  <input type="button" class="button bg-blue margin-left" id="image1" value="上传"  style="float:left;" onclick="doUpload()">
+          <div class="tipss">图片尺寸：500*500</div>
+        </div>
+      </div>     
+      
+      <if condition="$iscid eq 1">
+        <div class="form-group">
+          <div class="label">
+            <label>商品分类：</label>
+          </div>
+          <div class="field">
+            <select name="product_kind" class="input w50">
+	      {volist name="product_types" id="data"}
+	          <option value="{$data.id}">{$data.name}</option>
+	      {/volist}
+            </select>
+            <div class="tips"></div>
+          </div>
+        </div>
+      </if>
+      <div class="form-group">
+        <div class="label">
+          <label>商品描述：</label>
+        </div>
+        <div class="field">
+          <textarea class="input" name="product_desc" style=" height:90px;"></textarea>
+          <div class="tips"></div>
+        </div>
+      </div>
+      <div class="clear"></div>
+      <div class="form-group">
+        <div class="label">
+          <label>商品产地：</label>
+        </div>
+        <div class="field">
+          <input type="text" class="input" name="product_origin" value="" />
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label>商品库存：</label>
+        </div>
+        <div class="field">
+          <input type="text" class="input" name="product_count" value=""/>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label>商品价格：</label>
+        </div>
+        <div class="field">
+	    <input type="text" class="input" name="product_price" value=""/>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label>添加人：</label>
+        </div>
+        <div class="field">
+            <input type="text" class="input" name="product_adder" value=""/>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label></label>
+        </div>
+        <div class="field">
+          <button class="button bg-main icon-check-square-o" type="submit"> 提交</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+</body></html>

@@ -1,20 +1,27 @@
+{__NOLAYOUT__}
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<link rel="stylesheet" href="/static/common/css/bootstrap.min.css">
-<link rel="stylesheet" href="/static/common/css/common.css">
-<link rel="stylesheet" href="/static/common/css/default.css">
-<link rel="stylesheet" href="/static/common/css/select_school.css">
-<script language="javascript" src="/static/common/js/bootstrap.min.js"></script>
-<script language="javascript" src="/static/common/js/jquery.min.js"></script>
-<script language="javascript" src="/static/common/js/selectNav.js"></script>
-<script language="javascript" src="/static/common/js/common.js"></script>
-<script language="javascript" src="/static/common/js/city.min.js"></script>
-<script language="javascript" src="/static/common/js/jquery.cityselect.js"></script>
-<script language="javascript" src="/static/common/js/school-list.js"></script>
+<link rel="stylesheet" href="{$Think.const.CSS}bootstrap.min.css">
+<link rel="stylesheet" href="{$Think.const.CSS}common.css">
+<link rel="stylesheet" href="{$Think.const.CSS}default.css">
+<link rel="stylesheet" href="{$Think.const.CSS}select_school.css">
+<script language="javascript" src="{$Think.const.JS}bootstrap.min.js"></script>
+<script language="javascript" src="{$Think.const.JS}jquery.min.js"></script>
+<script language="javascript" src="{$Think.const.JS}selectNav.js"></script>
+<script language="javascript" src="{$Think.const.JS}common.js"></script>
+<script language="javascript" src="{$Think.const.JS}city.min.js"></script>
+<script language="javascript" src="{$Think.const.JS}jquery.cityselect.js"></script>
+<script language="javascript" src="{$Think.const.JS}school-list.js"></script>
+<style type="text/css">
+  .control-label {
+    width:18%;
+    color:#4CA2D3;
+  }
+</style>
 <script type="text/javascript">
     $(function(){
         $('.three_address').citySelect({
@@ -27,60 +34,39 @@
 <body>
 <div id="container">
   <div class="login-cont w1000 mar">
-    <div class="login-top posR">
-      <div class="logo2"></div>
-      <div class="login-top-link posA"><a href="{:url('login/homePage')}">返回首页</a> | <a href="{:url('login/help')}">帮助</a></div>
-    </div>
-    <div class="page-block borA clearfix">
+    <div style="margin:1% 0;font-size:1.2em;"><span class="glyphicon glyphicon-hand-right" style="color:#4CA2D3;"></span>&nbsp;&nbsp;<a href="{:url('login/index')}">返回登录</a></div>
+    <div class="page-block borA clearfix" style="width:800px;">
       <div class="register-left">
         <h1>用户注册</h1>
-        <!-- <form class="form-horizontal mar-t30" method="post" action=""> -->
-        <form class="form-horizontal mar-t30" method="post" action="{:url('register/register')}">
+        <form class="form-horizontal mar-t30" method="post" action="">
+        <!-- <form class="form-horizontal mar-t30" method="post" action="{:url('register/register')}"> -->
           <div class="form-group">
-            <label for="inputUserName" class="col-sm-2 control-label">用户名：</label>
+            <label for="inputUserName" class="col-sm-2 control-label">用户名</label>
             <div class="col-sm-6">
               <input type="text" class="form-control" id="inputUserName" placeholder="请输入您的用户名/手机号/电子邮箱" name="name">
             </div>
           </div>
           <div class="form-group">
-            <label for="inputNickname" class="col-sm-2 control-label">昵称：</label>
-            <div class="col-sm-6">
-              <input type="text" class="form-control" id="inputNickname" placeholder="请输入您的昵称" name="nickname">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="setPassword" class="col-sm-2 control-label">登录密码：</label>
+            <label for="setPassword" class="col-sm-2 control-label">登录密码</label>
             <div class="col-sm-6">
               <input type="password" class="form-control" id="setPassword" placeholder="请设置您的登录密码" name="password"> 
             </div> 
           </div>
           <div class="form-group">
-            <label for="reSetPassword" class="col-sm-2 control-label">确认密码：</label>
+            <label for="reSetPassword" class="col-sm-2 control-label">确认密码</label>
             <div class="col-sm-6">
               <input type="password" class="form-control" id="reSetPassword" placeholder="请确认您的登录密码" name="verifyPassword"> 
             </div> 
           </div>
-          <div class="form-group">
-            <label for="setQuestion" class="col-sm-2 control-label">密保问题：</label>
-            <div class="col-sm-6">
-              <input type="text" class="form-control" id="setQuestion" placeholder="请设置您的密保问题" name="question"> 
-            </div> 
-          </div>
-          <div class="form-group">
-            <label for="setAnswer" class="col-sm-2 control-label">密保答案：</label>
-            <div class="col-sm-6">
-              <input type="text" class="form-control" id="setAnswer" placeholder="请设置您的密保答案" name="answer"> 
-            </div> 
-          </div>
           <div class="form-group sex">
-            <label for="sex" class="col-sm-2 control-label">性别：</label>
-            <div class="col-xs-2">
-              <label class="radio-inline"><input type="radio" name="sex" id="man" value="男"> 男</label>
+            <label for="sex" class="col-sm-2 control-label">性别</label>
+            <div class="col-xs-2" id="register_sex">
+              <label class="radio-inline"><input type="radio" name="sex" id="man" value="男" checked="checked"> 男</label>
               <label class="radio-inline"><input type="radio" name="sex" id="woman" value="女"> 女</label>
             </div>
           </div>
           <div class="form-group mod-select">
-            <label for="address" class="col-xs-2 control-label">收件地址：</label>
+            <label for="address" class="col-xs-2 control-label">收件地址</label>
             <div class="col-xs-2 three_address" id="three_address">
               <select name="province" id="province" class="form-control prov"></select>
             </div>
@@ -94,23 +80,23 @@
           <div class="form-group">
             <label for="address" class="col-sm-2 control-label"></label>
             <div class="col-sm-6">
-              <input type="text" class="form-control" id="address" placeholder="地址" name="address">
+              <input type="text" class="form-control" id="address" placeholder="请输入详细街道地址" name="address">
             </div>
           </div>
           <div class="form-group" id="div-student">
-            <label for="children" class="col-sm-2 control-label">是否学生：</label>
-            <div class="col-xs-2">
-              <label class="radio-inline"><input type="radio" name="is_student" id="is_student" value="1"> 是</label>
+            <label for="children" class="col-sm-2 control-label">是否学生</label>
+            <div class="col-xs-2" id="register_student">
+              <label class="radio-inline"><input type="radio" name="is_student" id="is_student" value="1" checked="checked"> 是</label>
               <label class="radio-inline"><input type="radio" name="is_student" id="no_student" value="0"> 不是</label>
             </div>
           </div>
           <div id="contain-school">
               <div class="form-group school" id="div-school">
-                <label for="school" class="col-sm-2 control-label"><a href="javascript:void(0)" id="openSchoolBoxLink" style="font-weight:700;color:#5CB85C">请选择学校：</a></label>
-                <div class="col-sm-4">
+                <label for="school" class="col-sm-2 control-label"><span class="glyphicon glyphicon-hand-right" style="color:#4CA2D3;"></span>&nbsp;&nbsp;<a href="javascript:void(0)" id="openSchoolBoxLink" style="font-weight:700;color:#4CA2D3">请选择学校</a></label>
+                <div class="col-sm-3">
                   <input type="text" id="schoolInput" class="form-control" name="input_school" readonly />
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-3">
                   <input type="text" id="schoolId" class="form-control" readonly />
                 </div>
               </div>
@@ -128,30 +114,30 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="captcha" class="col-sm-2 control-label">验证码：</label>
-            <div class="col-sm-2">
+            <label for="captcha" class="col-sm-3 control-label">验证码</label>
+            <div class="col-sm-3">
               <input type="text" class="form-control" id="captcha" placeholder="验证码" name="captcha"><img src="{:captcha_src()}" alt="验证码" style="display:block;width:150px;height:40px;margin-left:200px;margin-top:-40px" id="captcha_img" onclick='this.src="{:captcha_src()}?id="+Math.random();' title="点击更换验证码">
             </div>
           </div>
           <div class="form-group mar-t30">
             <label for="inputEmail3" class="col-sm-2 control-label"></label>
             <div class="col-sm-5">
-              <div class="mar-t10" style='margin-left:10%;margin-bottom:5%'><a href="#">《橙云网用户使用协议》</a></div>			
-              <button type="submit" class="btn btn-success btn-lg" style='margin-left:10%;width:50%;font-size: 25pt;'>注册</button>
-              <!-- <button type="button" class="btn btn-success btn-lg" style='margin-left:10%;width:50%;font-size: 25pt;' onclick="userRegister();">注册</button> -->
+              <div class="mar-t10" style='margin-left:10%;margin-bottom:5%'></div>			
+              <!-- <button type="submit" class="btn btn-lg" id="submit_register" style='margin-left:10%;width:50%;font-size: 25pt;background:#4CA2D3;border-color:#4CA2D3;color:#fff' onclick="userRegister();">注册</button> -->
+              <button type="button" class="btn btn-lg" id="submit_register" style='margin-left:10%;width:50%;font-size: 25pt;background:#4CA2D3;border-color:#4CA2D3;color:#fff;' onclick="userRegister();">注册</button>
               <!-- <button type="reset" class="btn btn-success btn-lg" style='margin-left:10%;width:40%'>重置</button> -->
             </div>
           </div>
           </form>
       </div>
     </div>
-    <div class="footer-copy mar-t30">Copyright © 2013-2015 <a href="http://www.jikexueyuan.com/" target="_blank">云印科技</a> All Rights Reversed. 京ICP备11018032号</div>
+    <div class="footer-copy">Copyright &copy; All Rights Reversed. BZ</div> 
   </div>
 </div>
-<script language="javascript" src="/static/common/js/school_select.js"></script>
+<script language="javascript" src="{$Think.const.JS}school_select.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
-        $('#div-school').hide();
+        // $('#div-school').hide();
         $("#div-student input[type='radio']").change(function(){
             var student = $("#div-student input[type='radio']:checked").val();
             if (student == '1') {
@@ -163,66 +149,48 @@
     });
 
     function userRegister() {
-      if ($('#district').val() === null) {
-        var district = '';
-      } else {
-        var district = $('#district').val();
-      }
-
-      if ($('.is_student').val() === 0) {
-          var school = '';
-      } else {
-          var school = $('#schoolInput').val();
-      }
-      var name           = $('#inputUserName').val();
-      var nickname       = $('#inputNickname').val();
-      var password       = $('#setPassword').val();
-      var verifyPassword = $('#reSetPassword').val();
-      var question       = $('#setQuestion').val();
-      var answer         = $('#setAnswer').val();
-      var sex            = $('input[type="radio"].sex').val();
-      var isStudent      = $('input[type="radio"].is_student').val();
-      var province       = $('#province').val();
-      var city           = $('#city').val();
-      var address        = $('#address').val();
-      var captcha        = $('#captcha').val();
-
-      $.ajax({
-        type : 'POST',
-        url : "{:url('login/register')}",
-        data : {
-                'name' : name,
-                'nickname' : nickname,
-                'password' : password,
-                'verifyPassword' : verifyPassword,
-                'question' : question,
-                'answer' : answer,
-                'sex' : sex,
-                'province' : province,
-                'city' : city,
-                'district' : district,
-                'address' : address,
-                'isStudent' : isStudent,
-                'school' : school,
-                'captcha' : captcha,
-                },
-        dataType : 'json',
-        success : function(data) {
-            if (data.code) {
-                alert(data.msg);
-                setTimeout(function(){
-                    location.href = data.url;
-                }, 100);
-            } else {
-                alert(data.msg);
-            }
-        },
-        error : function(request) {
-            // alert('页面错误！');
-            alert(XMLHttpRequest.status);
-            // alert(data.code);
+        var name           = $('#inputUserName').val();
+        var password       = $('#setPassword').val();
+        var verifyPassword = $('#reSetPassword').val();
+        var sex            = $('#register_sex input[type="radio"]:checked').val();
+        var isStudent      = $('#register_student input[type="radio"]:checked').val();
+        var province       = $('#province').val();
+        var city           = $('#city').val();
+        var district       = $('#district').val();
+        if (district === null) {
+            district = "";
         }
-      });
+        var address        = $('#address').val();
+        var school         = $('#schoolInput').val();
+        var captcha        = $('#captcha').val();
+
+        $.ajax({
+          "type" : "POST",
+          "url" : "{:url('register/register')}",
+          "data" : {
+                  "name" : name,
+                  "password" : password,
+                  "verifyPassword" : verifyPassword,
+                  "sex" : sex,
+                  "province" : province,
+                  "city" : city,
+                  "district" : district,
+                  "address" : address,
+                  "isStudent" : isStudent,
+                  "school" : school,
+                  "captcha" : captcha,
+                  },
+          "dataType" : "json",
+          "success" : function(data) {
+                if (data.msg == "用户注册成功！") {
+                    location.href = data.url;
+                } 
+                alert(data.msg);
+          },
+          "error" : function(data) {
+              alert('页面错误！' + XMLHttpRequest.status);
+          },
+        });
     }
 </script>
 </body>
