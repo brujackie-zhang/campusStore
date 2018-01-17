@@ -13,6 +13,7 @@ class Collection extends Model
 	{
 		$fields = [
 			self::TB_COLLECTION . '.id as id',
+			self::TB_COMMIDITY . '.id as commidityId',
 			self::TB_COMMIDITY . '.name as commidityName',
 			self::TB_COMMIDITY . '.image as image',
 			self::TB_COMMIDITY . '.price as price',
@@ -39,5 +40,13 @@ class Collection extends Model
 	public function collectionByCommidityId($data)
 	{
 		return Db::table(self::TB_COLLECTION) -> insert($data);
+	}
+
+	//根据商品ID 判断商品是否被收藏
+	public function judgeCommidityIsCollection($commidityId)
+	{
+		$result = Db::table(self::TB_COLLECTION) -> where(self::TB_COLLECTION . '.commidity_id', $commidityId) -> select();
+
+		return $result = $result ? $result : "";
 	}
 }

@@ -1,115 +1,101 @@
 <?php
-
 namespace app\admin\controller;
-
-use think\Controller;
-use think\Request;
 use think\View;
-use think\Input;
-use think\Captcha;
+use think\Controller;
 use think\Validate;
+use think\Session;
+use think\Db;
+use think\Request;
+use think\Loader;
 use app\admin\model\AdminUser;
 
 class Login extends Controller
 {
-    /**
-     * 显示资源列表
-     *
-     * @return \think\Response
-     */
-    public function index()
-    {
-	return $this->fetch('login',['isError' => 1]);
-    }
-    
-    public function login()
-    {
-	//$view = new View();
-	$name = input('request.name');
-	$password  = input('request.password');
-	$data = input('request.captcha');
-	if(!captcha_check($data))
+	public function index()
 	{
-            return view('login', [
-		'isError' => 0,
-   	        'isCaptchaCorrect'  => 0,
-		'isHasUser' => 1
-	    ]);
-        }
-	$user = new AdminUser;
-	if($user->login($name,$password)){
-	    return $this->redirect('index/index');
-	}else{
-	    return view('login', [
-		'isError' => 0,
-		'isCaptchaCorrect' => 1,
-                'isHasUser'  => 0,
-            ]);
+		return $this -> fetch('index');
 	}
-    }
-    /**
-     * 显示创建资源表单页.
-     *
-     * @return \think\Response
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * 保存新建的资源
-     *
-     * @param  \think\Request  $request
-     * @return \think\Response
-     */
-    public function save(Request $request)
-    {
-        //
-    }
+	public function index1()
+	{
+		return $this -> fetch('index1');
+	}
 
-    /**
-     * 显示指定的资源
-     *
-     * @param  int  $id
-     * @return \think\Response
-     */
-    public function read($id)
-    {
-        //
-    }
+	//用户登录
+	public function login()
+	{
+		$name = Session::get('name');
+		$password = Session::get('password');
 
-    /**
-     * 显示编辑资源表单页.
-     *
-     * @param  int  $id
-     * @return \think\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+		$condition['name'] = $name;
+		$condition['password'] = $password;
+		$user = new AdminUser;
+		$result = $user -> verifyUserInfo($condition);
 
-    /**
-     * 保存更新的资源
-     *
-     * @param  \think\Request  $request
-     * @param  int  $id
-     * @return \think\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+		if ($result) {
+			$session['id'] = $result['id'];
+			$session['name'] = $result['name'];
+			$session['image'] = $result['image'];
+			session('userInfo', $result);
+			//更新登录时间
+			$update['id'] = $session['id'];
+			$user -> updateLoginTime($update);
 
-    /**
-     * 删除指定资源
-     *
-     * @param  int  $id
-     * @return \think\Response
-     */
-    public function delete($id)
-    {
-        //
-    }
+			$commidityParent = new CommidityInfo();
+			$commidityParentInfo = $commidityParent -> getCommidityParentInfoForLogin();
+			$this -> assign(
+				[
+					'name'                => $result['name'],
+					'adminImage'          => $result['image'],
+					'commidityParentInfo' => $commidityParentInfo,
+					'page'                => $commidityParentInfo -> render(),
+				]
+			);
+			return $this -> fetch('commidity_info/commidityParent');
+		} else {
+			return '<script>alert("登录失败，用户名或密码错误！");location.href="http://campusstore/admin/login";</script>';
+		}
+	}
+
+	//验证信息
+	public function verifyInfo()
+	{
+		$name = input('post.userName');
+		$password = input('post.password');
+		$captcha = input('post.captcha');
+		$data = [
+			'name'     => $name,
+			'password' => $password,
+			'captcha'  => $captcha,
+		];
+		$rules = [
+			'name'     => 'require|max:50',
+			'password' => 'require|min:6',
+			'captcha'  => 'require|captcha',
+		];
+		$validate = $this -> validate($data, $rules);
+
+		if ($validate !== true) {
+			return $validate;
+		} else {
+			session('name', $name);
+			session('password', md5($password));
+
+			return 'success';
+		}
+	}
+
+	//获取用户信息
+	public function getUserSessionInfo()
+	{
+		return Session::get('userInfo');
+	}
+
+	//注销登录
+	public function logout()
+	{
+		session::clear();
+		$view = new View();
+		return $view -> fetch('index');
+	}
 }

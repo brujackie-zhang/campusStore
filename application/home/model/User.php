@@ -55,4 +55,10 @@ class User extends Model
 	{
 		return Db::table(self::TB_USER) -> where(self::TB_USER . '.name', $userName) -> select();
 	}
+
+	//根据用户名重置密码
+	public function resetPassword($userName, $data)
+	{
+		return DB::table(self::TB_USER) -> where(self::TB_USER . '.name', $userName) -> update($data);
+	}
 }

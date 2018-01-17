@@ -138,4 +138,24 @@ class UserInfo extends Controller
 			return $this -> error('上传头像失败！'.$res);
 		}
 	}
+
+	//登录界面重置用户密码
+	public function resetPassword()
+	{
+		$password = md5(input('post.forgetPassword'));
+		// $userName = Session::get('userName');
+		$userName = input('post.userName') ? input('post.userName') : Session::get('userInfo.name');
+
+		$data = [
+			'password' => $password,
+		];
+		$user = new User;
+		$result = $user -> resetPassword($userName, $data);
+
+		if ($result) {
+			return $this -> success("重置密码成功！");
+		} else {
+			return $this -> error('重置密码失败，两次重置密码相同，请重新设置新密码！');
+		}
+	}
 }

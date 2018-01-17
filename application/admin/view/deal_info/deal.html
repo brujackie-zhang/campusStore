@@ -1,0 +1,100 @@
+<link rel="stylesheet" type="text/css" href="{$Think.const.ADMIN}css/alertWindow.css">
+<div class="righter nav-navicon" id="admin-nav">
+  <div class="mainer">
+    <div class="admin-navbar">
+      <span class="float-right">
+          <a class="button button-little bg-main" href="{:url('home/login/')}" target="_blank"><i class="fa fa-sign-out"></i>&nbsp;前台首页</a>
+          <a class="button button-little bg-yellow" href="{:url('login/logout')}"><i class="fa fa-power-off"></i>&nbsp;注销</a>
+      </span>
+      <ul class="nav nav-inline admin-nav">
+        <li>
+          <a href="{:url('CommidityInfo/getCommidityParentInfo')}" class="fa fa-shopping-basket">&nbsp;商品</a>
+          <ul>
+            <li><a href="{:url('CommidityInfo/getCommidityParentInfo')}">商品父类型管理</a></li>
+            <li><a href="{:url('CommidityInfo/getCommidityTypeInfo')}">商品类型管理</a></li>
+            <li><a href="{:url('CommidityInfo/getCommidityInfo')}">商品管理</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="{:url('ShopsInfo/getShopsInfo')}" class="icon-home">&nbsp;店铺</a>
+          <ul>
+            <li class="active"><a href="{:url('ShopsInfo/getShopsInfo')}">店铺管理</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="{:url('UserInfo/getUserInfo')}" class="icon-user">&nbsp;会员</a>
+          <ul>
+            <li class="active"><a href="{:url('UserInfo/getUserInfo')}">会员管理</a></li>
+          </ul>
+        </li>
+        <li class="active">
+          <a href="{:url('DealInfo/getDealInfo')}" class="icon-shopping-cart">&nbsp;订单</a>
+        	<ul>
+            	<li class="active"><a href="{:url('DealInfo/getDealInfo')}">订单管理</a></li>
+            	<li><a href="{:url('DealInfo/totalDealPage')}">订单统计</a></li>
+            </ul>
+        </li>
+        <li>
+        	<a href="{:url('AdminUserInfo/getAdminUserInfo')}" class="fa fa-user-secret">&nbsp;管理员</a>
+        	<ul>
+            	<li class="active"><a href="{:url('AdminUserInfo/getAdminUserInfo')}">管理员管理</a></li>
+          　　</ul>
+        </li>
+      </ul>
+    </div>
+    <div class="admin-bread">
+      <span style="margin-right:20px;">欢迎您&nbsp;<a href="" style="color:#4CA2D3;">{$name}&nbsp;<img src="{$adminImage}" alt="头像"　width="30" height="30" style="margin-bottom:5px;"></a></span>
+      <ul class="bread">
+        <li><a href="{:url('DealInfo/getDealInfo')}" class="fa fa-user-secret" style="color:#4CA2D3;">&nbsp;订单</a></li>
+        <li>订单管理管理</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="admin">
+	<div class="panel admin-panel">
+		<div class="panel-head">
+            <div class="span-title">搜索</div><input type="text" id="input-search" placeholder="请输入订单ID/订单号/用户名/商品名/付款方式"><i class="fa fa-search" id="i-search" onclick="searchDeal();"></i>
+        </div>
+		<table width="100%" cellspacing="0" cellpadding="0" border="0" class="table table-bordered table-hover table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>订单编号</th>
+          <th>商品名</th>
+          <th>用户名</th>
+          <th>商品数量</th>
+          <th>商品总价</th>
+          <th>付款方式</th>
+          <th>运送方式</th>
+          <th>生成时间</th>
+          <th>完成时间</th>
+          <th>订单状态</th>
+        </tr>
+      </thead>
+      <tbody id="deal-table">
+      {foreach $dealInfo as $data}
+        <tr>
+          <td>{$data.id}</td>
+          <td>{$data.dealNumber}</td>
+          <td>{$data.commidityName}</td>
+          <td>{$data.userName}</td>
+          <td>{$data.commidityNum}</td>
+          <td>{$data.total}</td>
+          <td>{$data.payMethod}</td>
+          <td>{$data.deliveryMethod}</td>
+          <td>{$data.createTime}</td>
+          <td>{$data.finishTime}</td>
+          {if $data.status eq 1}
+          <td style="color:red;">{$status[$data.status]}</td>
+          {else/}
+          <td>{$status[$data.status]}</td>
+          {/if}
+        </tr>
+        {/foreach}
+      </tbody>
+    </table>
+    {$page}
+	</div>
+</div>
+<script type="text/javascript" src="{$Think.const.ADMIN}js/deal.js"></script>

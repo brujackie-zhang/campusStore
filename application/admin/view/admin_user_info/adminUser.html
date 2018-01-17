@@ -1,0 +1,138 @@
+<link rel="stylesheet" type="text/css" href="{$Think.const.ADMIN}css/alertWindow.css">
+<style type="text/css">
+    #alertwindow {
+        height:70%;
+    }
+</style>
+<div class="righter nav-navicon" id="admin-nav">
+  <div class="mainer">
+    <div class="admin-navbar">
+      <span class="float-right">
+          <a class="button button-little bg-main" href="{:url('home/login/')}" target="_blank"><i class="fa fa-sign-out"></i>&nbsp;前台首页</a>
+          <a class="button button-little bg-yellow" href="{:url('login/logout')}"><i class="fa fa-power-off"></i>&nbsp;注销</a>
+      </span>
+      <ul class="nav nav-inline admin-nav">
+        <li>
+          <a href="{:url('CommidityInfo/getCommidityParentInfo')}" class="fa fa-shopping-basket">&nbsp;商品</a>
+          <ul>
+            <li><a href="{:url('CommidityInfo/getCommidityParentInfo')}">商品父类型管理</a></li>
+            <li><a href="{:url('CommidityInfo/getCommidityTypeInfo')}">商品类型管理</a></li>
+            <li><a href="{:url('CommidityInfo/getCommidityInfo')}">商品管理</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="{:url('ShopsInfo/getShopsInfo')}" class="icon-home">&nbsp;店铺</a>
+          <ul>
+            <li class="active"><a href="{:url('ShopsInfo/getShopsInfo')}">店铺管理</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="{:url('UserInfo/getUserInfo')}" class="icon-user">&nbsp;会员</a>
+          <ul>
+            <li class="active"><a href="{:url('UserInfo/getUserInfo')}">会员管理</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="{:url('DealInfo/getDealInfo')}" class="icon-shopping-cart">&nbsp;订单</a>
+        	<ul>
+            	<li class="active"><a href="{:url('DealInfo/getDealInfo')}">订单管理</a></li>
+            	<li><a href="#">订单统计</a></li>
+            </ul>
+        </li>
+        <li class="active">
+        	<a href="{:url('AdminUserInfo/getAdminUserInfo')}" class="fa fa-user-secret">&nbsp;管理员</a>
+        	<ul>
+            	<li class="active"><a href="{:url('AdminUserInfo/getAdminUserInfo')}">管理员管理</a></li>
+          　　</ul>
+        </li>
+      </ul>
+    </div>
+    <div class="admin-bread">
+      <span style="margin-right:20px;">欢迎您&nbsp;<a href="" style="color:#4CA2D3;">{$name}&nbsp;<img src="{$adminImage}" alt="头像"　width="30" height="30" style="margin-bottom:5px;"></a></span>
+      <ul class="bread">
+        <li><a href="{:url('AdminUserInfo/getAdminUserInfo')}" class="fa fa-user-secret" style="color:#4CA2D3;">&nbsp;管理员</a></li>
+        <li>管理员管理</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="admin">
+	<div class="panel admin-panel">
+		<div class="panel-head">
+            <div class="span-title">搜索</div><input type="text" id="input-search" placeholder="请输入管理员ID/姓名/邮箱"><i class="fa fa-search" id="i-search" onclick="searchAdminUser();"></i>
+        </div>
+		<table width="100%" cellspacing="0" cellpadding="0" border="0" class="table table-bordered table-hover table-striped">
+      <thead>
+        <tr>
+          <th><input type="checkbox" name="all" value="145"><span style="color:#4CA2D3;text-align:center;margin:2px;">全选</span></th>
+          <th>管理员ID</th>
+          <th>姓名</th>
+          <th>邮箱</th>
+          <th>注册时间</th>
+          <th>最后一次登录时间</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody id="adminUser-table">
+      {foreach $adminUserInfo as $data}
+        <tr id="tr_{$data.id}">
+          <td class="td-single-select"><input type="checkbox" name="single" value="{$data.id}"></td>
+          <td>{$data.id}</td>
+          <td><input type="text" name="adminUserName" value="{$data.name}" class="input-name" id="input-name_{$data.id}" disabled></td>
+          <td><input type="text" name="adminUserEmail" value="{$data.email}" class="input-name" id="input-email_{$data.id}" disabled style="width:200px;"></td>
+          <td>{$data.registerTime}</td>
+          <td>{$data.loginTime}</td>
+          <td>
+            <a href="javascript:void(0);" class="delete" style="display:inline-block;margin-right:5px;width:30px;line-height:20px;font-size:5px;text-align:center;border:1px solid #0088bb;text-decoration:none" onclick="deleteAdminUserById({$data.id});" id="delete_{$data.id}">删除</a>
+            <a href="javascript:void(0);" id="modify_{$data.id}" style="display:inline-block;width:30px;line-height:20px;font-size:5px;text-align:center;border:1px solid #0088bb;text-decoration:none" onclick="modifyAdminUserById({$data.id});">修改</a>
+          </td>
+        </tr>
+        {/foreach}
+      </tbody>
+    </table>
+    {$page}
+		<div class="padding border-bottom">
+			<input type="button" class="button button-small border-green" value="添加" onclick="showDiv('alertwindow','back');"/>
+			<a href="javascript:void(0);" class="button button-small border-yellow" onclick="deleteAdminUserByIds();">批量删除</a>
+		</div>
+	</div>
+    <div id="back"></div>
+    <div id="alertwindow">
+        <div style="text-align: right; cursor: default; height: 40px;">
+        <span onclick="hideDiv('alertwindow','back')" class="fa fa-window-close">&nbsp;关闭</span>
+        </div>
+        <div class="container" style="width:100%;">
+          <div class="panel panel-default">
+          <div class="panel-heading">
+            <strong style="color:#4CA2D3;font-size:1.5em;">管理员添加</strong>
+          </div>
+          <div class="panel-body">
+            <form class="form-horizontal" method="post" action="">
+              <div class="form-group">
+                <label class="col-sm-2 control-label">姓名</label>
+                <input type="text" class="form-control-input" name="name" value="" id="inputAdminUserName" placeholder="请输入管理员姓名">
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">邮箱</label>
+                <input type="email" class="form-control-input" name="email" value="" id="inputAdminUserEmail" placeholder="请输入管理员邮箱">
+              </div>
+              <span class="btn-add" onclick="addAdminUser();"><i class="fa fa-plus-circle"></i>添加</span>
+            </form>
+          </div>
+          <div class="panel-footer">&nbsp;</div>
+        </div>
+    </div>
+    </div>
+</div>
+<script type="text/javascript" src="{$Think.const.ADMIN}js/alertWindow.js"></script>
+<script type="text/javascript" src="{$Think.const.ADMIN}js/adminUser.js"></script>
+<script type="text/javascript">
+    //全选按钮
+    $("input[name='all']").click(function() {
+        if ($(this).is(":checked")) {
+            $("input[name='single']").prop("checked", true);
+        } else {
+            $("input[name='single']").prop("checked", false);
+        }
+    });
+</script>

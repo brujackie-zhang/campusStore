@@ -183,7 +183,7 @@
           "dataType" : "json",
           "success" : function(data) {
                 if (data.msg == "用户注册成功！") {
-                    location.href = data.url;
+                    location.href = "{:url('login/index')}";
                 } 
                 alert(data.msg);
           },

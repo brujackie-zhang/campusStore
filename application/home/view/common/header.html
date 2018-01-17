@@ -6,7 +6,7 @@
       <div class="w1000 mar posR">
         <div class="topInfo">欢迎您<b><a href="{:url('UserInfo/getUserInfo')}" style="text-decoration:none;">&nbsp;{$name}&nbsp;<img src="{$userImage}" alt="用户头像" width="25" height="25" style="border-radius:50%;"></a></b></div>
         <ul>
-          <li class="dropMenu posR"> <a href="#">我的云印</a>
+          <li class="dropMenu posR"> <a href="#">我的操作</a>
             <div class="dropMenuList posA" style="width:120px"> 
                 <i class="arrow"></i> 
                 <a href="{:url('CommiditiesInfo/getDealInfoByUserId')}"><img src="{$Think.const.ICON}order.png" alt="order.png" style="width:16px;height:16px">&nbsp;&nbsp;我的订单</a><br/>
@@ -28,18 +28,17 @@
       <div class="top-search posA" style="margin-left:-50px;margin-top:2%;">
       <form method="post" action="{:url('commidities_info/getCommiditiesByParentId')}" id="search-from">
         <div id="selectnav" class="search-select fl">
-              <select name="selectSearch" id="selectSearch" class="form-control input-md" style="background:#fff;border:0;">
+              <select name="selectSearch" id="selectSearch" class="form-control input-md" style="background:#fff;border:0;color:#4CA2D3;">
               {foreach $parent as $commidityParent}
                 <option value="{$commidityParent.id}">{$commidityParent.name}</option>
               {/foreach}
               </select>
         </div>
         <input type="text" class="fi-search fl" id="searchContent" name="searchContent" />
-        <button type="submit" class="btn btn-search fl" id="search-button" />
+        <button type="submit" class="btn btn-search fl fa fa-search" id="search-button" style="font-size:1.5em;" />
         <!-- <button type="button" class="btn btn-search fl" id="search-button" onclick="searchCommidities();" /> -->
         </form>
       </div>
-      <!-- <div class="top-keyword posA">&nbsp; 热门关键字：<a href="#">北京化工大学</a> <a href="#">复印</a> <a href="#">打印</a></div> -->
     </div>
     <!--/logo-bar end--> 
     <!--nav-->

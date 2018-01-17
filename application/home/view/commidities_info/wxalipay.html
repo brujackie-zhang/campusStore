@@ -1,0 +1,239 @@
+<style type="text/css">
+    .col-sm-2 {
+        width:10%;
+    }
+    .fa-weixin {
+        font-size: 2em;
+        /*color:#51C332;*/
+        color:#4CA2D3;
+        margin-right:1%;
+    }
+    .fa-window-close {
+        font-size: 1.5em;
+        cursor: pointer;
+        color:#4CA2D3;
+        margin:1%;
+    }
+    strong {
+        color:#4CA2D3;
+        font-size:1.3em;
+    }
+    .control-label {
+        color:#4CA2D3;
+    }
+    #ali-back, #wx-back {
+        display: none;
+        position: absolute;
+        top: 0%;
+        left: 0%;
+        width: 100%;
+        height: 100%;
+        background-color: black;
+        z-index:1001;
+        -moz-opacity: .5;
+        opacity:.5;
+        filter: alpha(opacity=50);
+    }
+    #ali-alertwindow, #wx-alertwindow {
+        display: none;
+        position: absolute;
+        top: 20%;
+        left: 40%;
+        width: 24%;
+        height: 64%;
+        border: 10px solid lightblue;
+        background-color: white;
+        z-index:1002;
+        overflow: auto;
+    }
+    input[type='radio'] {
+        vertical-align: middle;
+        margin-top:-2px;
+        margin-bottom: 1px;
+        margin-right: 1%;
+        background: #4CA2D3;
+    }
+    #alipay, #wxpay {
+        display:none;
+    }
+</style>
+<div id="mainbody">
+    <div class="page-pro w1000 mar">
+        <div class="main-shopcart mar-t10">
+            <div class="form-group" style="border:1px solid #ddd;height:35px;">
+                <span class="" style="width:16%;margin:0 1%;color:#4CA2D3;">请选择支付类型</span>
+                <input type="radio" name="pay" value="alipay" checked onclick="payTypeChange();" /><img src="{$Think.const.ALIPAY}logo.png" alt="alipay" width="80" height="23" style="line-height:25px;margin-top:-5px;margin-right:1%;">
+                <input type="radio" name="pay" value="wxpay" onclick="payTypeChange();" /><span class="fa fa-weixin" style="font-size:1.6em;line-height:25px;margin-top:3px;"></span>
+            </div>
+            <div class="panel panel-default" id="alipay">
+                <div class="panel-heading">
+                  <img src="{$Think.const.ALIPAY}alipay.png" alt="alipay" width="35" height="35" style="margin-right:1%;margin-top:-10px;"></span><strong>支付宝订单支付</strong>
+                </div>
+                <div class="panel-body">
+                  <div class="form-horizontal weixin-form">
+                    <div class="form-group" style="display:none;">
+                      <label class="col-sm-2 control-label">订单号</label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" id="ali-order-ids" value="" readonly>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-2 control-label">交易单号</label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" id="ali-order-id" value="" readonly>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-2 control-label">支付时间</label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" id="ali-order-time" value="" readonly>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-2 control-label">支付描述</label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" id="ali-order-describe" value="" readonly>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-2 control-label">支付金额</label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" id="ali-total" value="" readonly style="color:red;">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-sm-offset-2 col-sm-10">
+                        <button type="button" class="btn btn-lg" style="background:#4CA2D3;color:#FFF;" onclick="showDiv('ali-alertwindow','ali-back')">立即支付</button>
+                      </div>
+                    </div>
+                  </div>
+                    <div id="ali-back"></div>
+                    <div id="ali-alertwindow">
+                        <div style="text-align: right; cursor: default; height: 40px;">
+                        <span onclick="hideDiv('ali-alertwindow','ali-back')" class="fa fa-window-close">&nbsp;关闭</span>
+                        </div><img src="{$Think.const.ALIPAY}alipay.jpg" width="300" height="300"/>
+                        <button type="button" class="btn" style="background:#4CA2D3;color:#FFF;margin-left:40%;" onclick="finishedPay();">确定</button>
+                    </div>
+                    <div class="panel-footer">&nbsp;</div>
+                </div>
+            </div>
+            <div class="panel panel-default" id="wxpay">
+                <div class="panel-heading">
+                  <span class="fa fa-weixin"></span><strong>微信订单支付</strong>
+                </div>
+                <div class="panel-body">
+                  <div class="form-horizontal weixin-form">
+                    <div class="form-group" style="display:none;">
+                      <label class="col-sm-2 control-label">订单号</label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" id="wx-order-ids" value="" readonly>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-2 control-label">交易单号</label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" id="wx-order-id" value="" readonly>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-2 control-label">支付时间</label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" id="wx-order-time" value="" readonly>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-2 control-label">支付描述</label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" id="wx-order-describe" value="" readonly>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-2 control-label">支付金额</label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" id="wx-total" value="" readonly style="color:red;">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-sm-offset-2 col-sm-10">
+                        <button type="button" class="btn btn-lg" style="background:#4CA2D3;color:#FFF;" onclick="showDiv('wx-alertwindow','wx-back')">立即支付</button>
+                      </div>
+                    </div>
+                  </div>
+                    <div id="wx-back"></div>
+                    <div id="wx-alertwindow">
+                        <div style="text-align: right; cursor: default; height: 40px;">
+                        <span onclick="hideDiv('wx-alertwindow','wx-back')" class="fa fa-window-close">&nbsp;关闭</span>
+                        </div><img src="{$Think.const.WXPAY}wxpay.jpg" width="300" height="300"/>
+                        <button type="button" class="btn" style="background:#4CA2D3;color:#FFF;margin-left:40%;" onclick="finishedPay();">确定</button>
+                    </div>
+                <div class="panel-footer">&nbsp;</div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function() {
+        $("#ali-order-ids").val($.session.get('dealNumbers'));
+        $("#ali-order-id").val($.session.get('payNumber'));
+        $("#ali-order-time").val($.session.get('payTime'));
+        $("#ali-order-describe").val($.session.get('payDescribe'));
+        $("#ali-total").val($.session.get('total'));
+        $("#wx-order-ids").val($.session.get('dealNumbers'));
+        $("#wx-order-id").val($.session.get('payNumber'));
+        $("#wx-order-time").val($.session.get('payTime'));
+        $("#wx-order-describe").val($.session.get('payDescribe'));
+        $("#wx-total").val($.session.get('total'));
+        $("#alipay").show();
+    });
+
+    function payTypeChange() {
+        var payType = $('input[type="radio"]:checked').val();
+        if (payType == 'alipay') {
+            $("#wxpay").hide();
+            $("#alipay").show();
+        } else {
+            $("#alipay").hide();
+            $("#wxpay").show();
+        }
+    }
+
+    //展示微信支付弹层
+    function showDiv(showId, backId) {
+        document.getElementById(showId).style.display = 'block';
+        document.getElementById(backId).style.display = 'block';
+
+        var backDiv = document.getElementById(backId);
+
+        backDiv.style.width = document.body.scrollWidth;
+        $("#" + backDiv).height($(document).height());
+    }
+
+    //关闭微信支付弹层
+    function hideDiv(showId, backId) {
+        document.getElementById(showId).style.display = 'none';
+        document.getElementById(backId).style.display = 'none';
+    }
+
+    //确定支付完成后
+    function finishedPay() {
+        var dealNumbers = $("#wx-order-ids").val();
+        var payType = $('input[type="radio"]:checked').val();
+
+        $.ajax({
+            "type" : "POST",
+            "url" : "http://campusstore/home/commidities_info/pay",
+            "dataType" : "json",
+            "data" : {
+                "dealNumbers" : dealNumbers,
+                "payType" : payType,
+            },
+            "success" : function(data) {
+                alert(data.msg);
+                location.href = "http://campusstore/home/commidities_info/gotoaccount";
+            },
+            "error" : function(data) {
+                alert("页面错误!" + data.responseText);
+            },
+        });
+    }
+</script>

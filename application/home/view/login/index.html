@@ -8,10 +8,47 @@
 <link rel="stylesheet" href="{$Think.const.CSS}bootstrap.min.css">
 <link rel="stylesheet" href="{$Think.const.CSS}common.css">
 <link rel="stylesheet" href="{$Think.const.CSS}default.css">
+<link rel="stylesheet" type="text/css" href="{$Think.const.CSS}font-awesome.css">
 <script language="javascript" src="{$Think.const.JS}bootstrap.min.js"></script>
 <script language="javascript" src="{$Think.const.JS}jquery.min.js"></script>
 <script language="javascript" src="{$Think.const.JS}selectNav.js"></script>
 <script language="javascript" src="{$Think.const.JS}common.js"></script>
+<style type="text/css">
+  #back {
+        display: none;
+        position: absolute;
+        top: 0%;
+        left: 0%;
+        width: 100%;
+        height: 100%;
+        background-color: black;
+        z-index:1001;
+        -moz-opacity: .5;
+        opacity:.5;
+        filter: alpha(opacity=50);
+    }
+    #alertwindow {
+        display: none;
+        position: absolute;
+        top: 20%;
+        left: 20%;
+        width: 60%;
+        height: 63%;
+        border: 10px solid lightblue;
+        background-color: white;
+        z-index:1002;
+        overflow: auto;
+    }
+    .fa-window-close {
+        font-size: 1.5em;
+        cursor: pointer;
+        color:#4CA2D3;
+        margin:1%;
+    }
+    .control-label {
+      color:#4CA2D3;
+    }
+</style>
 </head>
 <body>
 <div class="container">
@@ -21,7 +58,50 @@
     <div class="page-block borA clearfix" style="width:940px;">
       <div class="login-left fl" style="border:1px solid #eee;width:600px;">
         <div class="col-sm-6" style="border-bottom:1px solid #eee;margin-bottom:5%;font-size:1.2em;color:#4CA2D3;">用户登录</div>   
-        <div class="col-sm-6" style="border-bottom:1px solid #eee;margin-bottom:5%;font-size:1.2em;"><span class="glyphicon glyphicon-hand-right" style="color:#4CA2D3;"></span>&nbsp;&nbsp;<a href="{:url('register/index')}">立即注册</a></div>   
+        <div class="col-sm-6" style="border-bottom:1px solid #eee;margin-bottom:5%;font-size:1.2em;"><span class="glyphicon glyphicon-hand-right" style="color:#4CA2D3;"></span>&nbsp;&nbsp;<a href="{:url('register/index')}">立即注册</a>&nbsp;&nbsp;<span class="fa fa-unlock-alt" style="color:#4CA2D3;"></span>&nbsp;&nbsp;<a href="javascript:void(0);" onclick="showDiv('alertwindow','back');">忘记密码</a></div>
+        <div id="back"></div>
+        <div id="alertwindow">
+            <div style="text-align: right; cursor: default; height: 40px;">
+            <span onclick="hideDiv('alertwindow','back')" class="fa fa-window-close">&nbsp;关闭</span>
+            </div>
+            <div class="container" style="width:100%;">
+              <div class="panel panel-default">
+              <div class="panel-heading">
+                <strong style="color:#4CA2D3;font-size:1.5em;">找回密码验证码发送</strong>
+              </div>
+              <div class="panel-body">
+                <form class="form-horizontal sms-form" method="post" action="{:url('Alidayu/sms')}">
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" style="width:10%;margin-left:-2%;">手机号</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" name="mobile" value="" style="width:70%;float:left;margin-right:7%;" id="forget-mobile" placeholder="请输入绑定的手机号">
+                      <button type="button" style="line-height:40px;color:#FFF;background:#4CA2D3;border-radius:5px;width:120px;" onclick="setTime(this);">点击获取验证码</button>
+                    </div>
+                  </div>
+                </form>
+                <form class="form-horizontal" method="post" action="#">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" style="width:10%;margin-left:-2%;">验证码</label>
+                        <div class="col-sm-10">
+                          <input type="text" class="form-control" name="forget-captcha" value="" style="width:70%;float:left;margin-right:7%;" id="forget-captcha" placeholder="请输入手机收到的验证码">
+                          <button type="button" style="line-height:40px;color:#FFF;background:#4CA2D3;border-radius:5px;width:120px;" onclick="verifyCaptcha();">确认验证码</button>
+                        </div>
+                    </div>
+                </form>
+                <form class="form-horizontal" method="post" action="#">
+                    <div class="form-group" id="div-forget-password" style="display:none;">
+                        <label class="col-sm-2 control-label" style="width:10%;margin-left:-2%;">新密码</label>
+                        <div class="col-sm-10">
+                          <input type="text" class="form-control" name="forget-password" value="" style="width:70%;float:left;margin-right:7%;" id="forget-password"　placeholder="请输入重置新密码">
+                          <button type="button" style="line-height:40px;color:#FFF;background:#4CA2D3;border-radius:5px;width:120px;" onclick="resetPassword();">确定</button>
+                        </div>
+                    </div>
+                </form>
+              </div>
+              <div class="panel-footer" style="color:red;">&nbsp;</div>
+            </div>
+        </div>
+        </div>   
         <form class="form-horizontal mar-t30" method="post" action="">
           <div class="form-group">
             <label for="inputEmail" class="col-sm-2 control-label" style="color:#4CA2D3;">用户名</label>
@@ -38,7 +118,7 @@
           <div class="form-group">
             <label for="inputValid" class="col-sm-2 control-label" style="color:#4CA2D3;">验证码</label>
             <div class="col-sm-3" id="div_captcha">
-              <input type="text" class="form-control" id="inputCaptcha" placeholder="请输入验证码" name="captcha" style="background-color:#eee;"><img src="{:captcha_src()}" alt="验证码" style="display:block;width:140px;height:40px;margin-left:120px;margin-top:-40px" id="captcha_img" onclick='this.src="{:captcha_src()}?id="+Math.random();' title="点击更换验证码">
+              <input type="text" class="form-control" id="inputCaptcha" placeholder="请输入验证码" name="captcha" style="background-color:#eee;"><img src="{:captcha_src()}" alt="验证码" style="display:block;width:140px;height:40px;margin-left:130px;margin-top:-40px" id="captcha_img" onclick='this.src="{:captcha_src()}?id="+Math.random();' title="点击更换验证码">
             </div><label id="captcha_error" class="error" style="margin-left:418px;margin-top:-40px;text-align:left;width:150px;height:40px;color:red;display:none">*验证码不为空</label>
           </div>
           <div class="form-group mar-t30">
@@ -91,12 +171,134 @@
                         window.location.href = '{:url('login/login')}';
                     } else {
                         alert('验证码出错，请刷新验证码并重新登陆！');
+                        window.location.href = '{:url('login/index')}';
                     }
                 },
             });
             return false;
         });
     });
+    //展示忘记密码弹层
+    function showDiv(showId, backId) {
+        document.getElementById(showId).style.display = 'block';
+        document.getElementById(backId).style.display = 'block';
+
+        var backDiv = document.getElementById(backId);
+
+        backDiv.style.width = document.body.scrollWidth;
+        $("#" + backDiv).height($(document).height());
+    }
+
+    //关闭忘记密码弹层
+    function hideDiv(showId, backId) {
+        document.getElementById(showId).style.display = 'none';
+        document.getElementById(backId).style.display = 'none';
+    }
+
+    //发送验证码表单
+    $('.sms-form').click(function(){
+      var $this = $(this);
+      if(!$this.hasClass('lock-form')){
+        var userName = $("#inputName").val();
+        if (userName == '') {
+            alert("请输入用户名！");
+        }　else {
+            $this.addClass('lock-form');//锁定表单
+            var formData = new FormData($this[0]);
+            formData.append('userName', userName);
+            $.ajax({
+              url:$this.attr("action"),
+              type:'POST',
+              data:formData,
+              dataType:'json',
+              cache: false,
+              contentType: false,
+              processData: false,
+              success:function(s){
+                $this.removeClass('lock-form');//解锁表单
+                var html = (s.code != 1 ? '错误代码：' : '') + s.msg;
+                if (html == "验证码发送成功！") {
+                    $(".panel-footer").css("color", "green");
+                }
+                $('.panel-footer').html(html);
+                return false;
+              }
+            });
+            $(".panel-footer").css("color", "red");
+        }
+      }
+      return false;
+    });
+    //验证码按钮倒计时
+    var countdown=60;
+    function setTime(obj) {
+        var mobile = $("#forget-mobile").val();
+        var erg = /^1[3|5|7|8][0-9]\d{4,8}$/;
+        if ((! erg.test(mobile)) || mobile == '') {
+            return false;
+        } else {
+            if (countdown == 0) { 
+                obj.removeAttribute("disabled");
+                obj.setAttribute("style", "background:#4CA2D3;line-height:40px;color:#fff;border-radius:5px;width:120px;");
+                obj.innerHTML = "点击获取验证码"; 
+                countdown = 60;
+                return;
+            } else { 
+                obj.setAttribute("disabled", true); 
+                obj.setAttribute("style", "background:#8f8f8f;line-height:40px;color:#fff;border-radius:5px;width:120px;");
+                obj.innerHTML = "重新发送(" + countdown + " s)"; 
+                countdown--; 
+            } 
+            setTimeout(function() {setTime(obj)},1000);
+        }
+    }
+
+    //验证验证码表单
+    function verifyCaptcha() {
+        var verifyCaptcha = $("#forget-captcha").val();
+        $.ajax({
+            url : "{:url('Alidayu/verifyCaptcha')}",
+            type : "POST",
+            data : {
+                "verifyCaptcha" : verifyCaptcha,
+            },
+            dataType : "json",
+            success:function(data){
+                if (data.msg == "验证码验证成功！") {
+                    $(".panel-footer").css("color", "green");
+                    $("#div-forget-password").show();
+                }
+                $('.panel-footer').html(data.msg);
+            },
+            error : function() {
+                $('.panel-footer').html("页面错误！");
+            }
+        });
+    }
+
+    //重置密码
+    function resetPassword() {
+        var forgetPassword = $("#forget-password").val();
+        var userName = $("#inputName").val();
+        $.ajax({
+            url : "{:url('UserInfo/resetPassword')}",
+            type : "POST",
+            data : {
+                "forgetPassword" : forgetPassword,
+                "userName" : userName,
+            },
+            dataType : "json",
+            success:function(data){
+                if (data.msg == "重置密码成功！") {
+                    $(".panel-footer").css("color", "green");
+                }
+                $('.panel-footer').html(data.msg);
+            },
+            error : function(data) {
+                $('.panel-footer').html("页面错误！");
+            }
+        });
+    }
 </script>
 </body>
 <footer>

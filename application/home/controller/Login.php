@@ -51,7 +51,7 @@ class Login extends Controller
 			);
 			return $this -> fetch('shop/shop');
 		} else {
-			return '<script>alert("登录失败，用户名或密码错误！");history.go(-1);</script>';
+			return '<script>alert("登录失败，用户名或密码错误！");location.href="http://campusstore/";</script>';
 		}
 	}
 

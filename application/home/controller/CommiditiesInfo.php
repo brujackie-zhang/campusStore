@@ -430,23 +430,74 @@ class CommiditiesInfo extends Controller
 	//订单支付页面
 	public function pay()
 	{
-		$dealNumbers = Request::instance() -> post('dealNumbers');
-		if (empty($dealNumbers)) {
-			return $this -> error("请选择要付款的订单！");
+		//获取选择的订单
+		$dealNumbers = json_decode(input('post.dealNumbers'), true);
+		//获取支付类型
+		$payType = input('post.payType');
+		$payMethod = [
+			'wxpay'  => '微信',
+			'alipay' => '支付宝'
+		];
+
+		$data = [
+			'status'      => 1,
+			'finish_time' => time(),
+			'pay_method'  => $payMethod[$payType],
+		];
+
+		$deal = new Deal;
+		$result = $deal -> updateDealsStatus($dealNumbers, $data);
+		if ($result) {
+			$dealNumbers = implode(',', $dealNumbers);
+			return $this -> success('订单 ' . $dealNumbers . ' 支付成功！');
 		} else {
-			$data = [
-				'status'      => 1,
-				'finish_time' => time(),
-			];
-			$deal = new Deal;
-			// $result = $deal -> updateDealsStatus($dealNumbers, $data);
-			$result = $deal -> updateDealsStatus($dealNumbers, $data);
-			if ($result) {
-				// $dealNumbers = implode(',', $dealNumbers);
-				return $this -> success('订单 ' . $dealNumbers . ' 支付成功！');
-			} else {
-				return $this -> error("订单支付失败！" . $dealNumbers . $deal -> getLastSql());
-			}
+			return $this -> error("订单支付失败！" . $deal -> getLastSql());
 		}
+	}
+
+	//微信支付宝支付接口
+	public function wxAliPay()
+	{
+		$dealNumbers = json_decode(input('post.dealNumbers'), true);
+
+		if (empty($dealNumbers)) {
+			return $this -> error("请选择要付款的订单！！");
+		} else {
+			$deal = new Deal;
+			$total = 0;
+			$result = $deal -> getDealTotalByDealNumber($dealNumbers);
+			foreach ($result as $v) {
+				$total += $v['total']; 
+			}
+
+			$data = [
+				"total"       => $total . "元",
+				"payTime"     => date("Y-m-d H:i:s", time()),
+				"payNumber"   => date("YmdHis", time()) . $result[0]["dealNumbers"],
+				"payDescribe" => "支付" . implode(",", $dealNumbers) . "订单",
+				"dealNumbers" => input('post.dealNumbers'),
+	    	];
+			return $data;
+		}
+	}
+
+	//微信支付宝订单详情
+	public function wxAliPayInfo()
+	{
+		$login = new Login();
+		$name = $login -> getUserSessionInfo()['name'];
+		$userId = $login -> getUserSessionInfo()['id'];
+		$userImage = $login -> getUserSessionInfo()['image'];
+		$search = new Search();
+		$parent = $search -> getCommidityParentName();
+
+		$this -> assign(
+    		[
+				'name'        => $name,
+				'userImage'   => $userImage,
+				'parent'      => $parent,
+    		]
+		);
+		return $this -> fetch('wxalipay');
 	}
 }

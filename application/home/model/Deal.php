@@ -7,6 +7,7 @@ class Deal extends Model
 {
 	const TB_DEAL           = 'deal';
 	const TB_COMMIDITY      = 'commidity';
+	const TB_SHOPS          = 'shops';
 
 	//生成订单
 	public function generateDeal($data)
@@ -20,6 +21,7 @@ class Deal extends Model
 		$fields = [
 			self::TB_DEAL . '.id as id',
 			self::TB_DEAL . '.deal_number as dealNumber',
+			// self::TB_SHOPS . '.name as shopName',
 			self::TB_DEAL . '.commidity_id as commidityId',
 			self::TB_COMMIDITY . '.name as commidityName',
 			self::TB_COMMIDITY . '.image as commidityImage',
@@ -33,6 +35,7 @@ class Deal extends Model
 
 		$result = Db::table(self::TB_DEAL)
 			-> field($fields)
+			// -> join(self::TB_SHOPS, self::TB_SHOPS . '.id = ' . self::TB_DEAL . '.shop_id')
 			-> join(self::TB_COMMIDITY, self::TB_COMMIDITY . '.id = ' . self::TB_DEAL . '.commidity_id')
 			-> where(self::TB_DEAL . '.user_id', $userId)
 			-> order(self::TB_DEAL . '.id', 'desc')
@@ -47,6 +50,7 @@ class Deal extends Model
 		$fields = [
 			self::TB_DEAL . '.id as id',
 			self::TB_DEAL . '.deal_number as dealNumber',
+			// self::TB_SHOPS . '.name as shopName',
 			self::TB_COMMIDITY . '.name as commidityName',
 			self::TB_COMMIDITY . '.image as commidityImage',
 			self::TB_DEAL . '.commidity_num as commidityNum',
@@ -58,6 +62,7 @@ class Deal extends Model
 
 		$result = Db::table(self::TB_DEAL)
 			-> field($fields)
+			// -> join(self::TB_SHOPS, self::TB_SHOPS . '.id = ' . self::TB_DEAL . '.shop_id')
 			-> join(self::TB_COMMIDITY, self::TB_COMMIDITY . '.id = ' . self::TB_DEAL . '.commidity_id')
 			-> where(self::TB_DEAL . '.user_id', $userId)
 			-> order(self::TB_DEAL . '.id', 'desc')
@@ -73,6 +78,7 @@ class Deal extends Model
 			self::TB_DEAL . '.id as dealId',
 			self::TB_COMMIDITY . '.id as commidityId',
 			self::TB_DEAL . '.deal_number as dealNumber',
+			// self::TB_SHOPS . '.name as shopName',
 			self::TB_COMMIDITY . '.name as commidityName',
 			self::TB_COMMIDITY . '.price as commidityPrice',
 			self::TB_COMMIDITY . '.image as commidityImage',
@@ -86,6 +92,7 @@ class Deal extends Model
 
 		$result = Db::table(self::TB_DEAL)
 			-> field($fields)
+			// -> join(self::TB_SHOPS, self::TB_SHOPS . '.id = ' . self::TB_DEAL . '.shop_id')
 			-> join(self::TB_COMMIDITY, self::TB_COMMIDITY . '.id = ' . self::TB_DEAL . '.commidity_id')
 			-> where(self::TB_DEAL . '.user_id', $userId)
 			-> where(self::TB_DEAL . '.status', 0)
@@ -108,14 +115,35 @@ class Deal extends Model
 	}
 
 	//付款批量更新订单状态
-	public function updateDealsStatus($dealNumber, $data)
+	// public function updateDealsStatus($dealNumber, $data)
+	public function updateDealsStatus($dealNumbers, $data)
 	{
-		// foreach ($dealNumbers as $dealNumber) {
-		// 	Db::table(self::TB_DEAL) -> where(self::TB_DEAL . '.deal_number', $dealNumber) -> update($data);
-		// 	return 1;
-		// }
-		// return 0;
+		return Db::table(self::TB_DEAL) -> where(self::TB_DEAL . '.deal_number', 'in', $dealNumbers) -> update($data);
+		// return Db::table(self::TB_DEAL) -> where(self::TB_DEAL . '.deal_number', $dealNumber) -> update($data);
+	}
 
-		return Db::table(self::TB_DEAL) -> where(self::TB_DEAL . '.deal_number', $dealNumber) -> update($data);
+	//根据订单号获取订单总价
+	public function getDealTotalByDealNumber($dealNumbers)
+	{
+		$fields = [
+			self::TB_DEAL . '.id as dealId',
+			self::TB_COMMIDITY . '.id as commidityId',
+			self::TB_DEAL . '.deal_number as dealNumber',
+			self::TB_COMMIDITY . '.name as commidityName',
+			self::TB_COMMIDITY . '.price as commidityPrice',
+			self::TB_COMMIDITY . '.image as commidityImage',
+			self::TB_DEAL . '.commidity_num as commidityNum',
+			self::TB_DEAL . '.total as total',
+			self::TB_DEAL . '.discount as discount',
+		];
+
+		$result = Db::table(self::TB_DEAL)
+			-> field($fields)
+			-> join(self::TB_COMMIDITY, self::TB_COMMIDITY . '.id = ' . self::TB_DEAL . '.commidity_id')
+			-> where(self::TB_DEAL . '.deal_number', 'in', $dealNumbers)
+			-> order('dealId', 'desc')
+			-> select();
+
+		return $result = $result ? $result : '';
 	}
 }

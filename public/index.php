@@ -31,5 +31,15 @@ define('ICON', '/static/common/icon/');
 define('PIC', '/static/common/pic/');
 //用户头像存放目录
 define('USER_PHOTO', '/homeuploads/userPhoto/');
+//微信支付二维码图片
+define('WXPAY', '/static/common/wxpay/');
+//支付宝支付二维码图片
+define('ALIPAY', '/static/common/alipay/');
+//后台管理所需资源
+define('ADMIN', '/static/common/admin/');
+//店铺门面图片存放目录
+define('FACE', '/static/common/shops/face/');
+//店铺执照图片存放目录
+define('LICENSE', '/static/common/shops/license/');
 // 加载框架引导文件
 require __DIR__ . '/../thinkphp/start.php';

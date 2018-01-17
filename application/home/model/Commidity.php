@@ -11,6 +11,7 @@ class Commidity extends Model
 	const TB_BRAND            = 'brand';
 	const TB_DEAL             = 'deal';
 	const TB_USER             = 'user';
+	const TB_SHOPS            = 'shops';
 
 	protected $pk = 'id';
 
@@ -38,6 +39,7 @@ class Commidity extends Model
 		$fields = [
 			self::TB_COMMIDITY . '.id as id',
 			self::TB_COMMIDITY . '.name as name',
+			self::TB_SHOPS . '.name as shopName',
 			self::TB_COMMIDITY_TYPE . '.name as cTypeName',
 			self::TB_COMMIDITY_PARENT . '.name as cParentName',
 			self::TB_BRAND . '.name as brandName',
@@ -51,6 +53,7 @@ class Commidity extends Model
 
 		$result = Db::table(self::TB_COMMIDITY)
 			-> field($fields)
+			-> join(self::TB_SHOPS, self::TB_SHOPS . '.id = ' . self::TB_COMMIDITY . '.shop_id', 'left')
 			-> join(self::TB_COMMIDITY_TYPE, self::TB_COMMIDITY_TYPE . '.id = ' . self::TB_COMMIDITY . '.commidity_type_id', 'left')
 			-> join(self::TB_COMMIDITY_PARENT, self::TB_COMMIDITY_PARENT . '.id = ' . self::TB_COMMIDITY_TYPE . '.p_id', 'left')
 			-> join(self::TB_BRAND, self::TB_BRAND . '.id = ' . self::TB_COMMIDITY . '.brand_id', 'left')
@@ -70,6 +73,7 @@ class Commidity extends Model
 		$fields = [
 			self::TB_COMMIDITY . '.id as id',
 			self::TB_COMMIDITY . '.name as name',
+			self::TB_SHOPS . '.name as shopName',
 			self::TB_COMMIDITY_TYPE . '.name as cTypeName',
 			self::TB_COMMIDITY_PARENT . '.name as cParentName',
 			self::TB_BRAND . '.name as brandName',
@@ -83,6 +87,7 @@ class Commidity extends Model
 
 		$result = Db::table(self::TB_COMMIDITY)
 			-> field($fields)
+			-> join(self::TB_SHOPS, self::TB_SHOPS . '.id = ' . self::TB_COMMIDITY . '.shop_id', 'left')
 			-> join(self::TB_COMMIDITY_TYPE, self::TB_COMMIDITY_TYPE . '.id = ' . self::TB_COMMIDITY . '.commidity_type_id', 'left')
 			-> join(self::TB_COMMIDITY_PARENT, self::TB_COMMIDITY_PARENT . '.id = ' . self::TB_COMMIDITY_TYPE . '.p_id', 'left')
 			-> join(self::TB_BRAND, self::TB_BRAND . '.id = ' . self::TB_COMMIDITY . '.brand_id', 'left')
@@ -99,6 +104,7 @@ class Commidity extends Model
 		$fields = [
 			self::TB_COMMIDITY . '.id as commidityId',
 			self::TB_COMMIDITY . '.name as name',
+			self::TB_SHOPS . '.name as shopName',
 			self::TB_COMMIDITY_TYPE . '.name as cTypeName',
 			self::TB_COMMIDITY_PARENT . '.name as cParentName',
 			self::TB_BRAND . '.name as brandName',
@@ -114,6 +120,7 @@ class Commidity extends Model
 
 		$result = Db::table(self::TB_COMMIDITY)
 			-> field($fields)
+			-> join(self::TB_SHOPS, self::TB_SHOPS . '.id = ' . self::TB_COMMIDITY . '.shop_id', 'left')
 			-> join(self::TB_COMMIDITY_TYPE, self::TB_COMMIDITY_TYPE . '.id = ' . self::TB_COMMIDITY . '.commidity_type_id', 'left')
 			-> join(self::TB_COMMIDITY_PARENT, self::TB_COMMIDITY_PARENT . '.id = ' . self::TB_COMMIDITY_TYPE . '.p_id', 'left')
 			-> join(self::TB_BRAND, self::TB_BRAND . '.id = ' . self::TB_COMMIDITY . '.brand_id', 'left')
@@ -170,6 +177,7 @@ class Commidity extends Model
 		$fields = [
 			self::TB_COMMIDITY . '.id as id',
 			self::TB_COMMIDITY . '.name as name',
+			self::TB_SHOPS . '.name as shopName',
 			self::TB_COMMIDITY_TYPE . '.name as cTypeName',
 			self::TB_COMMIDITY_PARENT . '.name as cParentName',
 			self::TB_BRAND . '.name as brandName',
@@ -189,6 +197,7 @@ class Commidity extends Model
 
 		$result = Db::table(self::TB_COMMIDITY)
 			-> field($fields)
+			-> join(self::TB_SHOPS, self::TB_SHOPS . '.id = ' . self::TB_COMMIDITY . '.shop_id', 'left')
 			-> join(self::TB_COMMIDITY_TYPE, self::TB_COMMIDITY_TYPE . '.id = ' . self::TB_COMMIDITY . '.commidity_type_id', 'left')
 			-> join(self::TB_COMMIDITY_PARENT, self::TB_COMMIDITY_PARENT . '.id = ' . self::TB_COMMIDITY_TYPE . '.p_id', 'left')
 			-> join(self::TB_BRAND, self::TB_BRAND . '.id = ' . self::TB_COMMIDITY . '.brand_id', 'left')
@@ -208,6 +217,7 @@ class Commidity extends Model
 		$fields = [
 			self::TB_COMMIDITY . '.id as id',
 			self::TB_COMMIDITY . '.name as name',
+			self::TB_SHOPS . '.name as shopName',
 			self::TB_COMMIDITY_TYPE . '.name as cTypeName',
 			self::TB_COMMIDITY_PARENT . '.name as cParentName',
 			self::TB_BRAND . '.name as brandName',
@@ -227,6 +237,7 @@ class Commidity extends Model
 
 		$result = Db::table(self::TB_COMMIDITY)
 			-> field($fields)
+			-> join(self::TB_SHOPS, self::TB_SHOPS . '.id = ' . self::TB_COMMIDITY . '.shop_id', 'left')
 			-> join(self::TB_COMMIDITY_TYPE, self::TB_COMMIDITY_TYPE . '.id = ' . self::TB_COMMIDITY . '.commidity_type_id', 'left')
 			-> join(self::TB_COMMIDITY_PARENT, self::TB_COMMIDITY_PARENT . '.id = ' . self::TB_COMMIDITY_TYPE . '.p_id', 'left')
 			-> join(self::TB_BRAND, self::TB_BRAND . '.id = ' . self::TB_COMMIDITY . '.brand_id', 'left')

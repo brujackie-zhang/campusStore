@@ -16,7 +16,7 @@ class CommentInfo extends Controller
 		$id = $login -> getUserSessionInfo()['id'];
 		$name = $login -> getUserSessionInfo()['name'];
 		$image = $login -> getUserSessionInfo()['image'];
-		$selectId = input('post.select_comment') ? input('post.select_comment') : '2';
+		$selectId = input('post.select_comment') ? input('post.select_comment') : '3';
 		// $selectId = input('post.select_comment');
 		// echo $selectId;
 		//实例化搜索
@@ -27,7 +27,9 @@ class CommentInfo extends Controller
 		$condition = [
 			'1' => [$startTime, $endTime],
 			'2' => [$startTime - 7 * 86400, $endTime],
-			'3' => [$startTime - 31 * 86400, $endTime],	
+			'3' => [$startTime - 31 * 86400, $endTime],
+			'4' => [$startTime - 3 * 31 * 86400, $endTime],
+			'5' => [$startTime - 12 * 31 * 86400, $endTime],
 		];
 		$comment = new Comment;
 		$total = $comment -> getCommentByUserTotal($id, $condition[$selectId]);

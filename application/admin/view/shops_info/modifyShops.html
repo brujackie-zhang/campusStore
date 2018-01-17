@@ -1,0 +1,151 @@
+<link rel="stylesheet" type="text/css" href="{$Think.const.ADMIN}css/alertWindow.css">
+<style type="text/css">
+    #select-shopsType {
+        width:700px;
+        height:30px;
+    }
+    .form-group {
+        margin-bottom:25px;
+    }
+    .form-group-textarea {
+        margin-bottom:-5px;
+    }
+    .fa-window-close {
+        font-size: 16px;
+    }
+    .form-control-textarea {
+        width:700px;
+        height:50px;
+        margin-bottom: 0;
+        color:#4CA2D3;
+    }
+    .form-control-input {
+        width:700px;
+        color:#4CA2D3;
+    }
+    .form-control-input-disabled {
+        border:1px solid #ddd;
+    }
+</style>
+<div class="righter nav-navicon" id="admin-nav">
+  <div class="mainer">
+    <div class="admin-navbar">
+      <span class="float-right">
+          <a class="button button-little bg-main" href="{:url('home/login/')}" target="_blank"><i class="fa fa-sign-out"></i>&nbsp;前台首页</a>
+          <a class="button button-little bg-yellow" href="{:url('login/logout')}"><i class="fa fa-power-off"></i>&nbsp;注销</a>
+      </span>
+      <ul class="nav nav-inline admin-nav">
+        <li>
+          <a href="{:url('CommidityInfo/getCommidityParentInfo')}" class="fa fa-shopping-basket">&nbsp;商品</a>
+          <ul>
+            <li><a href="{:url('CommidityInfo/getCommidityParentInfo')}">商品父类型管理</a></li>
+            <li><a href="{:url('CommidityInfo/getCommidityTypeInfo')}">商品类型管理</a></li>
+            <li><a href="{:url('CommidityInfo/getCommidityInfo')}">商品管理</a></li>
+          </ul>
+        </li>
+        <li class="active">
+          <a href="{:url('ShopsInfo/getShopsInfo')}" class="icon-home">&nbsp;店铺</a>
+          <ul>
+            <li class="active"><a href="{:url('ShopsInfo/getShopsInfo')}">店铺管理</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="{:url('UserInfo/getUserInfo')}" class="icon-user">&nbsp;会员</a>
+          <ul>
+            <li class="active"><a href="{:url('UserInfo/getUserInfo')}">会员管理</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="{:url('DealInfo/getDealInfo')}" class="icon-shopping-cart">&nbsp;订单</a>
+        	<ul>
+            	<li class="active"><a href="{:url('DealInfo/getDealInfo')}">订单管理</a></li>
+            	<li><a href="#">订单统计</a></li>
+            </ul>
+        </li>
+        <li>
+        	<a href="{:url('AdminUserInfo/getAdminUserInfo')}" class="fa fa-user-secret">&nbsp;管理员</a>
+        	<ul>
+            	<li class="active"><a href="{:url('AdminUserInfo/getAdminUserInfo')}">管理员管理</a></li>
+          　　</ul>
+        </li>
+      </ul>
+    </div>
+    <div class="admin-bread">
+      <span style="margin-right:20px;">欢迎您&nbsp;<a href="" style="color:#4CA2D3;">{$name}&nbsp;<img src="{$adminImage}" alt="头像"　width="30" height="30" style="margin-bottom:5px;"></a></span>
+      <ul class="bread">
+        <li><a href="{:url('ShopsInfo/getShopsInfo')}" class="fa fa-shopping-basket" style="color:#4CA2D3;">&nbsp;店铺</a></li>
+        <li>店铺管理</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="admin">
+		<div style="margin-top:-20px;">
+      <div style="color:#4CA2D3;font-size:1.2em;marin-top:-10px;">店铺信息修改</div>
+      <p style="clear:both;"></p>
+    <form class="form-horizontal" method="post" action="">
+      <div class="form-group">
+        <label class="col-sm-2 control-label">店铺名称</label>
+        <input type="text" class="form-control-input" id="inputShopsName" value="{$shopsInfoById.name}">
+      </div>
+      <div class="form-group form-group-textarea">
+        <label class="col-sm-2 control-label">店铺业务</label>
+        <textarea class="form-control-textarea" id="inputShopsSevices">{$shopsInfoById.sevices}</textarea>
+      </div>
+      <div class="form-group form-group-textarea">
+        <label class="col-sm-2 control-label">店铺简介</label>
+        <textarea class="form-control-textarea" id="inputShopsDescription">{$shopsInfoById.description}</textarea>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">店铺门面</label>
+        <input type="text" class="form-control-input" id="inputShopsFace" value="{$shopsInfoById.face}">
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">店铺执照</label>
+        <input type="text" class="form-control-input" id="inputShopsLicense" value="{$shopsInfoById.license}">
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">店铺地址</label>
+        <input type="text" class="form-control-input" id="inputShopsAddress" value="{$shopsInfoById.address}">
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">店铺手机</label>
+        <input type="text" class="form-control-input" id="inputShopsMobile" value="{$shopsInfoById.mobile}">
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">店铺QQ</label>
+        <input type="text" class="form-control-input" id="inputShopsqq" value="{$shopsInfoById.qq}">
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">店铺支付宝</label>
+        <input type="text" class="form-control-input" id="inputShopsAlipay" value="{$shopsInfoById.alipay}">
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">店铺微信</label>
+        <input type="text" class="form-control-input" id="inputShopsWxpay" value="{$shopsInfoById.wxpay}">
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">营业时间</label>
+        <input type="text" class="form-control-input" id="inputShopsOnDuty" value="{$shopsInfoById.onDuty}">
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">关门时间</label>
+        <input type="text" class="form-control-input" id="inputShopsOffDuty" value="{$shopsInfoById.offDuty}">
+      </div>
+      <div class="form-group" style="margin-bottom:0;">
+        <label class="col-sm-2 control-label">店铺类型</label>
+        <select id="select-shopsType">
+        {if ($shopsInfoById.type) eq 0}
+          <option value="0">打印类</option>
+          <option value="1">非打印类</option>
+        {else /}
+          <option value="1">非打印类</option>
+          <option value="0">打印类</option>
+        {/if}
+        </select>
+      </div>
+      <span class="btn-add" onclick="modifyShopsById({$shopsInfoById.id});"><i class="fa fa-pencil"></i>修改</span>
+    </form>
+	</div>
+</div>
+<script type="text/javascript" src="{$Think.const.ADMIN}js/shops.js"></script>

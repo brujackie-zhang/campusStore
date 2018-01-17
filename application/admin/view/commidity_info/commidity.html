@@ -1,0 +1,146 @@
+<link rel="stylesheet" type="text/css" href="{$Think.const.ADMIN}css/alertWindow.css">
+<style type="text/css">
+    #alertwindow {
+        height:70%;
+    }
+    .input-name {
+      width:80px;
+    }
+    .input-name1 {
+      width:50px;
+    }
+    .select-comTypeName {
+        width:80px;
+        height:22px;
+    }
+</style>
+<div class="righter nav-navicon" id="admin-nav">
+  <div class="mainer">
+    <div class="admin-navbar">
+      <span class="float-right">
+          <a class="button button-little bg-main" href="{:url('home/login/')}" target="_blank"><i class="fa fa-sign-out"></i>&nbsp;前台首页</a>
+          <a class="button button-little bg-yellow" href="{:url('login/logout')}"><i class="fa fa-power-off"></i>&nbsp;注销</a>
+      </span>
+      <ul class="nav nav-inline admin-nav">
+        <li class="active">
+          <a href="{:url('CommidityInfo/getCommidityParentInfo')}" class="fa fa-shopping-basket">&nbsp;商品</a>
+          <ul>
+            <li><a href="{:url('CommidityInfo/getCommidityParentInfo')}">商品父类型管理</a></li>
+            <li><a href="{:url('CommidityInfo/getCommidityTypeInfo')}">商品类型管理</a></li>
+            <li class="active"><a href="{:url('CommidityInfo/getCommidityInfo')}">商品管理</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="{:url('ShopsInfo/getShopsInfo')}" class="icon-home">&nbsp;店铺</a>
+          <ul>
+            <li class="active"><a href="{:url('ShopsInfo/getShopsInfo')}">店铺管理</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="{:url('UserInfo/getUserInfo')}" class="icon-user">&nbsp;会员</a>
+          <ul>
+            <li class="active"><a href="{:url('UserInfo/getUserInfo')}">会员管理</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="{:url('DealInfo/getDealInfo')}" class="icon-shopping-cart">&nbsp;订单</a>
+          <ul>
+              <li class="active"><a href="{:url('DealInfo/getDealInfo')}">订单管理</a></li>
+              <li><a href="#">订单统计</a></li>
+            </ul>
+        </li>
+        <li>
+          <a href="{:url('AdminUserInfo/getAdminUserInfo')}" class="fa fa-user-secret">&nbsp;管理员</a>
+          <ul>
+              <li class="active"><a href="{:url('AdminUserInfo/getAdminUserInfo')}">管理员管理</a></li>
+          　　</ul>
+        </li>
+      </ul>
+    </div>
+    <div class="admin-bread">
+      <span style="margin-right:20px;">欢迎您&nbsp;<a href="" style="color:#4CA2D3;">{$name}&nbsp;<img src="{$adminImage}" alt="头像"　width="30" height="30" style="margin-bottom:5px;"></a></span>
+      <ul class="bread">
+        <li><a href="{:url('CommidityInfo/getCommidityParentInfo')}" class="fa fa-shopping-basket" style="color:#4CA2D3;">&nbsp;商品</a></li>
+        <li>商品管理</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="admin">
+  <div class="panel admin-panel">
+    <div class="panel-head">
+            <div class="span-title">搜索</div><input type="text" id="input-search" placeholder="请输入商品ID/名称/商品类型/创建者"><i class="fa fa-search" id="i-search" onclick="searchCommidity();"></i>
+        </div>
+    <table width="100%" cellspacing="0" cellpadding="0" border="0" class="table table-bordered table-hover table-striped">
+      <thead>
+        <tr>
+          <th width="5%"><input type="checkbox" name="all" value="145"><span style="color:#4CA2D3;text-align:center;margin:2px;">全选</span></th>
+          <th width="2%">ID</th>
+          <th width="5%">商品名称</th>
+          <th width="5%">商品类型名称</th>
+          <th width="3%">库存</th>
+          <th width="5%">销售量</th>
+          <th width="5%">单价(元)</th>
+          <th width="5%">折扣</th>
+          <th width="5%">新品</th>
+          <th width="5%">创建者</th>
+          <th width="8%">创建时间</th>
+          <th width="5%">更新者</th>
+          <th width="8%">更新时间</th>
+          <th width="8%">操作</th>
+        </tr>
+      </thead>
+      <tbody id="commidity-table">
+      {foreach $commidityInfo as $data}
+        <tr id="tr_{$data.id}">
+          <td class="td-single-select"><input type="checkbox" name="single" value="{$data.id}"></td>
+          <td>{$data.id}</td>
+          <td><input type="text" value="{$data.name}" class="input-name" id="input-name_{$data.id}" disabled></td>
+          <td>
+              <select class="select-comTypeName" id="select-comTypeName_{$data.id}" disabled>
+                <option value="{$data.cTypeId}" selected disabled>{$data.cTypeName}</option>
+                {foreach $commidityTypeIdAndName as $idAndName}
+                <option value="{$idAndName.comTypeId}">{$idAndName.comTypeName}</option>
+                {/foreach}
+              </select>
+          </td>
+          <td><input type="text" value="{$data.stocks}" class="input-name1" id="input-stocks_{$data.id}" disabled></td>
+          <td>{$data.salesVolume}</td>
+          <td><input type="text" value="{$data.price}" class="input-name1" id="input-price_{$data.id}" disabled></td>
+          <td><input type="text" value="{$data.discount}" class="input-name1" id="input-discount_{$data.id}" disabled></td>
+          {if $data.isNew eq 0}
+            <td>{$isNew[$data.isNew]}</td>
+          {else/}
+            <td style="color:red;">{$isNew[$data.isNew]}</td>
+          {/if}
+          <td>{$data.createBy}</td>
+          <td>{$data.createTime}</td>
+          <td id="td_update_by_{$data.id}">{$data.updateBy}</td>
+          <td id="td_update_time_{$data.id}">{$data.updateTime}</td>
+          <td>
+            <a href="javascript:void(0);" class="delete" style="display:inline-block;margin-right:5px;width:30px;line-height:20px;font-size:5px;text-align:center;border:1px solid #0088bb;text-decoration:none" onclick="deleteCommidityById({$data.id});" id="delete_{$data.id}">删除</a>
+            <a href="javascript:void(0);" id="modify_{$data.id}" style="display:inline-block;width:30px;line-height:20px;font-size:5px;text-align:center;border:1px solid #0088bb;text-decoration:none" onclick="modifyCommidityById({$data.id});">修改</a>
+          </td>
+        </tr>
+        {/foreach}
+      </tbody>
+    </table>
+    {$page}
+    <div class="padding border-bottom">
+      <a href="{:url('commidityInfo/addPage')}" class="button button-small border-green">添加</a>
+      <a href="javascript:void(0);" class="button button-small border-yellow" onclick="deleteCommidityByIds();">批量删除</a>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" src="{$Think.const.ADMIN}js/alertWindow.js"></script>
+<script type="text/javascript" src="{$Think.const.ADMIN}js/commidity.js"></script>
+<script type="text/javascript">
+    //全选按钮
+    $("input[name='all']").click(function() {
+        if ($(this).is(":checked")) {
+            $("input[name='single']").prop("checked", true);
+        } else {
+            $("input[name='single']").prop("checked", false);
+        }
+    });
+</script>

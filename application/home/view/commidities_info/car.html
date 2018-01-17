@@ -28,7 +28,8 @@
           <td id="td-dealId" style="display:none;">{$data.dealId}</td>
           <td>{$data.commidityName}</td>
           <td>
-            <img src="{$data.commidityImage}" width="80" height="80">
+            <a href="{:url('CommiditiesInfo/getCommidityInfoByCommidityId', ['commidityId' => $data.commidityId])}">
+            <img src="{$data.commidityImage}" width="80" height="80"></a>
          </td>
          <td class="num">
             <input type="button" name="subtract" id='subtract_{$data.dealId}' value="-" style="width:20px;line-height:20px;cursor:not-allowed;" disabled="disabled" onclick="sub({$data.dealId});" />
@@ -41,7 +42,7 @@
           <td>{$data.deliveryMethod}</td>
           <td>{$data.time}</td>
           <td>
-                <a href="javascript:void(0);" class="delete" style="display:inline-block;width:30px;line-height:20px;font-size:5px;text-align:center;border:1px solid #0088bb;text-decoration:none" onclick="deleteDealById({$data.dealId});">删除</a>
+                <a href="javascript:void(0);" class="delete" style="display:inline-block;width:30px;line-height:20px;font-size:5px;text-align:center;border:1px solid #0088bb;text-decoration:none" onclick="deleteDealById({$data.dealId});" id="delete_{$data.dealId}">删除</a>
                 <a href="javascript:void(0);" id="modify_{$data.dealId}" style="display:inline-block;width:30px;line-height:20px;font-size:5px;text-align:center;border:1px solid #0088bb;text-decoration:none" onclick="modifyDealById({$data.dealId});">修改</a>
           </td>
         </tr>
@@ -53,7 +54,7 @@
         <dt id="dt-total">总价（含配送费）：<b id="b-total">￥{$totalPrice}</b></dt>
         <dd>已节省： -￥{$discountPrice}</dd>
       </dl>
-      <!-- <a href="{:url('commiditiesInfo/pay')}" class="btns btn-3 posA">去付款</a> -->
+      <!-- <a href="{:url('commiditiesInfo/wxpay')}" class="btns btn-3 posA">去付款</a> -->
       <a href="javascript:void(0);" class="btns btn-3 posA" style="text-decoration:none;" onclick="pay();">去付款</a>
     </div>
   </div>

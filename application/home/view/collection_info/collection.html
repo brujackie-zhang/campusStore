@@ -48,7 +48,7 @@
             <td style="text-align:center">{$data.id}</td>
             <td>{$data.commidityName}</td>
             <td>
-              <img src="{$data.image}" width="80" height="80">
+              <a href="{:url('CommiditiesInfo/getCommidityInfoByCommidityId', ['commidityId' => $data.commidityId])}"><img src="{$data.image}" width="80" height="80"></a>
        </td>
            <td>￥{$data.price}元</td>       
             <td>{$data.collectionTime}</td>

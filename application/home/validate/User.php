@@ -52,6 +52,7 @@ class User extends Validate
 		'edit'     => ['name', 'email'],
 		'test'     => ['name'],
 		'password' => ['password', 'newPassword'],
+		'resetPassword' => ['password'],
 		'register' => ['name', 'sex', 'address', 'captcha', 'is_student', 'password', 'verifyPassword', 'province', 'city'],
 	];
 }

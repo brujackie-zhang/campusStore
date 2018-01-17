@@ -1,0 +1,128 @@
+<link rel="stylesheet" type="text/css" href="{$Think.const.ADMIN}css/alertWindow.css">
+<div class="righter nav-navicon" id="admin-nav">
+  <div class="mainer">
+    <div class="admin-navbar">
+      <span class="float-right">
+          <a class="button button-little bg-main" href="{:url('home/login/')}" target="_blank"><i class="fa fa-sign-out"></i>&nbsp;前台首页</a>
+          <a class="button button-little bg-yellow" href="{:url('login/logout')}"><i class="fa fa-power-off"></i>&nbsp;注销</a>
+      </span>
+      <ul class="nav nav-inline admin-nav">
+        <li>
+          <a href="{:url('CommidityInfo/getCommidityParentInfo')}" class="fa fa-shopping-basket">&nbsp;商品</a>
+          <ul>
+            <li><a href="{:url('CommidityInfo/getCommidityParentInfo')}">商品父类型管理</a></li>
+            <li><a href="{:url('CommidityInfo/getCommidityTypeInfo')}">商品类型管理</a></li>
+            <li><a href="{:url('CommidityInfo/getCommidityInfo')}">商品管理</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="{:url('ShopsInfo/getShopsInfo')}" class="icon-home">&nbsp;店铺</a>
+          <ul>
+            <li class="active"><a href="{:url('ShopsInfo/getShopsInfo')}">店铺管理</a></li>
+          </ul>
+        </li>
+        <li class="active">
+          <a href="{:url('UserInfo/getUserInfo')}" class="icon-user">&nbsp;会员</a>
+          <ul>
+            <li class="active"><a href="{:url('UserInfo/getUserInfo')}">会员管理</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="{:url('DealInfo/getDealInfo')}" class="icon-shopping-cart">&nbsp;订单</a>
+        	<ul>
+            	<li class="active"><a href="{:url('DealInfo/getDealInfo')}">订单管理</a></li>
+            	<li><a href="#">订单统计</a></li>
+            </ul>
+        </li>
+        <li>
+        	<a href="{:url('AdminUserInfo/getAdminUserInfo')}" class="fa fa-user-secret">&nbsp;管理员</a>
+        	<ul>
+            	<li class="active"><a href="{:url('AdminUserInfo/getAdminUserInfo')}">管理员管理</a></li>
+          　　</ul>
+        </li>
+      </ul>
+    </div>
+    <div class="admin-bread">
+      <span style="margin-right:20px;">欢迎您&nbsp;<a href="" style="color:#4CA2D3;">{$name}&nbsp;<img src="{$adminImage}" alt="头像"　width="30" height="30" style="margin-bottom:5px;"></a></span>
+      <ul class="bread">
+        <li><a href="{:url('UserInfo/getUserInfo')}" class="fa fa-user-secret" style="color:#4CA2D3;">&nbsp;会员</a></li>
+        <li>会员管理</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="admin">
+	<div class="panel admin-panel">
+		<div class="panel-head">
+            <div class="span-title">搜索</div><input type="text" id="input-search" placeholder="请输入会员ID/姓名/性别/地址"><i class="fa fa-search" id="i-search" onclick="searchUser();"></i>
+        </div>
+		<table width="100%" cellspacing="0" cellpadding="0" border="0" class="table table-bordered table-hover table-striped">
+      <thead>
+        <tr>
+          <th width="5%"><input type="checkbox" name="all" value="145"><span style="color:#4CA2D3;text-align:center;margin:2px;">全选</span></th>
+          <th width="2%">ID</th>
+          <th width="4%">姓名</th>
+          <th width="2%">昵称</th>
+          <th width="3%">性别</th>
+          <th width="5%">手机号</th>
+          <th width="10%">地址</th>
+          <th width="3%">冻结</th>
+          <th width="5%">注册时间</th>
+          <th width="8%">最后登录时间</th>
+          <th width="3%">学生</th>
+          <th width="5%">学校</th>
+          <th width="5%">操作</th>
+        </tr>
+      </thead>
+      <tbody id="user-table">
+      {foreach $userInfo as $data}
+        <tr id="tr_{$data.id}">
+          <td class="td-single-select"><input type="checkbox" name="single" value="{$data.id}"></td>
+          <td>{$data.id}</td>
+          <td>{$data.name}</td>
+          <td>{$data.nickname}</td>
+          <td>{$data.sex}</td>
+          <td>{$data.mobilePhone}</td>
+          <td>{$data.address}</td>
+          {if ($data.isFreeze) eq 0}
+              <td id="td-freeze_{$data.id}">{$status[$data.isFreeze]}</td>
+              {else /}
+              <td style="color:red;" id="td-freeze_{$data.id}">{$status[$data.isFreeze]}</td>
+          {/if}
+          <td>{$data.registerTime}</td>
+          <td>{$data.loginTime}</td>
+          {if $data.isStudent eq 0}
+              <td>{$status[$data.isStudent]}</td>
+              {else /}
+              <td style="color:red;">{$status[$data.isStudent]}</td>
+          {/if}
+          <td>{$data.school}</td>
+          <td>
+          {if $data.isFreeze eq 0}
+            <a href="javascript:void(0);" class="freeze" style="display:inline-block;margin-right:5px;width:30px;line-height:20px;font-size:5px;text-align:center;border:1px solid #0088bb;text-decoration:none" onclick="freezeUserById({$data.id});" id="freeze_{$data.id}">冻结</a>
+            {else /}
+            <a href="javascript:void(0);" class="freeze" style="display:inline-block;margin-right:5px;width:30px;line-height:20px;font-size:5px;text-align:center;border:1px solid #0088bb;text-decoration:none" onclick="unFreezeUserById({$data.id});" id="unFreeze_{$data.id}">解冻</a>
+            {/if}
+          </td>
+        </tr>
+        {/foreach}
+      </tbody>
+    </table>
+    {$page}
+		<div class="padding border-bottom">
+            <input type="button" class="button button-small border-green" value="批量解冻" onclick="unFreezeUserByIds();"/>
+			<a href="javascript:void(0);" class="button button-small border-yellow" onclick="freezeUserByIds();">批量冻结</a>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" src="{$Think.const.ADMIN}js/user.js"></script>
+<script type="text/javascript">
+    //全选按钮
+    $("input[name='all']").click(function() {
+        if ($(this).is(":checked")) {
+            $("input[name='single']").prop("checked", true);
+        } else {
+            $("input[name='single']").prop("checked", false);
+        }
+    });
+</script>

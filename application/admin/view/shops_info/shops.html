@@ -1,0 +1,224 @@
+<link rel="stylesheet" type="text/css" href="{$Think.const.ADMIN}css/alertWindow.css">
+<link rel="stylesheet" type="text/css" href="{$Think.const.ADMIN}css/alertWindow1.css">
+<style type="text/css">
+    #select-shopsType {
+        width:380px;
+        height:30px;
+    }
+    #alertwindow {
+        height:90%;
+        top:5%;
+        width:45%;
+        left:25%;
+    }
+    .form-group {
+        margin-bottom:25px;
+    }
+    .form-group-textarea {
+        margin-bottom:-5px;
+    }
+    .fa-window-close {
+        font-size: 16px;
+    }
+    .form-control-textarea {
+        width:380px;
+        height:50px;
+        margin-bottom: 0;
+    }
+    .form-control-input {
+        width:380px;
+    }
+    .form-control-input-disabled {
+        border:1px solid #ddd;
+    }
+</style>
+<div class="righter nav-navicon" id="admin-nav">
+  <div class="mainer">
+    <div class="admin-navbar">
+      <span class="float-right">
+          <a class="button button-little bg-main" href="{:url('home/login/')}" target="_blank"><i class="fa fa-sign-out"></i>&nbsp;前台首页</a>
+          <a class="button button-little bg-yellow" href="{:url('login/logout')}"><i class="fa fa-power-off"></i>&nbsp;注销</a>
+      </span>
+      <ul class="nav nav-inline admin-nav">
+        <li>
+          <a href="{:url('CommidityInfo/getCommidityParentInfo')}" class="fa fa-shopping-basket">&nbsp;商品</a>
+          <ul>
+            <li><a href="{:url('CommidityInfo/getCommidityParentInfo')}">商品父类型管理</a></li>
+            <li><a href="{:url('CommidityInfo/getCommidityTypeInfo')}">商品类型管理</a></li>
+            <li><a href="{:url('CommidityInfo/getCommidityInfo')}">商品管理</a></li>
+          </ul>
+        </li>
+        <li class="active">
+          <a href="{:url('ShopsInfo/getShopsInfo')}" class="icon-home">&nbsp;店铺</a>
+          <ul>
+            <li class="active"><a href="{:url('ShopsInfo/getShopsInfo')}">店铺管理</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="{:url('UserInfo/getUserInfo')}" class="icon-user">&nbsp;会员</a>
+          <ul>
+            <li class="active"><a href="{:url('UserInfo/getUserInfo')}">会员管理</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="{:url('DealInfo/getDealInfo')}" class="icon-shopping-cart">&nbsp;订单</a>
+        	<ul>
+            	<li class="active"><a href="{:url('DealInfo/getDealInfo')}">订单管理</a></li>
+            	<li><a href="#">订单统计</a></li>
+            </ul>
+        </li>
+        <li>
+        	<a href="{:url('AdminUserInfo/getAdminUserInfo')}" class="fa fa-user-secret">&nbsp;管理员</a>
+        	<ul>
+            	<li class="active"><a href="{:url('AdminUserInfo/getAdminUserInfo')}">管理员管理</a></li>
+          　　</ul>
+        </li>
+      </ul>
+    </div>
+    <div class="admin-bread">
+      <span style="margin-right:20px;">欢迎您&nbsp;<a href="" style="color:#4CA2D3;">{$name}&nbsp;<img src="{$adminImage}" alt="头像"　width="30" height="30" style="margin-bottom:5px;"></a></span>
+      <ul class="bread">
+        <li><a href="{:url('ShopsInfo/getShopsInfo')}" class="fa fa-shopping-basket" style="color:#4CA2D3;">&nbsp;店铺</a></li>
+        <li>店铺管理</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="admin">
+	<div class="panel admin-panel">
+		<div class="panel-head">
+            <div class="span-title">搜索</div><input type="text" id="input-search" placeholder="请输入店铺ID/名称/服务/描述/地址/评分"><i class="fa fa-search" id="i-search" onclick="searchShops();"></i>
+        </div>
+		<table width="100%" cellspacing="0" cellpadding="0" border="0" class="table table-bordered table-hover table-striped">
+      <thead>
+        <tr>
+          <th width="6%"><input type="checkbox" name="all" value="145"><span style="color:#4CA2D3;text-align:center;margin:2px;">全选</span></th>
+          <th width="5%">ID</th>
+          <th width="5%">名称</th>
+          <th width="10%">地址</th>
+          <th width="5%">电话</th>
+          <th width="5%">ＱＱ</th>
+          <th width="5%">支付宝</th>
+          <th width="5%">微信</th>
+          <th width="5%">评分</th>
+          <th width="7%">营业时间</th>
+          <th width="7%">关门时间</th>
+          <th width="7%">店铺类型</th>
+          <th width="8%">操作</th>
+        </tr>
+      </thead>
+      <tbody id="shops-table">
+      {foreach $shopsInfo as $data}
+        <tr id="tr_{$data.id}">
+          <td class="td-single-select"><input type="checkbox" name="single" value="{$data.id}"></td>
+          <td>{$data.id}</td>
+          <td>{$data.name}</td>
+          <td>{$data.address}</td>
+          <td>{$data.mobile}</td>
+          <td>{$data.qq}</td>
+          <td>{$data.alipay}</td>
+          <td>{$data.wxpay}</td>
+          <td>{$data.credit}</td>
+          <td>{$data.onDuty}</td>
+          <td>{$data.offDuty}</td>
+          <td>{$type[$data.type]}</td>
+          <td>
+            <a href="javascript:void(0);" class="delete" style="display:inline-block;margin-right:5px;width:30px;line-height:20px;font-size:5px;text-align:center;border:1px solid #0088bb;text-decoration:none" onclick="deleteShopsById({$data.id});" id="delete_{$data.id}">删除</a>
+            <a href="{:url('ShopsInfo/getShopsInfoById', ['id' => $data.id])}" id="modify_{$data.id}" style="display:inline-block;width:30px;line-height:20px;font-size:5px;text-align:center;border:1px solid #0088bb;text-decoration:none">修改</a>
+          </td>
+        </tr>
+        {/foreach}
+      </tbody>
+    </table>
+    {$page}
+		<div class="padding border-bottom">
+			<input type="button" class="button button-small border-green" value="添加" onclick="showDiv('alertwindow','back');"/>
+			<a href="javascript:void(0);" class="button button-small border-yellow" onclick="deleteShopsByIds();">批量删除</a>
+		</div>
+	</div>
+</div>
+<div id="back"></div>
+<div id="alertwindow">
+    <div style="text-align: right; cursor: default; height: 40px;">
+    <span onclick="hideDiv('alertwindow','back')" class="fa fa-window-close">&nbsp;关闭</span>
+    </div>
+    <div class="container" style="width:100%;">
+      <div class="panel panel-default">
+      <div class="panel-heading">
+        <strong style="color:#4CA2D3;font-size:1.2em;">店铺添加</strong>
+      </div>
+      <div class="panel-body">
+        <form class="form-horizontal" method="post" action="">
+          <div class="form-group">
+            <label class="col-sm-2 control-label">店铺名称</label>
+            <input type="text" class="form-control-input" id="inputShopsName" value="" placeholder="请输入店铺名称" onchange="faceAndLicenseName();">
+          </div>
+          <div class="form-group form-group-textarea">
+            <label class="col-sm-2 control-label">店铺业务</label>
+            <textarea class="form-control-textarea" id="inputShopsSevices" placeholder="请输入店铺业务"></textarea>
+          </div>
+          <div class="form-group form-group-textarea">
+            <label class="col-sm-2 control-label">店铺简介</label>
+            <textarea class="form-control-textarea" id="inputShopsDescription" placeholder="请输入店铺简介"></textarea>
+          </div>
+          <div class="form-group" style="display:none;">
+            <label class="col-sm-2 control-label">店铺门面</label>
+            <input type="text" class="form-control-input form-control-input-disabled" id="inputShopsFace" value="/static/common/shops/face/" disabled>
+          </div>
+          <div class="form-group" style="display:none;">
+            <label class="col-sm-2 control-label">店铺执照</label>
+            <input type="text" class="form-control-input form-control-input-disabled" id="inputShopsLicense" value="/static/common/shops/license/" disabled>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">店铺地址</label>
+            <input type="text" class="form-control-input" id="inputShopsAddress" placeholder="请输入店铺详细地址">
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">店铺手机</label>
+            <input type="text" class="form-control-input" id="inputShopsMobile" placeholder="请输入店铺手机">
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">店铺QQ</label>
+            <input type="text" class="form-control-input" id="inputShopsqq" placeholder="请输入店铺QQ">
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">店铺支付宝</label>
+            <input type="text" class="form-control-input" id="inputShopsAlipay" placeholder="请输入店铺支付宝帐号">
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">店铺微信</label>
+            <input type="text" class="form-control-input" id="inputShopsWxpay" placeholder="请输入店铺微信帐号">
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">营业时间</label>
+            <input type="text" class="form-control-input" id="inputShopsOnDuty" placeholder="请输入店铺开始营业时间（格式00:00）">
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">关门时间</label>
+            <input type="text" class="form-control-input" id="inputShopsOffDuty" placeholder="请输入店铺结束营业时间（格式00:00）">
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">店铺类型</label>
+            <select id="select-shopsType">
+                <option value="0">打印类</option>
+                <option value="1" selected>非打印类</option>
+            </select>
+          </div>
+          <span class="btn-add" onclick="addShops();"><i class="fa fa-plus-circle"></i>添加</span>
+        </form>
+      </div>
+    </div>
+</div>
+</div>
+<script type="text/javascript" src="{$Think.const.ADMIN}js/alertWindow.js"></script>
+<script type="text/javascript" src="{$Think.const.ADMIN}js/shops.js"></script>
+<script type="text/javascript">
+    //全选按钮
+    $("input[name='all']").click(function() {
+        if ($(this).is(":checked")) {
+            $("input[name='single']").prop("checked", true);
+        } else {
+            $("input[name='single']").prop("checked", false);
+        }
+    });
+</script>

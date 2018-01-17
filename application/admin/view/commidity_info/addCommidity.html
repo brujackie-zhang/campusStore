@@ -1,0 +1,161 @@
+<link rel="stylesheet" type="text/css" href="{$Think.const.ADMIN}css/alertWindow.css">
+<link rel="stylesheet" type="text/css" href="{$Think.const.ADMIN}css/webuploader.css">
+<link rel="stylesheet" type="text/css" href="{$Think.const.ADMIN}css/style.css">
+<style type="text/css">
+    #select-commidity-isNew, .select-comTypeName {
+        width:700px;
+        height:30px;
+    }
+    .form-group {
+        margin-bottom:25px;
+    }
+    .form-group-textarea {
+        margin-bottom:-5px;
+    }
+    .fa-window-close {
+        font-size: 16px;
+    }
+    .form-control-textarea {
+        width:700px;
+        height:50px;
+        margin-bottom: 0;
+        color:#4CA2D3;
+    }
+    .form-control-input {
+        width:700px;
+        color:#4CA2D3;
+    }
+    .form-control-input-disabled {
+        border:1px solid #ddd;
+    }
+    .demo {
+        min-width:300px;
+        margin:30px auto;
+        padding:10px 20px;
+    }
+</style>
+<div class="righter nav-navicon" id="admin-nav">
+  <div class="mainer">
+    <div class="admin-navbar">
+      <span class="float-right">
+          <a class="button button-little bg-main" href="{:url('home/login/')}" target="_blank"><i class="fa fa-sign-out"></i>&nbsp;前台首页</a>
+          <a class="button button-little bg-yellow" href="{:url('login/logout')}"><i class="fa fa-power-off"></i>&nbsp;注销</a>
+      </span>
+      <ul class="nav nav-inline admin-nav">
+        <li class="active">
+          <a href="{:url('CommidityInfo/getCommidityParentInfo')}" class="fa fa-shopping-basket">&nbsp;商品</a>
+          <ul>
+            <li><a href="{:url('CommidityInfo/getCommidityParentInfo')}">商品父类型管理</a></li>
+            <li><a href="{:url('CommidityInfo/getCommidityTypeInfo')}">商品类型管理</a></li>
+            <li class="active"><a href="{:url('CommidityInfo/getCommidityInfo')}">商品管理</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="{:url('ShopsInfo/getShopsInfo')}" class="icon-home">&nbsp;店铺</a>
+          <ul>
+            <li class="active"><a href="{:url('ShopsInfo/getShopsInfo')}">店铺管理</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="{:url('UserInfo/getUserInfo')}" class="icon-user">&nbsp;会员</a>
+          <ul>
+            <li class="active"><a href="{:url('UserInfo/getUserInfo')}">会员管理</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="{:url('DealInfo/getDealInfo')}" class="icon-shopping-cart">&nbsp;订单</a>
+        	<ul>
+            	<li class="active"><a href="{:url('DealInfo/getDealInfo')}">订单管理</a></li>
+            	<li><a href="#">订单统计</a></li>
+            </ul>
+        </li>
+        <li>
+        	<a href="{:url('AdminUserInfo/getAdminUserInfo')}" class="fa fa-user-secret">&nbsp;管理员</a>
+        	<ul>
+            	<li class="active"><a href="{:url('AdminUserInfo/getAdminUserInfo')}">管理员管理</a></li>
+          　　</ul>
+        </li>
+      </ul>
+    </div>
+    <div class="admin-bread">
+      <span style="margin-right:20px;">欢迎您&nbsp;<a href="" style="color:#4CA2D3;">{$name}&nbsp;<img src="{$adminImage}" alt="头像"　width="30" height="30" style="margin-bottom:5px;"></a></span>
+      <ul class="bread">
+        <li><a href="{:url('ShopsInfo/getCommidityParentInfo')}" class="fa fa-shopping-basket" style="color:#4CA2D3;">&nbsp;商品</a></li>
+        <li>商品管理</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="admin">
+		<div style="margin-top:-20px;">
+      <div style="color:#4CA2D3;font-size:1.2em;marin-top:-10px;">商品添加</div>
+      <p style="clear:both;"></p>
+    <form class="form-horizontal" method="post" action="">
+      <div class="form-group">
+        <label class="col-sm-2 control-label">商品名称</label>
+        <input type="text" class="form-control-input" id="inputCommidityName" placeholder="请输入商品名称">
+      </div>
+      <div class="form-group form-group-textarea">
+        <label class="col-sm-2 control-label">商品类型名称</label>
+        <select class="select-comTypeName" id="select-comTypeName">
+          <option value="1" selected disabled>请选择商品所属类型</option>
+          {foreach $commidityTypeIdAndName as $idAndName}
+          <option value="{$idAndName.comTypeId}">{$idAndName.comTypeName}</option>
+          {/foreach}
+        </select>
+      </div>
+      <div class="form-group form-group-textarea">
+        <label class="col-sm-2 control-label">商品介绍</label>
+        <textarea class="form-control-textarea" id="inputCommidityIntroduction" placeholder="请输入商品介绍"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">商品库存</label>
+        <input type="text" class="form-control-input" id="inputCommidityStocks" placeholder="请输入商品库存（默认0）">
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">商品价格(元)</label>
+        <input type="text" class="form-control-input" id="inputCommidityPrice" placeholder="请输入商品价格">
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">商品折扣(%)</label>
+        <input type="text" class="form-control-input" id="inputCommidityDiscount" placeholder="请输入商品折扣（默认100）">
+      </div>
+      <div class="form-group form-group-textarea">
+        <label class="col-sm-2 control-label">是否新品</label>
+        <select id="select-commidity-isNew">
+          <option value="0">否</option>
+          <option value="1" selected>是</option>
+        </select>
+      </div>
+      <div class="form-group form-group-textarea">
+        <label class="col-sm-2 control-label">额外信息</label>
+        <textarea class="form-control-textarea" id="inputCommidityExtraInfo">仅针对打印业务（其他可不管）</textarea>
+      </div>
+      <div class="form-group form-group-textarea">
+        <label class="col-sm-2 control-label">商品图片</label>
+        <div id="uploader"　style="width:700px;">
+            <div class="queueList">
+                <div id="dndArea" class="placeholder">
+                    <div id="filePicker"></div>
+                    <p>或将照片拖到这里，单次最多可选10张</p>
+                </div>
+            </div>
+            <div class="statusBar" style="display:none;">
+                <div class="progress">
+                    <span class="text">0%</span>
+                    <span class="percentage"></span>
+                </div><div class="info"></div>
+                <div class="btns">
+                    <div id="filePicker2"></div><div class="uploadBtn">开始上传</div>
+                </div>
+            </div>
+        </div>
+        <span style="border:1px solid #ddd;dispaly:block;height:30px;"　id="span-imagelist"></span>
+      </div>
+      <span class="btn-add" onclick="addCommidity();"><i class="fa fa-plus-circle"></i>添加</span>
+    </form>
+	</div>
+</div>
+<script type="text/javascript" src="{$Think.const.ADMIN}js/commidity.js"></script>
+<script type="text/javascript" src="{$Think.const.ADMIN}js/upload.js"></script>
+<script type="text/javascript" src="{$Think.const.ADMIN}js/webuploader.min.js"></script>

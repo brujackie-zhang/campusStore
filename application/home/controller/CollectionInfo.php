@@ -69,20 +69,26 @@ class CollectionInfo extends Controller
 	{
 		$login = new Login();
 		$userId = $login -> getUserSessionInfo()['id'];
-
-		$data = [
-			'user_id'         => $userId,
-			'commidity_id'    => $commidityId,
-			'collection_time' => time(),
-		];
-
 		$collection = new Collection();
-		$res = $collection -> collectionByCommidityId($data);
 
-		if ($res) {
-			return $this -> success('收藏商品成功！');
+		//判断商品是否被受藏
+		$isCollection = $collection -> judgeCommidityIsCollection($commidityId);
+		if ($isCollection) {
+			return $this -> error('商品已经被收藏了,请收藏其他商品吧！');
 		} else {
-			return $this -> error('收藏商品失败！');
+			$data = [
+				'user_id'         => $userId,
+				'commidity_id'    => $commidityId,
+				'collection_time' => time(),
+			];
+
+			$res = $collection -> collectionByCommidityId($data);
+
+			if ($res) {
+				return $this -> success('收藏商品成功！');
+			} else {
+				return $this -> error('收藏商品失败！');
+			}
 		}
 	}
 }

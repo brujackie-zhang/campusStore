@@ -1,21 +1,21 @@
 <div id="container">
     <div class="page-pro w1000 mar" style="border:1px solid #ddd;padding:10px;">
         <form class="form-inline" method="post" action="#">
-            <div class="form-group mar-t10">
-            <span class="btn btn-md" style="background:#4CA2D3;border:1px solid #4CA2D3;color:white;cursor:default;">店铺搜索</span>
-              <select name="select_shops" id="select_shops" class="form-control input-md">
+        <!-- <form class="form-inline" method="post" action="{:url('ShopsInfo/getShopSInfoByCondition')}"> -->
+            <span style="background:#4CA2D3;color:white;display:block;line-height:32px;width:100px;float:left;padding:1px;cursor:default;margin-right:2%;text-align:center;">店铺搜索</span>
+              <select name="select_shops" id="select_shops" class="form-control input-md" style="margin-right:2%;">
                 <option value="1" selected>全部</option>
                 <option value="2">打印类</option>
                 <option value="3">非打印类</option>
                 <option value="4">好评</option>
               </select>   
-              <button type="submit" class="btn btn-md" style="background:#4CA2D3;border:1px solid #4CA2D3;color:white;">查询</button>
-            </div>
+              <button type="button" class="btn btn-md" style="background:#4CA2D3;border:1px solid #4CA2D3;color:white;" onclick="getShopsByCondition();">查询</button>
+              <!-- <button type="submit" class="btn btn-md" style="background:#4CA2D3;border:1px solid #4CA2D3;color:white;">查询</button> -->
         </form>
-        <div class="main-shopcart mar-t10">
+        <div class="main-shopcart mar-t10" id="main-search-shops">
         {foreach $shopsInfo as $data}
             <div class="sub-search-list">
-                <div class="search-list-image" id="image1">
+                <div class="search-list-image">
                     <a href="{:url('ShopsInfo/displayShopDetailInfo', ['id' => $data.id])}"><img src="{$data.face}" height="220" width="220" /></a>
                 </div>
                 <div class="search-list-info">
@@ -34,3 +34,30 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    function getShopsByCondition() {
+        var condition = $("#select_shops").val();
+        $.ajax({
+            type : "POST",
+            url : "{:url('ShopsInfo/getShopSInfoByCondition')}",
+            dataType : "html",
+            data : {
+                "condition" : condition,
+            },
+            success : function(data) {
+                $("#main-search-shops").empty();
+                var d = JSON.parse(data);
+                showData(d);
+            },
+            error : function(data) {
+                alert("页面错误！");
+            },
+        });
+    }
+    function showData(d) {
+        for (var i = 0; i < d["data"].length; i ++) {
+            var html = '<div class="sub-search-list"><div class="search-list-image"><a href="http://campusstore/home/shops_info/displayShopDetailInfo/id/' + d["data"][i].id + '"><img src="' + d["data"][i].face + '" height="220" width="220" /></a></div><div class="search-list-info"><h1 style=" font-size:25px;color:#4CA2D3;margin-bottom:1%;"><a href="http://campusstore/home/shops_info/displayShopDetailInfo/id/' + d["data"][i].id + '"><strong style="color:#4CA2D3;">' + d["data"][i].name + '</strong></a></h1><p class="p-info"><span class="fa fa-server"></span>' + d["data"][i].sevices+'</p><p class="p-info"><span class="fa fa-street-view"></span>' + d["data"][i].address+ '</p><p class="p-info"><span class="glyphicon glyphicon-phone"></span>' + d["data"][i].mobile+'</p><p class="p-info"><span class="fa fa-qq"></span>' +d["data"][i].qq+'</p><p class="p-info"><span class="fa fa-hourglass-start"></span>'+d["data"][i].onDuty+'&nbsp;开始营业</p><p class="p-info"><span class="fa fa-hourglass-end"></span>'+d["data"][i].offDuty+'&nbsp;结束营业</p></div><p class="clear"></p></div>';
+            $("#main-search-shops").append(html);
+        }
+    }
+</script>

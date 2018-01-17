@@ -1,4 +1,4 @@
-<div id="mainbody">
+<div id="mainbody" style="margin-bottom:80px;">
 <div class="page-pro w1000 mar">
   <div class="main-shopcart mar-t10">
     <h1>我的订单列表</h1>
@@ -25,14 +25,18 @@
           <td>{$data.commidityName}</td>
           <!-- <td>{$data.commidityId}</td> -->
           <td>
-            <img src="{$data.commidityImage}" width="80" height="80">
+            <a href="{:url('CommiditiesInfo/getCommidityInfoByCommidityId', ['commidityId' => $data.commidityId])}"><img src="{$data.commidityImage}" width="80" height="80"></a>
 		 </td>
          <td>{$data.commidityNum}</td>
          <td>￥{$data.total}元</td>			  
           <td>{$data.payMethod}</td>
 		  <td>{$data.deliveryMethod}</td>
           <td>{$data.time}</td>
-          <td id="td-status_{$data.id}">{$status[$data.status]}</td>
+          {if ($status[$data.status] eq "成功")}
+            <td id="td-status_{$data.id}" style="color:#F00;font-weight:bold;font-size:1.2em;">{$status[$data.status]}</td>
+          {else/}
+            <td id="td-status_{$data.id}">{$status[$data.status]}</td>
+          {/if}
           <td>
             <a href="{:url('CommentInfo/createCommentByCommidityId', ['commidityId' => $data.commidityId])}" id="go-comment_{$data.id}" style="display:inline-block;width:50px;line-height:20px;font-size:5px;text-align:center;border:1px solid #0088bb;text-decoration:none" onclick="judgeIsOk({$data.id});">去评价</a>
           </td>

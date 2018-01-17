@@ -10,6 +10,7 @@ use app\home\model\CommidityType;
 use app\home\model\Commidity;
 use app\home\model\Comment;
 
+error_reporting(0);
 class Shop extends Controller
 {
 	//获取导航栏商品分类信息

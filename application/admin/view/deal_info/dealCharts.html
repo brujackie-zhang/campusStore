@@ -1,0 +1,265 @@
+<div class="righter nav-navicon" id="admin-nav">
+  <div class="mainer">
+    <div class="admin-navbar">
+      <span class="float-right">
+          <a class="button button-little bg-main" href="{:url('home/login/')}" target="_blank"><i class="fa fa-sign-out"></i>&nbsp;前台首页</a>
+          <a class="button button-little bg-yellow" href="{:url('login/logout')}"><i class="fa fa-power-off"></i>&nbsp;注销</a>
+      </span>
+      <ul class="nav nav-inline admin-nav">
+        <li>
+          <a href="{:url('CommidityInfo/getCommidityParentInfo')}" class="fa fa-shopping-basket">&nbsp;商品</a>
+          <ul>
+            <li><a href="{:url('CommidityInfo/getCommidityParentInfo')}">商品父类型管理</a></li>
+            <li><a href="{:url('CommidityInfo/getCommidityTypeInfo')}">商品类型管理</a></li>
+            <li><a href="{:url('CommidityInfo/getCommidityInfo')}">商品管理</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="{:url('ShopsInfo/getShopsInfo')}" class="icon-home">&nbsp;店铺</a>
+          <ul>
+            <li class="active"><a href="{:url('ShopsInfo/getShopsInfo')}">店铺管理</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="{:url('UserInfo/getUserInfo')}" class="icon-user">&nbsp;会员</a>
+          <ul>
+            <li class="active"><a href="{:url('UserInfo/getUserInfo')}">会员管理</a></li>
+          </ul>
+        </li>
+        <li class="active">
+          <a href="{:url('DealInfo/getDealInfo')}" class="icon-shopping-cart">&nbsp;订单</a>
+            <ul>
+                <li><a href="{:url('DealInfo/getDealInfo')}">订单管理</a></li>
+                <li class="active"><a href="">订单统计</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="{:url('AdminUserInfo/getAdminUserInfo')}" class="fa fa-user-secret">&nbsp;管理员</a>
+            <ul>
+                <li class="active"><a href="{:url('AdminUserInfo/getAdminUserInfo')}">管理员管理</a></li>
+          　　</ul>
+        </li>
+      </ul>
+    </div>
+    <div class="admin-bread">
+      <span style="margin-right:20px;">欢迎您&nbsp;<a href="" style="color:#4CA2D3;">{$name}&nbsp;<img src="{$adminImage}" alt="头像"　width="30" height="30" style="margin-bottom:5px;"></a></span>
+      <ul class="bread">
+        <li><a href="{:url('DealInfo/getDealInfo')}" class="fa fa-user-secret" style="color:#4CA2D3;">&nbsp;订单</a></li>
+        <li>订单管理管理</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="admin" style="background:#E6F2FB;">
+    <div id="charts" style="width:480px;height:400px;border:1px solid #ddd;padding:1%;float:left;margin-right:50px;"></div>
+    <div id="charts1" style="width:380px;height:400px;border:1px solid #ddd;padding:1%;float:left;margin-bottom:50px;"></div>
+    <div id="charts2" style="width:910px;height:400px;border:1px solid #ddd;padding:1%;clear:both;"></div>
+</div>
+<script type="text/javascript" src="{$Think.const.ADMIN}js/echarts.js"></script>
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('charts'));
+    var myChart1 = echarts.init(document.getElementById('charts1'));
+    var myChart2 = echarts.init(document.getElementById('charts2'));
+
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: "{:url('DealInfo/totalDeal')}",
+        success: function(data) {
+            var deal = JSON.parse(data);
+            //订单商品父类型
+            var name = [];
+            //订单商品父类型数量
+            var value = [];
+            //订单状态数量
+            var count = [];
+            //订单状态
+            var status = [];
+            //订单商品类型
+            var typeName = [];
+            //订单商品类型数量
+            var typeValue = [];
+            //商品父类型
+            for (var i = 0; i < deal.data.length; i ++) {
+                value[i] = deal.data[i].total;
+                name[i] = deal.data[i].name;
+            }
+            //商品状态
+            for (var j = 0; j < deal.status.length; j ++) {
+                status[j] = deal.status[j].status;
+                count[j] = deal.status[j].count;
+            }
+            //商品类型
+            for (var k = 0; k < deal.type.length; k ++) {
+                typeValue[k] = deal.type[k].total;
+                typeName[k] = deal.type[k].name;
+            }
+
+            var option = {
+                backgroundColor:'rgba(12,121,123,0.1)', 
+                title: {
+                    text: '商品订单类别统计（共' + deal.total + '笔）',
+                    x: 'center',
+                    textStyle: {
+                        color: '#4CA2D3',
+                    },
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b}: {c} ({d}%)"
+                },
+                legend: {
+                    orient: 'vertical',
+                    x: 'left',
+                    data: name
+                },
+                series: [
+                    {
+                        name:'校园商城订单统计',
+                        type:'pie',
+                        selectedMode: 'single',
+                        radius: ['50%', '70%'],
+                        avoidLabelOverlap: false,
+                        label: {
+                            normal: {
+                                show: false,
+                                position: 'center'
+                            },
+                            emphasis: {
+                                show: true,
+                                textStyle: {
+                                    fontSize: '30',
+                                    fontWeight: 'bold'
+                                }
+                            }
+                        },
+                        labelLine: {
+                            normal: {
+                                show: false
+                            }
+                        },
+                        data: (function() {
+                            var res = [];
+                            var len = value.length;
+                            while (len --) {
+                                res.push({
+                                    name: name[len],
+                                    value: value[len]
+                                });
+                            }
+                            return res;
+                        })()
+                    }
+                ]
+            };
+
+            var option1 = {
+                backgroundColor: 'rgba(12, 121, 123, 0.1)',
+                title : {
+                    text: '商品订单状态统计',
+                    x:'center',
+                    textStyle: {
+                        color: '#4CA2D3',
+                    },
+                },
+                tooltip : {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 'right',
+                    data: status
+                },
+                series : [
+                    {
+                        name: '校园商城订单状态统计',
+                        type: 'pie',
+                        radius : '55%',
+                        center: ['50%', '60%'],
+                        data:　(function() {
+                            var res = [];
+                            var len = status.length;
+                            while (len --) {
+                                res.push({
+                                    name: status[len],
+                                    value: count[len]
+                                });
+                            }
+                            return res;
+                        })(),
+                        itemStyle: {
+                            emphasis: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    }
+                ]
+            };
+
+            var option2 = {
+                title: {
+                    text: '商品订单详细统计概览',
+                    left: 'center',
+                    top: 10,
+                    textStyle: {
+                        color: '#4CA2D3'
+                    }
+                },
+                color: ['#3398DB'],
+                backgroundColor:'rgba(12,121,123,0.1)',
+                tooltip : {
+                    trigger: 'axis',
+                    axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                        type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                    }
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis : [
+                    {
+                        type : 'category',
+                        data : typeName,
+                        axisTick: {
+                            alignWithLabel: true
+                        }
+                    }
+                ],
+                yAxis : [
+                    {
+                        type : 'value'
+                    }
+                ],
+                series : [
+                    {
+                        name:'数量',
+                        type:'bar',
+                        barWidth: '60%',
+                        label: {
+                            normal: {
+                                show: true,
+                                position: 'insideTop',
+                                formatter: function(params) {
+                                    return params.value[1];
+                                }
+                            }
+                        },
+                        data:　typeValue
+                    }
+                ]
+            };
+
+            // 使用刚指定的配置项和数据显示图表
+            myChart.setOption(option);
+            myChart1.setOption(option1);
+            myChart2.setOption(option2);
+        },
+    });
+</script>

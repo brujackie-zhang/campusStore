@@ -80,7 +80,7 @@ class Shops extends Model
 	}
 
 	//根据商店ID获取商店下的产品信息
-	public function getCommiditiesInfoByShopId($id, $perPage, $total)
+	public function getCommiditiesInfoByShopId($id, $perPage = 10, $total)
 	{
 		$fields = [
 			self::TB_SHOPS . '.id as id',
@@ -121,6 +121,7 @@ class Shops extends Model
 			-> join(self::TB_COMMIDITY_PARENT, self::TB_COMMIDITY_PARENT . '.id = ' . self::TB_COMMIDITY_TYPE . '.p_id', 'left')
 			-> join(self::TB_BRAND, self::TB_BRAND . '.id = ' . self::TB_COMMIDITY . '.brand_id', 'left')
 			-> where(self::TB_COMMIDITY . '.is_new', 1)
+			-> where(self::TB_SHOPS . '.id', $id)
 			-> order('id', 'desc')
 			-> paginate($perPage, $total);
 
@@ -169,6 +170,7 @@ class Shops extends Model
 			-> join(self::TB_COMMIDITY_PARENT, self::TB_COMMIDITY_PARENT . '.id = ' . self::TB_COMMIDITY_TYPE . '.p_id', 'left')
 			-> join(self::TB_BRAND, self::TB_BRAND . '.id = ' . self::TB_COMMIDITY . '.brand_id', 'left')
 			-> where(self::TB_COMMIDITY . '.is_new', 1)
+			-> where(self::TB_SHOPS . '.id', $id)
 			-> count();
 
 		return $result = $result ? $result : '';
@@ -203,6 +205,79 @@ class Shops extends Model
 			-> field($fields)
 			-> where(self::TB_SHOPS . '.id', $id)
 			-> find();
+
+		return $result = $result ? $result : '';
+	}
+
+	//根据搜索条件查询店铺信息
+	public function getShopSInfoByCondition($condition, $perPage = 10, $total)
+	{
+		$fields = [
+			self::TB_SHOPS . '.id as id',
+			self::TB_SHOPS . '.name as name',
+			self::TB_SHOPS . '.sevices as sevices',
+			self::TB_SHOPS . '.description as description',
+			self::TB_SHOPS . '.face as face',
+			self::TB_SHOPS . '.license as license',
+			self::TB_SHOPS . '.address as address',
+			self::TB_SHOPS . '.mobile as mobile',
+			self::TB_SHOPS . '.qq as qq',
+			self::TB_SHOPS . '.alipay as alipay',
+			self::TB_SHOPS . '.wxpay as wxpay',
+			self::TB_SHOPS . '.longtitude as longtitude',
+			self::TB_SHOPS . '.latitude as latitude',
+			self::TB_SHOPS . '.credit as credit',
+			self::TB_SHOPS . '.on_duty as onDuty',
+			self::TB_SHOPS . '.off_duty as offDuty',
+			'FROM_UNIXTIME(' . self::TB_SHOPS . '.create_time, "%Y-%m-%d %H:%i:%s") as createTime',
+			'FROM_UNIXTIME(' . self::TB_SHOPS . '.update_time, "%Y-%m-%d %H:%i:%s") as updateTime',
+		];
+
+		if ($condition > 4) {
+			$result = Db::table(self::TB_SHOPS)
+				-> field($fields)
+				-> where(self::TB_SHOPS . '.credit', '>', $condition)
+				-> order('id', 'desc')
+				-> paginate($perPage, $total);
+		} else {
+			$result = Db::table(self::TB_SHOPS)
+				-> field($fields)
+				-> where(self::TB_SHOPS . '.type', $condition)
+				-> order('id', 'desc')
+				-> paginate($perPage, $total);
+		}
+
+		return $result = $result ? $result : '';
+	}
+
+	//根据搜索条件查询店铺信息总数
+	public function getShopSInfoByConditionTotal($condition)
+	{
+		$fields = [
+			self::TB_SHOPS . '.id as id',
+			self::TB_SHOPS . '.name as name',
+			self::TB_SHOPS . '.sevices as sevices',
+			self::TB_SHOPS . '.description as description',
+			self::TB_SHOPS . '.face as face',
+			self::TB_SHOPS . '.license as license',
+			self::TB_SHOPS . '.address as address',
+			self::TB_SHOPS . '.mobile as mobile',
+			self::TB_SHOPS . '.qq as qq',
+			self::TB_SHOPS . '.alipay as alipay',
+			self::TB_SHOPS . '.wxpay as wxpay',
+			self::TB_SHOPS . '.longtitude as longtitude',
+			self::TB_SHOPS . '.latitude as latitude',
+			self::TB_SHOPS . '.credit as credit',
+			self::TB_SHOPS . '.on_duty as onDuty',
+			self::TB_SHOPS . '.off_duty as offDuty',
+			'FROM_UNIXTIME(' . self::TB_SHOPS . '.create_time, "%Y-%m-%d %H:%i:%s") as createTime',
+			'FROM_UNIXTIME(' . self::TB_SHOPS . '.update_time, "%Y-%m-%d %H:%i:%s") as updateTime',
+		];
+
+		$result = Db::table(self::TB_SHOPS)
+			-> field($fields)
+			-> where(self::TB_SHOPS . '.type', $condition)
+			-> count();
 
 		return $result = $result ? $result : '';
 	}

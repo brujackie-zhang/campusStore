@@ -15,10 +15,11 @@ class ShopsInfo extends Controller
 		$userImage = $login -> getUserSessionInfo()['image'];
 		$search = new Search();
 		$parent = $search -> getCommidityParentName();
-
+ 		
+ 		//实例化店铺
 		$shops = new Shops;
 		$total = $shops -> getShopsInfoTotal();
-		$result = $shops -> getShopsInfo(2, $total);
+		$result = $shops -> getShopsInfo(10, $total);
 
 		if($result) {
 			$page = $result -> render();
@@ -51,6 +52,7 @@ class ShopsInfo extends Controller
 		$shops = new Shops;
 		$total = $shops -> getCommiditiesInfoByShopIdTotal($id);
 		$results = $shops -> getCommiditiesInfoByShopId($id, 4, $total);
+		// echo $shops ->  getLastSql();
 		//获取店铺信息
 		$shopInfo = $shops -> getShopInfoByShopId($id);
 		//获取商品评价
@@ -76,6 +78,68 @@ class ShopsInfo extends Controller
 				]
 	    	);
 	    	return $this -> fetch('shops/shopDetailInfo');
+		}
+	}
+
+	//根据搜索条件查询店铺
+	public function getShopSInfoByCondition()
+	{
+		$condition = input('post.condition');
+		// $condition = input('post.select_shops');
+
+		$login = new Login();
+		$name = $login -> getUserSessionInfo()['name'];
+		$userId = $login -> getUserSessionInfo()['id'];
+		$userImage = $login -> getUserSessionInfo()['image'];
+		$search = new Search();
+		$parent = $search -> getCommidityParentName();
+		$shops = new Shops;
+
+		$result = '';
+
+		// $status = [
+		// 	'1' => [0, 1],
+		// 	'2' => 0,
+		// 	'3' => 1, 
+		// 	'4' => 5,
+		// ];
+		$type = [
+			'2' => '0', //打印类
+			'3' => '1', //非打印类
+			'4' => '4.5', //好评
+		];
+
+		if ($condition == 2 || $condition == 3) {
+			$total = $shops -> getShopSInfoByConditionTotal($type[$condition]);
+			$result = $shops -> getShopSInfoByCondition($type[$condition], 10, $total);
+		}
+
+		if ($condition == 1) {
+			$total = $shops -> getShopsInfoTotal();
+			$result = $shops -> getShopsInfo(10, $total);
+		}
+
+		if ($condition == 4) {
+			$total = $shops -> getShopSInfoByConditionTotal($type[$condition]);
+			$result = $shops -> getShopSInfoByCondition($type[$condition], 10, $total);
+		}
+
+		if($result) {
+			$page = $result -> render();
+			// $this -> assign(
+	  //   		[
+			// 		'name'      => $name,
+			// 		'parent'    => $parent,
+			// 		'userImage' => $userImage,
+			// 		'shopsInfo' => $result,
+			// 		'page'      => $page,
+	  //   		]
+	  //   	);
+			// return $this -> fetch("shops/shops");
+			// $this -> success("success" . $result);
+			return $result;
+		} else {
+			return $this -> error("暂时没有数据！o(╯□╰)o");
 		}
 	}
 }
